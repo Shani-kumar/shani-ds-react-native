@@ -7,7 +7,11 @@
     "sticky": { "$value": 200, "$type": "zIndex", "$description": "Sticky headers" },
     "banner": { "$value": 300, "$type": "zIndex", "$description": "System broadcast banners" },
     "overlay": { "$value": 400, "$type": "zIndex", "$description": "Backdrops and scrims" },
-    "modal": { "$value": 500, "$type": "zIndex", "$description": "Modal dialogs and bottom sheets" },
+    "modal": {
+      "$value": 500,
+      "$type": "zIndex",
+      "$description": "Modal dialogs and bottom sheets"
+    },
     "popover": { "$value": 600, "$type": "zIndex", "$description": "Floating context menus" },
     "toast": { "$value": 700, "$type": "zIndex", "$description": "In-app notifications" },
     "tooltip": { "$value": 800, "$type": "zIndex", "$description": "Always-on-top hints" }

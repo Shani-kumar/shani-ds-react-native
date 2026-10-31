@@ -2,7 +2,11 @@
   "radius": {
     "none": { "$value": 0, "$type": "dimension", "$description": "Square corners" },
     "xs": { "$value": 2, "$type": "dimension", "$description": "Subtle rounding" },
-    "sm": { "$value": 4, "$type": "dimension", "$description": "Small rounding for tags and badges" },
+    "sm": {
+      "$value": 4,
+      "$type": "dimension",
+      "$description": "Small rounding for tags and badges"
+    },
     "md": { "$value": 8, "$type": "dimension", "$description": "Standard component border radius" },
     "lg": { "$value": 12, "$type": "dimension", "$description": "Medium container radius" },
     "xl": { "$value": 16, "$type": "dimension", "$description": "Card and modal radius" },

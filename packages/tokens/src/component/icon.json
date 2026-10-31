@@ -1,0 +1,25 @@
+{
+  "component": {
+    "icon": {
+      "size": {
+        "xs": { "$value": 12, "$type": "dimension", "$description": "Extra small icon (12px)" },
+        "sm": { "$value": 16, "$type": "dimension", "$description": "Small icon (16px)" },
+        "md": {
+          "$value": 20,
+          "$type": "dimension",
+          "$description": "Medium icon for buttons and inputs (20px)"
+        },
+        "lg": {
+          "$value": 24,
+          "$type": "dimension",
+          "$description": "Standard navigation and action icon (24px)"
+        },
+        "xl": {
+          "$value": 32,
+          "$type": "dimension",
+          "$description": "Hero and empty state icon (32px)"
+        }
+      }
+    }
+  }
+}

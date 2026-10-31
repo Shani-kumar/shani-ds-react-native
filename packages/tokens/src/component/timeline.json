@@ -1,0 +1,33 @@
+{
+  "component": {
+    "timeline": {
+      "indicator": {
+        "size": { "$value": 24, "$type": "dimension" },
+        "borderWidth": { "$value": 2, "$type": "dimension" }
+      },
+      "line": {
+        "width": { "$value": 2, "$type": "dimension" },
+        "color": {
+          "completed": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+          "upcoming": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
+        }
+      },
+      "dot": {
+        "completed": {
+          "bg": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+          "icon": { "$value": "{semantic.color.action.primary.text}", "$type": "color" }
+        },
+        "current": {
+          "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+          "border": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+          "center": { "$value": "{semantic.color.action.primary.default}", "$type": "color" }
+        },
+        "upcoming": {
+          "bg": { "$value": "{semantic.color.bg.muted}", "$type": "color" },
+          "border": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
+        }
+      }
+    }
+  }
+}
+

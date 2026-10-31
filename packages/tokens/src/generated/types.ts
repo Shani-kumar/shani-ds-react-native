@@ -76,6 +76,7 @@ export interface ThemeColors {
     warning: Record<'50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', string>;
     danger: Record<'50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', string>;
     info: Record<'50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', string>;
+    partner: Record<'50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', string>;
   };
 }
 
@@ -122,6 +123,8 @@ export interface MotionTokens {
   spring: Record<'default' | 'snappy' | 'bouncier' | 'gentle', MotionSpringConfig>;
 }
 
+export type FontWeightValue = '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | 'normal' | 'bold';
+
 export interface TypographyTokens {
   fontFamily: {
     sans: string;
@@ -129,7 +132,7 @@ export interface TypographyTokens {
   };
   fontSize: Record<'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl', number>;
   lineHeight: Record<'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl', number>;
-  fontWeight: Record<'regular' | 'medium' | 'semibold' | 'bold', string>;
+  fontWeight: Record<'regular' | 'medium' | 'semibold' | 'bold', FontWeightValue>;
   letterSpacing: Record<'tight' | 'normal' | 'wide' | 'wider', number>;
 }
 
@@ -158,13 +161,40 @@ export interface ComponentTokens {
       text: string;
       textDisabled: string;
     };
+    tertiary: {
+      bg: string;
+      bgPressed: string;
+      bgDisabled: string;
+      text: string;
+      textDisabled: string;
+    };
+    ghost: {
+      bg: string;
+      bgPressed: string;
+      bgDisabled: string;
+      text: string;
+      textDisabled: string;
+    };
+    size: Record<
+      'sm' | 'md' | 'lg',
+      {
+        minHeight: number;
+        paddingHorizontal: number;
+        paddingVertical: number;
+        gap: number;
+        fontSize: number;
+        iconSize: number;
+      }
+    >;
   };
   input: {
     bg: string;
+    bgDisabled: string;
     border: {
       default: string;
       focus: string;
       error: string;
+      disabled: string;
     };
     text: {
       value: string;
@@ -172,13 +202,118 @@ export interface ComponentTokens {
       label: string;
       helper: string;
       error: string;
+      disabled: string;
     };
+    size: Record<
+      'sm' | 'md' | 'lg',
+      {
+        minHeight: number;
+        paddingHorizontal: number;
+        paddingVertical: number;
+        gap: number;
+        fontSize: number;
+        iconSize: number;
+      }
+    >;
   };
-  badge: Record<'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info', { bg: string; text: string }>;
+  checkbox: {
+    bg: {
+      default: string;
+      checked: string;
+      disabled: string;
+    };
+    border: {
+      default: string;
+      focus: string;
+      checked: string;
+      disabled: string;
+    };
+    icon: {
+      checked: string;
+      disabled: string;
+    };
+    size: Record<
+      'sm' | 'md' | 'lg',
+      {
+        boxSize: number;
+        iconSize: number;
+        fontSize: number;
+        minTouchTarget: number;
+      }
+    >;
+  };
+  badge: {
+    neutral: { bg: string; text: string };
+    brand: { bg: string; text: string };
+    success: { bg: string; text: string };
+    warning: { bg: string; text: string };
+    danger: { bg: string; text: string };
+    info: { bg: string; text: string };
+    size: Record<
+      'sm' | 'md',
+      {
+        paddingHorizontal: number;
+        paddingVertical: number;
+        fontSize: number;
+        iconSize: number;
+      }
+    >;
+  };
   card: {
     bg: string;
     bgElevated: string;
+    bgFilled: string;
     border: string;
+    padding: Record<'sm' | 'md' | 'lg', number>;
+  };
+  timeline: {
+    indicator: {
+      size: number;
+      borderWidth: number;
+    };
+    line: {
+      width: number;
+      color: {
+        completed: string;
+        upcoming: string;
+      };
+    };
+    dot: {
+      completed: {
+        bg: string;
+        icon: string;
+      };
+      current: {
+        bg: string;
+        border: string;
+        center: string;
+      };
+      upcoming: {
+        bg: string;
+        border: string;
+      };
+    };
+  };
+  icon: {
+    size: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl', number>;
+  };
+  switch: {
+    track: {
+      width: number;
+      height: number;
+      padding: number;
+      bgActive: string;
+      bgInactive: string;
+      bgDisabledActive: string;
+      bgDisabledInactive: string;
+    };
+    thumb: {
+      size: number;
+      offset: number;
+      bg: string;
+      bgDisabled: string;
+    };
+    minTouchTarget: number;
   };
 }
 

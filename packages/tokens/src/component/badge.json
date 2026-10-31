@@ -24,6 +24,20 @@
       "info": {
         "bg": { "$value": "{semantic.color.feedback.info.bg}", "$type": "color" },
         "text": { "$value": "{semantic.color.feedback.info.text}", "$type": "color" }
+      },
+      "size": {
+        "sm": {
+          "paddingHorizontal": { "$value": 6, "$type": "dimension" },
+          "paddingVertical": { "$value": 2, "$type": "dimension" },
+          "fontSize": { "$value": 11, "$type": "dimension" },
+          "iconSize": { "$value": 12, "$type": "dimension" }
+        },
+        "md": {
+          "paddingHorizontal": { "$value": 8, "$type": "dimension" },
+          "paddingVertical": { "$value": 4, "$type": "dimension" },
+          "fontSize": { "$value": 12, "$type": "dimension" },
+          "iconSize": { "$value": 14, "$type": "dimension" }
+        }
       }
     }
   }

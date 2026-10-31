@@ -1,0 +1,42 @@
+{
+  "component": {
+    "checkbox": {
+      "bg": {
+        "default": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+        "checked": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "disabled": { "$value": "{semantic.color.bg.muted}", "$type": "color" }
+      },
+      "border": {
+        "default": { "$value": "{semantic.color.border.default}", "$type": "color" },
+        "focus": { "$value": "{semantic.color.border.focus}", "$type": "color" },
+        "checked": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "disabled": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
+      },
+      "icon": {
+        "checked": { "$value": "{semantic.color.action.primary.text}", "$type": "color" },
+        "disabled": { "$value": "{semantic.color.text.muted}", "$type": "color" }
+      },
+      "size": {
+        "sm": {
+          "boxSize": { "$value": 18, "$type": "dimension" },
+          "iconSize": { "$value": 14, "$type": "dimension" },
+          "fontSize": { "$value": 14, "$type": "dimension" },
+          "minTouchTarget": { "$value": 44, "$type": "dimension" }
+        },
+        "md": {
+          "boxSize": { "$value": 22, "$type": "dimension" },
+          "iconSize": { "$value": 16, "$type": "dimension" },
+          "fontSize": { "$value": 16, "$type": "dimension" },
+          "minTouchTarget": { "$value": 44, "$type": "dimension" }
+        },
+        "lg": {
+          "boxSize": { "$value": 26, "$type": "dimension" },
+          "iconSize": { "$value": 20, "$type": "dimension" },
+          "fontSize": { "$value": 18, "$type": "dimension" },
+          "minTouchTarget": { "$value": 48, "$type": "dimension" }
+        }
+      }
+    }
+  }
+}
+

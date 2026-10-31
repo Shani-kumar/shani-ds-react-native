@@ -1,11 +1,27 @@
 {
   "opacity": {
     "0": { "$value": 0, "$type": "opacity", "$description": "Completely transparent" },
-    "faint": { "$value": 0.08, "$type": "opacity", "$description": "Very subtle hover/pressed tint" },
-    "subtle": { "$value": 0.16, "$type": "opacity", "$description": "Subtle tint for light mode badges" },
+    "faint": {
+      "$value": 0.08,
+      "$type": "opacity",
+      "$description": "Very subtle hover/pressed tint"
+    },
+    "subtle": {
+      "$value": 0.16,
+      "$type": "opacity",
+      "$description": "Subtle tint for light mode badges"
+    },
     "muted": { "$value": 0.38, "$type": "opacity", "$description": "Disabled state opacity" },
-    "medium": { "$value": 0.6, "$type": "opacity", "$description": "Secondary / hint text opacity" },
-    "strong": { "$value": 0.8, "$type": "opacity", "$description": "Pressed / active state opacity" },
+    "medium": {
+      "$value": 0.6,
+      "$type": "opacity",
+      "$description": "Secondary / hint text opacity"
+    },
+    "strong": {
+      "$value": 0.8,
+      "$type": "opacity",
+      "$description": "Pressed / active state opacity"
+    },
     "full": { "$value": 1, "$type": "opacity", "$description": "Completely opaque" }
   }
 }

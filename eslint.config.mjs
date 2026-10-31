@@ -14,7 +14,10 @@ export default tseslint.config(
       '**/.expo/**',
       '**/coverage/**',
       '**/generated/**',
-      'jest.config.js',
+      '**/jest.config.js',
+      '**/jest.setup.js',
+      '**/babel.config.js',
+      '**/metro.config.js',
     ],
   },
   {

@@ -3,7 +3,13 @@
     "card": {
       "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
       "bgElevated": { "$value": "{semantic.color.bg.surfaceRaised}", "$type": "color" },
-      "border": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
+      "bgFilled": { "$value": "{semantic.color.bg.muted}", "$type": "color" },
+      "border": { "$value": "{semantic.color.border.subtle}", "$type": "color" },
+      "padding": {
+        "sm": { "$value": 12, "$type": "dimension" },
+        "md": { "$value": 16, "$type": "dimension" },
+        "lg": { "$value": 24, "$type": "dimension" }
+      }
     }
   }
 }

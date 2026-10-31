@@ -3,7 +3,11 @@
     "0": { "$value": 0, "$type": "dimension", "$description": "0px - no space" },
     "1": { "$value": 4, "$type": "dimension", "$description": "4px - minimum token space (1x)" },
     "2": { "$value": 8, "$type": "dimension", "$description": "8px - tight spacing (2x)" },
-    "3": { "$value": 12, "$type": "dimension", "$description": "12px - comfortable small spacing (3x)" },
+    "3": {
+      "$value": 12,
+      "$type": "dimension",
+      "$description": "12px - comfortable small spacing (3x)"
+    },
     "4": { "$value": 16, "$type": "dimension", "$description": "16px - base unit spacing (4x)" },
     "5": { "$value": 20, "$type": "dimension", "$description": "20px - medium spacing (5x)" },
     "6": { "$value": 24, "$type": "dimension", "$description": "24px - large spacing (6x)" },
@@ -11,10 +15,30 @@
     "8": { "$value": 32, "$type": "dimension", "$description": "32px - extra large spacing (8x)" },
     "9": { "$value": 36, "$type": "dimension", "$description": "36px - section spacing (9x)" },
     "10": { "$value": 40, "$type": "dimension", "$description": "40px - major spacing (10x)" },
-    "12": { "$value": 48, "$type": "dimension", "$description": "48px - touch target spacing (12x)" },
-    "14": { "$value": 56, "$type": "dimension", "$description": "56px - component height / layout (14x)" },
-    "16": { "$value": 64, "$type": "dimension", "$description": "64px - spacious separation (16x)" },
-    "20": { "$value": 80, "$type": "dimension", "$description": "80px - hero section spacing (20x)" },
-    "24": { "$value": 96, "$type": "dimension", "$description": "96px - outer viewport margin (24x)" }
+    "12": {
+      "$value": 48,
+      "$type": "dimension",
+      "$description": "48px - touch target spacing (12x)"
+    },
+    "14": {
+      "$value": 56,
+      "$type": "dimension",
+      "$description": "56px - component height / layout (14x)"
+    },
+    "16": {
+      "$value": 64,
+      "$type": "dimension",
+      "$description": "64px - spacious separation (16x)"
+    },
+    "20": {
+      "$value": 80,
+      "$type": "dimension",
+      "$description": "80px - hero section spacing (20x)"
+    },
+    "24": {
+      "$value": 96,
+      "$type": "dimension",
+      "$description": "96px - outer viewport margin (24x)"
+    }
   }
 }

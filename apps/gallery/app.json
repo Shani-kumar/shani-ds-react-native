@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Shani DS Gallery",
+    "slug": "shani-gallery",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "scheme": "shani-gallery",
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
+

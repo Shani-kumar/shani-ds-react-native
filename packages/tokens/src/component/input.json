@@ -2,17 +2,58 @@
   "component": {
     "input": {
       "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+      "bgDisabled": { "$value": "{semantic.color.bg.muted}", "$type": "color" },
       "border": {
         "default": { "$value": "{semantic.color.border.default}", "$type": "color" },
         "focus": { "$value": "{semantic.color.border.focus}", "$type": "color" },
-        "error": { "$value": "{semantic.color.border.danger}", "$type": "color" }
+        "error": { "$value": "{semantic.color.border.danger}", "$type": "color" },
+        "disabled": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
       },
       "text": {
         "value": { "$value": "{semantic.color.text.primary}", "$type": "color" },
         "placeholder": { "$value": "{semantic.color.text.tertiary}", "$type": "color" },
         "label": { "$value": "{semantic.color.text.primary}", "$type": "color" },
         "helper": { "$value": "{semantic.color.text.secondary}", "$type": "color" },
-        "error": { "$value": "{semantic.color.text.danger}", "$type": "color" }
+        "error": { "$value": "{semantic.color.text.danger}", "$type": "color" },
+        "disabled": { "$value": "{semantic.color.text.muted}", "$type": "color" }
+      },
+      "size": {
+        "sm": {
+          "minHeight": {
+            "$value": 44,
+            "$type": "dimension",
+            "$description": "Minimum 44pt touch target"
+          },
+          "paddingHorizontal": { "$value": 12, "$type": "dimension" },
+          "paddingVertical": { "$value": 8, "$type": "dimension" },
+          "gap": { "$value": 8, "$type": "dimension" },
+          "fontSize": { "$value": 14, "$type": "dimension" },
+          "iconSize": { "$value": 16, "$type": "dimension" }
+        },
+        "md": {
+          "minHeight": {
+            "$value": 48,
+            "$type": "dimension",
+            "$description": "Standard input height"
+          },
+          "paddingHorizontal": { "$value": 16, "$type": "dimension" },
+          "paddingVertical": { "$value": 12, "$type": "dimension" },
+          "gap": { "$value": 8, "$type": "dimension" },
+          "fontSize": { "$value": 16, "$type": "dimension" },
+          "iconSize": { "$value": 20, "$type": "dimension" }
+        },
+        "lg": {
+          "minHeight": {
+            "$value": 56,
+            "$type": "dimension",
+            "$description": "Hero & driver-friendly input"
+          },
+          "paddingHorizontal": { "$value": 20, "$type": "dimension" },
+          "paddingVertical": { "$value": 16, "$type": "dimension" },
+          "gap": { "$value": 12, "$type": "dimension" },
+          "fontSize": { "$value": 18, "$type": "dimension" },
+          "iconSize": { "$value": 24, "$type": "dimension" }
+        }
       }
     }
   }

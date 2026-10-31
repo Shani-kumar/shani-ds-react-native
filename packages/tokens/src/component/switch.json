@@ -1,0 +1,37 @@
+{
+  "component": {
+    "switch": {
+      "track": {
+        "width": { "$value": 48, "$type": "dimension", "$description": "Width of switch track" },
+        "height": { "$value": 28, "$type": "dimension", "$description": "Height of switch track" },
+        "padding": {
+          "$value": 2,
+          "$type": "dimension",
+          "$description": "Internal padding of switch track"
+        },
+        "bgActive": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "bgInactive": { "$value": "{semantic.color.bg.subtle}", "$type": "color" },
+        "bgDisabledActive": {
+          "$value": "{semantic.color.action.primary.disabled}",
+          "$type": "color"
+        },
+        "bgDisabledInactive": { "$value": "{semantic.color.bg.muted}", "$type": "color" }
+      },
+      "thumb": {
+        "size": { "$value": 24, "$type": "dimension", "$description": "Diameter of switch thumb" },
+        "offset": {
+          "$value": 20,
+          "$type": "dimension",
+          "$description": "TranslateX offset when active"
+        },
+        "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+        "bgDisabled": { "$value": "{semantic.color.bg.surface}", "$type": "color" }
+      },
+      "minTouchTarget": {
+        "$value": 44,
+        "$type": "dimension",
+        "$description": "WCAG minimum 44pt touch target"
+      }
+    }
+  }
+}

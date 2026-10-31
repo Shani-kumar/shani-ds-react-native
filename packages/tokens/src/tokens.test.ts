@@ -35,6 +35,9 @@ describe('Design Tokens Integration', () => {
   it('has valid component tokens mapped to semantic colors', () => {
     expect(lightTheme.components.button.primary.bg).toBe(lightTheme.colors.action.primary.default);
     expect(lightTheme.components.input.border.error).toBe(lightTheme.colors.border.danger);
+    expect(lightTheme.components.switch.track.bgActive).toBe(
+      lightTheme.colors.action.primary.default
+    );
     expect(darkTheme.components.button.primary.bg).toBe(darkTheme.colors.action.primary.default);
   });
 });

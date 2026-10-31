@@ -2,92 +2,339 @@
   "semantic": {
     "color": {
       "bg": {
-        "canvas": { "$value": "{color.neutral.950}", "$type": "color", "$description": "Main application background in dark mode" },
-        "surface": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Card, list and container background in dark mode" },
-        "surfaceRaised": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Elevated card and sheet surface in dark mode" },
-        "surfaceOverlay": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Modal and dialog surface in dark mode" },
-        "muted": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Muted background for chips and dividers in dark mode" },
-        "subtle": { "$value": "{color.neutral.700}", "$type": "color", "$description": "Secondary container background in dark mode" },
-        "inverse": { "$value": "{color.neutral.50}", "$type": "color", "$description": "High contrast light surface (toasts in dark mode)" },
-        "brand": { "$value": "{color.brand.900}", "$type": "color", "$description": "Brand tint background in dark mode" },
-        "brandSubtle": { "$value": "{color.brand.800}", "$type": "color", "$description": "Subtle brand container background in dark mode" }
+        "canvas": {
+          "$value": "{color.neutral.950}",
+          "$type": "color",
+          "$description": "Main application background in dark mode"
+        },
+        "surface": {
+          "$value": "{color.neutral.900}",
+          "$type": "color",
+          "$description": "Card, list and container background in dark mode"
+        },
+        "surfaceRaised": {
+          "$value": "{color.neutral.800}",
+          "$type": "color",
+          "$description": "Elevated card and sheet surface in dark mode"
+        },
+        "surfaceOverlay": {
+          "$value": "{color.neutral.800}",
+          "$type": "color",
+          "$description": "Modal and dialog surface in dark mode"
+        },
+        "muted": {
+          "$value": "{color.neutral.800}",
+          "$type": "color",
+          "$description": "Muted background for chips and dividers in dark mode"
+        },
+        "subtle": {
+          "$value": "{color.neutral.700}",
+          "$type": "color",
+          "$description": "Secondary container background in dark mode"
+        },
+        "inverse": {
+          "$value": "{color.neutral.50}",
+          "$type": "color",
+          "$description": "High contrast light surface (toasts in dark mode)"
+        },
+        "brand": {
+          "$value": "{color.brand.900}",
+          "$type": "color",
+          "$description": "Brand tint background in dark mode"
+        },
+        "brandSubtle": {
+          "$value": "{color.brand.800}",
+          "$type": "color",
+          "$description": "Subtle brand container background in dark mode"
+        }
       },
       "text": {
-        "primary": { "$value": "{color.neutral.50}", "$type": "color", "$description": "Primary readable text in dark mode" },
-        "secondary": { "$value": "{color.neutral.300}", "$type": "color", "$description": "Secondary readable text in dark mode" },
-        "tertiary": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Tertiary helper and placeholder text in dark mode" },
-        "muted": { "$value": "{color.neutral.500}", "$type": "color", "$description": "Disabled or fine print text in dark mode" },
-        "inverse": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Dark text on light surfaces in dark mode" },
-        "brand": { "$value": "{color.brand.400}", "$type": "color", "$description": "Brand accent text in dark mode" },
-        "brandEmphasized": { "$value": "{color.brand.300}", "$type": "color", "$description": "Strong brand text in dark mode" },
-        "danger": { "$value": "{color.danger.400}", "$type": "color", "$description": "Error and danger text in dark mode" },
-        "warning": { "$value": "{color.warning.400}", "$type": "color", "$description": "Warning callout text in dark mode" },
-        "success": { "$value": "{color.success.400}", "$type": "color", "$description": "Success confirmation text in dark mode" },
-        "info": { "$value": "{color.info.400}", "$type": "color", "$description": "Informational text in dark mode" }
+        "primary": {
+          "$value": "{color.neutral.50}",
+          "$type": "color",
+          "$description": "Primary readable text in dark mode"
+        },
+        "secondary": {
+          "$value": "{color.neutral.300}",
+          "$type": "color",
+          "$description": "Secondary readable text in dark mode"
+        },
+        "tertiary": {
+          "$value": "{color.neutral.400}",
+          "$type": "color",
+          "$description": "Tertiary helper and placeholder text in dark mode"
+        },
+        "muted": {
+          "$value": "{color.neutral.500}",
+          "$type": "color",
+          "$description": "Disabled or fine print text in dark mode"
+        },
+        "inverse": {
+          "$value": "{color.neutral.900}",
+          "$type": "color",
+          "$description": "Dark text on light surfaces in dark mode"
+        },
+        "brand": {
+          "$value": "{color.brand.400}",
+          "$type": "color",
+          "$description": "Brand accent text in dark mode"
+        },
+        "brandEmphasized": {
+          "$value": "{color.brand.300}",
+          "$type": "color",
+          "$description": "Strong brand text in dark mode"
+        },
+        "danger": {
+          "$value": "{color.danger.400}",
+          "$type": "color",
+          "$description": "Error and danger text in dark mode"
+        },
+        "warning": {
+          "$value": "{color.warning.400}",
+          "$type": "color",
+          "$description": "Warning callout text in dark mode"
+        },
+        "success": {
+          "$value": "{color.success.400}",
+          "$type": "color",
+          "$description": "Success confirmation text in dark mode"
+        },
+        "info": {
+          "$value": "{color.info.400}",
+          "$type": "color",
+          "$description": "Informational text in dark mode"
+        }
       },
       "border": {
-        "subtle": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Subtle divider line in dark mode" },
-        "default": { "$value": "{color.neutral.700}", "$type": "color", "$description": "Standard border for cards and inputs in dark mode" },
-        "strong": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Emphasized border in dark mode" },
-        "brand": { "$value": "{color.brand.400}", "$type": "color", "$description": "Brand colored border in dark mode" },
-        "focus": { "$value": "{color.brand.400}", "$type": "color", "$description": "Focus ring indicator in dark mode" },
-        "danger": { "$value": "{color.danger.400}", "$type": "color", "$description": "Error border on inputs in dark mode" },
-        "warning": { "$value": "{color.warning.400}", "$type": "color", "$description": "Warning state border in dark mode" },
-        "success": { "$value": "{color.success.400}", "$type": "color", "$description": "Success state border in dark mode" },
-        "info": { "$value": "{color.info.400}", "$type": "color", "$description": "Informational border in dark mode" }
+        "subtle": {
+          "$value": "{color.neutral.800}",
+          "$type": "color",
+          "$description": "Subtle divider line in dark mode"
+        },
+        "default": {
+          "$value": "{color.neutral.700}",
+          "$type": "color",
+          "$description": "Standard border for cards and inputs in dark mode"
+        },
+        "strong": {
+          "$value": "{color.neutral.600}",
+          "$type": "color",
+          "$description": "Emphasized border in dark mode"
+        },
+        "brand": {
+          "$value": "{color.brand.400}",
+          "$type": "color",
+          "$description": "Brand colored border in dark mode"
+        },
+        "focus": {
+          "$value": "{color.brand.400}",
+          "$type": "color",
+          "$description": "Focus ring indicator in dark mode"
+        },
+        "danger": {
+          "$value": "{color.danger.400}",
+          "$type": "color",
+          "$description": "Error border on inputs in dark mode"
+        },
+        "warning": {
+          "$value": "{color.warning.400}",
+          "$type": "color",
+          "$description": "Warning state border in dark mode"
+        },
+        "success": {
+          "$value": "{color.success.400}",
+          "$type": "color",
+          "$description": "Success state border in dark mode"
+        },
+        "info": {
+          "$value": "{color.info.400}",
+          "$type": "color",
+          "$description": "Informational border in dark mode"
+        }
       },
       "action": {
         "primary": {
-          "default": { "$value": "{color.brand.600}", "$type": "color", "$description": "Primary action button background in dark mode" },
-          "pressed": { "$value": "{color.brand.700}", "$type": "color", "$description": "Primary action button pressed in dark mode" },
-          "disabled": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Primary action button disabled in dark mode" },
-          "text": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Primary action button text in dark mode" },
-          "textDisabled": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Primary action text disabled in dark mode" }
+          "default": {
+            "$value": "{color.brand.600}",
+            "$type": "color",
+            "$description": "Primary action button background in dark mode"
+          },
+          "pressed": {
+            "$value": "{color.brand.700}",
+            "$type": "color",
+            "$description": "Primary action button pressed in dark mode"
+          },
+          "disabled": {
+            "$value": "{color.neutral.800}",
+            "$type": "color",
+            "$description": "Primary action button disabled in dark mode"
+          },
+          "text": {
+            "$value": "{color.neutral.0}",
+            "$type": "color",
+            "$description": "Primary action button text in dark mode"
+          },
+          "textDisabled": {
+            "$value": "{color.neutral.600}",
+            "$type": "color",
+            "$description": "Primary action text disabled in dark mode"
+          }
         },
         "secondary": {
-          "default": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Secondary action button background in dark mode" },
-          "pressed": { "$value": "{color.neutral.700}", "$type": "color", "$description": "Secondary action button pressed in dark mode" },
-          "disabled": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Secondary action button disabled in dark mode" },
-          "border": { "$value": "{color.neutral.700}", "$type": "color", "$description": "Secondary action border in dark mode" },
-          "borderPressed": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Secondary action border pressed in dark mode" },
-          "text": { "$value": "{color.neutral.50}", "$type": "color", "$description": "Secondary action button text in dark mode" },
-          "textDisabled": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Secondary action text disabled in dark mode" }
+          "default": {
+            "$value": "{color.neutral.800}",
+            "$type": "color",
+            "$description": "Secondary action button background in dark mode"
+          },
+          "pressed": {
+            "$value": "{color.neutral.700}",
+            "$type": "color",
+            "$description": "Secondary action button pressed in dark mode"
+          },
+          "disabled": {
+            "$value": "{color.neutral.900}",
+            "$type": "color",
+            "$description": "Secondary action button disabled in dark mode"
+          },
+          "border": {
+            "$value": "{color.neutral.700}",
+            "$type": "color",
+            "$description": "Secondary action border in dark mode"
+          },
+          "borderPressed": {
+            "$value": "{color.neutral.600}",
+            "$type": "color",
+            "$description": "Secondary action border pressed in dark mode"
+          },
+          "text": {
+            "$value": "{color.neutral.50}",
+            "$type": "color",
+            "$description": "Secondary action button text in dark mode"
+          },
+          "textDisabled": {
+            "$value": "{color.neutral.600}",
+            "$type": "color",
+            "$description": "Secondary action text disabled in dark mode"
+          }
         },
         "danger": {
-          "default": { "$value": "{color.danger.600}", "$type": "color", "$description": "Destructive action button background in dark mode" },
-          "pressed": { "$value": "{color.danger.700}", "$type": "color", "$description": "Destructive action button pressed in dark mode" },
-          "disabled": { "$value": "{color.neutral.800}", "$type": "color", "$description": "Destructive action button disabled in dark mode" },
-          "text": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Destructive action button text in dark mode" },
-          "textDisabled": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Destructive action text disabled in dark mode" }
+          "default": {
+            "$value": "{color.danger.600}",
+            "$type": "color",
+            "$description": "Destructive action button background in dark mode"
+          },
+          "pressed": {
+            "$value": "{color.danger.700}",
+            "$type": "color",
+            "$description": "Destructive action button pressed in dark mode"
+          },
+          "disabled": {
+            "$value": "{color.neutral.800}",
+            "$type": "color",
+            "$description": "Destructive action button disabled in dark mode"
+          },
+          "text": {
+            "$value": "{color.neutral.0}",
+            "$type": "color",
+            "$description": "Destructive action button text in dark mode"
+          },
+          "textDisabled": {
+            "$value": "{color.neutral.600}",
+            "$type": "color",
+            "$description": "Destructive action text disabled in dark mode"
+          }
         }
       },
       "feedback": {
         "success": {
-          "bg": { "$value": "{color.success.900}", "$type": "color", "$description": "Success banner background in dark mode" },
-          "border": { "$value": "{color.success.700}", "$type": "color", "$description": "Success banner border in dark mode" },
-          "text": { "$value": "{color.success.200}", "$type": "color", "$description": "Success banner text in dark mode" },
-          "icon": { "$value": "{color.success.400}", "$type": "color", "$description": "Success icon in dark mode" }
+          "bg": {
+            "$value": "{color.success.900}",
+            "$type": "color",
+            "$description": "Success banner background in dark mode"
+          },
+          "border": {
+            "$value": "{color.success.700}",
+            "$type": "color",
+            "$description": "Success banner border in dark mode"
+          },
+          "text": {
+            "$value": "{color.success.200}",
+            "$type": "color",
+            "$description": "Success banner text in dark mode"
+          },
+          "icon": {
+            "$value": "{color.success.400}",
+            "$type": "color",
+            "$description": "Success icon in dark mode"
+          }
         },
         "warning": {
-          "bg": { "$value": "{color.warning.900}", "$type": "color", "$description": "Warning banner background in dark mode" },
-          "border": { "$value": "{color.warning.700}", "$type": "color", "$description": "Warning banner border in dark mode" },
-          "text": { "$value": "{color.warning.200}", "$type": "color", "$description": "Warning banner text in dark mode" },
-          "icon": { "$value": "{color.warning.400}", "$type": "color", "$description": "Warning icon in dark mode" }
+          "bg": {
+            "$value": "{color.warning.900}",
+            "$type": "color",
+            "$description": "Warning banner background in dark mode"
+          },
+          "border": {
+            "$value": "{color.warning.700}",
+            "$type": "color",
+            "$description": "Warning banner border in dark mode"
+          },
+          "text": {
+            "$value": "{color.warning.200}",
+            "$type": "color",
+            "$description": "Warning banner text in dark mode"
+          },
+          "icon": {
+            "$value": "{color.warning.400}",
+            "$type": "color",
+            "$description": "Warning icon in dark mode"
+          }
         },
         "danger": {
-          "bg": { "$value": "{color.danger.900}", "$type": "color", "$description": "Danger banner background in dark mode" },
-          "border": { "$value": "{color.danger.700}", "$type": "color", "$description": "Danger banner border in dark mode" },
-          "text": { "$value": "{color.danger.200}", "$type": "color", "$description": "Danger banner text in dark mode" },
-          "icon": { "$value": "{color.danger.400}", "$type": "color", "$description": "Danger icon in dark mode" }
+          "bg": {
+            "$value": "{color.danger.900}",
+            "$type": "color",
+            "$description": "Danger banner background in dark mode"
+          },
+          "border": {
+            "$value": "{color.danger.700}",
+            "$type": "color",
+            "$description": "Danger banner border in dark mode"
+          },
+          "text": {
+            "$value": "{color.danger.200}",
+            "$type": "color",
+            "$description": "Danger banner text in dark mode"
+          },
+          "icon": {
+            "$value": "{color.danger.400}",
+            "$type": "color",
+            "$description": "Danger icon in dark mode"
+          }
         },
         "info": {
-          "bg": { "$value": "{color.info.900}", "$type": "color", "$description": "Info banner background in dark mode" },
-          "border": { "$value": "{color.info.700}", "$type": "color", "$description": "Info banner border in dark mode" },
-          "text": { "$value": "{color.info.200}", "$type": "color", "$description": "Info banner text in dark mode" },
-          "icon": { "$value": "{color.info.400}", "$type": "color", "$description": "Info icon in dark mode" }
+          "bg": {
+            "$value": "{color.info.900}",
+            "$type": "color",
+            "$description": "Info banner background in dark mode"
+          },
+          "border": {
+            "$value": "{color.info.700}",
+            "$type": "color",
+            "$description": "Info banner border in dark mode"
+          },
+          "text": {
+            "$value": "{color.info.200}",
+            "$type": "color",
+            "$description": "Info banner text in dark mode"
+          },
+          "icon": {
+            "$value": "{color.info.400}",
+            "$type": "color",
+            "$description": "Info icon in dark mode"
+          }
         }
       }
     }
   }
 }
-

@@ -8,7 +8,7 @@
     "build": "pnpm tokens:build && pnpm --filter \"./packages/*\" build",
     "test": "jest --passWithNoTests",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit && pnpm --filter \"./packages/*\" typecheck",
+    "typecheck": "tsc --noEmit && pnpm --filter \"./packages/*\" --filter \"./apps/*\" typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
     "tokens:build": "tsx scripts/build-tokens.ts",
     "tokens:drift": "tsx scripts/build-tokens.ts --check",

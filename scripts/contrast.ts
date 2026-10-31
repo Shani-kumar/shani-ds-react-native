@@ -340,9 +340,15 @@ export function runContrastAudit(): { results: ContrastResult[]; passed: boolean
 }
 
 export function printContrastReport(): boolean {
-  console.log('\n========================================================================================');
-  console.log('                          SHANI DS - WCAG 2.1 CONTRAST AUDIT                           ');
-  console.log('========================================================================================\n');
+  console.log(
+    '\n========================================================================================'
+  );
+  console.log(
+    '                          SHANI DS - WCAG 2.1 CONTRAST AUDIT                           '
+  );
+  console.log(
+    '========================================================================================\n'
+  );
 
   const { results, passed } = runContrastAudit();
 
@@ -375,4 +381,3 @@ if (require.main === module) {
     process.exit(1);
   }
 }
-

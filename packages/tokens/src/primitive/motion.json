@@ -1,17 +1,53 @@
 {
   "motion": {
     "duration": {
-      "instant": { "$value": 0, "$type": "duration", "$description": "No animation / reduced motion" },
-      "fast": { "$value": 150, "$type": "duration", "$description": "Micro-interactions: buttons, switches, checkboxes" },
-      "normal": { "$value": 250, "$type": "duration", "$description": "Standard transitions: expand/collapse, cards" },
-      "slow": { "$value": 400, "$type": "duration", "$description": "Major transitions: modals, page sheets" },
-      "crawl": { "$value": 600, "$type": "duration", "$description": "Progressive multi-step animations" }
+      "instant": {
+        "$value": 0,
+        "$type": "duration",
+        "$description": "No animation / reduced motion"
+      },
+      "fast": {
+        "$value": 150,
+        "$type": "duration",
+        "$description": "Micro-interactions: buttons, switches, checkboxes"
+      },
+      "normal": {
+        "$value": 250,
+        "$type": "duration",
+        "$description": "Standard transitions: expand/collapse, cards"
+      },
+      "slow": {
+        "$value": 400,
+        "$type": "duration",
+        "$description": "Major transitions: modals, page sheets"
+      },
+      "crawl": {
+        "$value": 600,
+        "$type": "duration",
+        "$description": "Progressive multi-step animations"
+      }
     },
     "easing": {
-      "standard": { "$value": [0.2, 0, 0, 1], "$type": "cubicBezier", "$description": "Standard material cubic bezier" },
-      "accelerate": { "$value": [0.3, 0, 1, 1], "$type": "cubicBezier", "$description": "Elements exiting screen" },
-      "decelerate": { "$value": [0, 0, 0, 1], "$type": "cubicBezier", "$description": "Elements entering screen" },
-      "linear": { "$value": [0, 0, 1, 1], "$type": "cubicBezier", "$description": "Constant motion like spinners" }
+      "standard": {
+        "$value": [0.2, 0, 0, 1],
+        "$type": "cubicBezier",
+        "$description": "Standard material cubic bezier"
+      },
+      "accelerate": {
+        "$value": [0.3, 0, 1, 1],
+        "$type": "cubicBezier",
+        "$description": "Elements exiting screen"
+      },
+      "decelerate": {
+        "$value": [0, 0, 0, 1],
+        "$type": "cubicBezier",
+        "$description": "Elements entering screen"
+      },
+      "linear": {
+        "$value": [0, 0, 1, 1],
+        "$type": "cubicBezier",
+        "$description": "Constant motion like spinners"
+      }
     },
     "spring": {
       "default": {
