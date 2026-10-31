@@ -106,11 +106,35 @@ const CHECKS: CheckDefinition[] = [
   },
   {
     category: 'text',
+    fgName: 'text.secondary',
+    getFg: t => t.colors.text.secondary,
+    bgName: 'bg.surfaceRaised',
+    getBg: t => t.colors.bg.surfaceRaised,
+    minRatio: 4.5,
+  },
+  {
+    category: 'text',
+    fgName: 'text.tertiary',
+    getFg: t => t.colors.text.tertiary,
+    bgName: 'bg.canvas',
+    getBg: t => t.colors.bg.canvas,
+    minRatio: 4.5,
+  },
+  {
+    category: 'text',
     fgName: 'text.tertiary',
     getFg: t => t.colors.text.tertiary,
     bgName: 'bg.surface',
     getBg: t => t.colors.bg.surface,
-    minRatio: 3.0,
+    minRatio: 4.5,
+  },
+  {
+    category: 'text',
+    fgName: 'text.tertiary',
+    getFg: t => t.colors.text.tertiary,
+    bgName: 'bg.surfaceRaised',
+    getBg: t => t.colors.bg.surfaceRaised,
+    minRatio: 4.5,
   },
   {
     category: 'text',
@@ -351,3 +375,4 @@ if (require.main === module) {
     process.exit(1);
   }
 }
+

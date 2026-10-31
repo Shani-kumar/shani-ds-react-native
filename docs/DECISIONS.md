@@ -25,3 +25,12 @@
 - **Why:** Avoids heavy external token build tools (like Style Dictionary) that add arbitrary config bloat; guarantees 100% strict TypeScript types matching the exact React Native style object signatures.
 - **Alternatives Considered:**
   - Style Dictionary: Mature but heavy, requires complex custom formatters for idiomatic React Native StyleSheet types.
+
+## ADR-004: WCAG 2.1 AA Contrast Threshold Enforcement
+- **Context:** Mobile logistics applications are operated in unpredictable outdoor lighting and warehouse environments by users with diverse visual abilities. Certain text tokens (such as `text.tertiary`) represent small text (captions, form field helpers, timestamps, tracking notes).
+- **Decision:** Strictly enforce a 4.5:1 minimum contrast ratio across all normal-sized text tokens (`text.primary`, `text.secondary`, `text.tertiary`, `text.brand`, `text.danger`, etc.) against all applicable backgrounds (`bg.canvas`, `bg.surface`, `bg.surfaceRaised`). The relaxed 3:1 threshold is reserved exclusively for large text (≥18pt or ≥14pt bold) and non-text graphical UI components (e.g. feedback icons, active control borders).
+- **Why:** WCAG 2.1 Success Criterion 1.4.3 requires 4.5:1 for normal text (<18pt regular). Since tertiary text is frequently rendered at 12pt (`fontSize.xs`) or 14pt (`fontSize.sm`), treating it under the 3:1 graphical component threshold produces illegible UI on glare-prone mobile screens.
+- **Alternatives Considered:**
+  - Permitting 3:1 for tertiary text: Leads to accessibility failures and illegibility for warehouse drivers in sunlight.
+
+

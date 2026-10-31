@@ -14,9 +14,9 @@
       },
       "text": {
         "primary": { "$value": "{color.neutral.50}", "$type": "color", "$description": "Primary readable text in dark mode" },
-        "secondary": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Secondary readable text in dark mode" },
-        "tertiary": { "$value": "{color.neutral.500}", "$type": "color", "$description": "Tertiary helper and placeholder text in dark mode" },
-        "muted": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Disabled or fine print text in dark mode" },
+        "secondary": { "$value": "{color.neutral.300}", "$type": "color", "$description": "Secondary readable text in dark mode" },
+        "tertiary": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Tertiary helper and placeholder text in dark mode" },
+        "muted": { "$value": "{color.neutral.500}", "$type": "color", "$description": "Disabled or fine print text in dark mode" },
         "inverse": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Dark text on light surfaces in dark mode" },
         "brand": { "$value": "{color.brand.400}", "$type": "color", "$description": "Brand accent text in dark mode" },
         "brandEmphasized": { "$value": "{color.brand.300}", "$type": "color", "$description": "Strong brand text in dark mode" },
@@ -90,3 +90,4 @@
     }
   }
 }
+

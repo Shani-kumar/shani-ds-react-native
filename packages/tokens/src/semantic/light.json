@@ -14,8 +14,8 @@
       },
       "text": {
         "primary": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Primary readable text" },
-        "secondary": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Secondary readable text" },
-        "tertiary": { "$value": "{color.neutral.500}", "$type": "color", "$description": "Tertiary helper and placeholder text" },
+        "secondary": { "$value": "{color.neutral.700}", "$type": "color", "$description": "Secondary readable text" },
+        "tertiary": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Tertiary helper and placeholder text" },
         "muted": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Disabled or fine print text" },
         "inverse": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Inverse text on dark surfaces" },
         "brand": { "$value": "{color.brand.600}", "$type": "color", "$description": "Brand accent text" },

@@ -20,8 +20,8 @@ export const lightTheme: ThemeTokens = {
     },
     "text": {
       "primary": "#0F172A",
-      "secondary": "#475569",
-      "tertiary": "#64748B",
+      "secondary": "#334155",
+      "tertiary": "#475569",
       "muted": "#94A3B8",
       "inverse": "#FFFFFF",
       "brand": "#1D4ED8",
@@ -386,7 +386,7 @@ export const lightTheme: ThemeTokens = {
     "badge": {
       "neutral": {
         "bg": "#F1F5F9",
-        "text": "#475569"
+        "text": "#334155"
       },
       "brand": {
         "bg": "#DBEAFE",
@@ -448,9 +448,9 @@ export const lightTheme: ThemeTokens = {
       },
       "text": {
         "value": "#0F172A",
-        "placeholder": "#64748B",
+        "placeholder": "#475569",
         "label": "#0F172A",
-        "helper": "#475569",
+        "helper": "#334155",
         "error": "#DC2626"
       }
     }

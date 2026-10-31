@@ -20,9 +20,9 @@ export const darkTheme: ThemeTokens = {
     },
     "text": {
       "primary": "#F8FAFC",
-      "secondary": "#94A3B8",
-      "tertiary": "#64748B",
-      "muted": "#475569",
+      "secondary": "#CBD5E1",
+      "tertiary": "#94A3B8",
+      "muted": "#64748B",
       "inverse": "#0F172A",
       "brand": "#60A5FA",
       "brandEmphasized": "#93C5FD",
@@ -386,7 +386,7 @@ export const darkTheme: ThemeTokens = {
     "badge": {
       "neutral": {
         "bg": "#1E293B",
-        "text": "#94A3B8"
+        "text": "#CBD5E1"
       },
       "brand": {
         "bg": "#1E3A8A",
@@ -448,9 +448,9 @@ export const darkTheme: ThemeTokens = {
       },
       "text": {
         "value": "#F8FAFC",
-        "placeholder": "#64748B",
+        "placeholder": "#94A3B8",
         "label": "#F8FAFC",
-        "helper": "#94A3B8",
+        "helper": "#CBD5E1",
         "error": "#F87171"
       }
     }
