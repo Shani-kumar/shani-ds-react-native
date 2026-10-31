@@ -1,0 +1,92 @@
+{
+  "semantic": {
+    "color": {
+      "bg": {
+        "canvas": { "$value": "{color.neutral.50}", "$type": "color", "$description": "Main application background" },
+        "surface": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Card, list and container background" },
+        "surfaceRaised": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Elevated card and sheet surface" },
+        "surfaceOverlay": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Modal and dialog surface" },
+        "muted": { "$value": "{color.neutral.100}", "$type": "color", "$description": "Muted background for chips and dividers" },
+        "subtle": { "$value": "{color.neutral.200}", "$type": "color", "$description": "Secondary container background" },
+        "inverse": { "$value": "{color.neutral.900}", "$type": "color", "$description": "High contrast inverse surface (toasts)" },
+        "brand": { "$value": "{color.brand.50}", "$type": "color", "$description": "Brand tint background" },
+        "brandSubtle": { "$value": "{color.brand.100}", "$type": "color", "$description": "Subtle brand container background" }
+      },
+      "text": {
+        "primary": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Primary readable text" },
+        "secondary": { "$value": "{color.neutral.600}", "$type": "color", "$description": "Secondary readable text" },
+        "tertiary": { "$value": "{color.neutral.500}", "$type": "color", "$description": "Tertiary helper and placeholder text" },
+        "muted": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Disabled or fine print text" },
+        "inverse": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Inverse text on dark surfaces" },
+        "brand": { "$value": "{color.brand.600}", "$type": "color", "$description": "Brand accent text" },
+        "brandEmphasized": { "$value": "{color.brand.700}", "$type": "color", "$description": "Strong brand text" },
+        "danger": { "$value": "{color.danger.600}", "$type": "color", "$description": "Error and danger text" },
+        "warning": { "$value": "{color.warning.600}", "$type": "color", "$description": "Warning callout text" },
+        "success": { "$value": "{color.success.700}", "$type": "color", "$description": "Success confirmation text" },
+        "info": { "$value": "{color.info.700}", "$type": "color", "$description": "Informational text" }
+      },
+      "border": {
+        "subtle": { "$value": "{color.neutral.200}", "$type": "color", "$description": "Subtle divider line" },
+        "default": { "$value": "{color.neutral.300}", "$type": "color", "$description": "Standard border for cards and inputs" },
+        "strong": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Emphasized border" },
+        "brand": { "$value": "{color.brand.500}", "$type": "color", "$description": "Brand colored border" },
+        "focus": { "$value": "{color.brand.600}", "$type": "color", "$description": "Focus ring indicator" },
+        "danger": { "$value": "{color.danger.500}", "$type": "color", "$description": "Error border on inputs" },
+        "warning": { "$value": "{color.warning.500}", "$type": "color", "$description": "Warning state border" },
+        "success": { "$value": "{color.success.500}", "$type": "color", "$description": "Success state border" },
+        "info": { "$value": "{color.info.500}", "$type": "color", "$description": "Informational border" }
+      },
+      "action": {
+        "primary": {
+          "default": { "$value": "{color.brand.600}", "$type": "color", "$description": "Primary action button background" },
+          "pressed": { "$value": "{color.brand.700}", "$type": "color", "$description": "Primary action button pressed" },
+          "disabled": { "$value": "{color.neutral.200}", "$type": "color", "$description": "Primary action button disabled" },
+          "text": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Primary action button text" },
+          "textDisabled": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Primary action text disabled" }
+        },
+        "secondary": {
+          "default": { "$value": "{color.neutral.100}", "$type": "color", "$description": "Secondary action button background" },
+          "pressed": { "$value": "{color.neutral.200}", "$type": "color", "$description": "Secondary action button pressed" },
+          "disabled": { "$value": "{color.neutral.100}", "$type": "color", "$description": "Secondary action button disabled" },
+          "border": { "$value": "{color.neutral.300}", "$type": "color", "$description": "Secondary action border" },
+          "borderPressed": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Secondary action border pressed" },
+          "text": { "$value": "{color.neutral.900}", "$type": "color", "$description": "Secondary action button text" },
+          "textDisabled": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Secondary action text disabled" }
+        },
+        "danger": {
+          "default": { "$value": "{color.danger.600}", "$type": "color", "$description": "Destructive action button background" },
+          "pressed": { "$value": "{color.danger.700}", "$type": "color", "$description": "Destructive action button pressed" },
+          "disabled": { "$value": "{color.neutral.200}", "$type": "color", "$description": "Destructive action button disabled" },
+          "text": { "$value": "{color.neutral.0}", "$type": "color", "$description": "Destructive action button text" },
+          "textDisabled": { "$value": "{color.neutral.400}", "$type": "color", "$description": "Destructive action text disabled" }
+        }
+      },
+      "feedback": {
+        "success": {
+          "bg": { "$value": "{color.success.50}", "$type": "color", "$description": "Success banner background" },
+          "border": { "$value": "{color.success.300}", "$type": "color", "$description": "Success banner border" },
+          "text": { "$value": "{color.success.800}", "$type": "color", "$description": "Success banner text" },
+          "icon": { "$value": "{color.success.600}", "$type": "color", "$description": "Success icon" }
+        },
+        "warning": {
+          "bg": { "$value": "{color.warning.50}", "$type": "color", "$description": "Warning banner background" },
+          "border": { "$value": "{color.warning.300}", "$type": "color", "$description": "Warning banner border" },
+          "text": { "$value": "{color.warning.800}", "$type": "color", "$description": "Warning banner text" },
+          "icon": { "$value": "{color.warning.600}", "$type": "color", "$description": "Warning icon" }
+        },
+        "danger": {
+          "bg": { "$value": "{color.danger.50}", "$type": "color", "$description": "Danger banner background" },
+          "border": { "$value": "{color.danger.300}", "$type": "color", "$description": "Danger banner border" },
+          "text": { "$value": "{color.danger.800}", "$type": "color", "$description": "Danger banner text" },
+          "icon": { "$value": "{color.danger.600}", "$type": "color", "$description": "Danger icon" }
+        },
+        "info": {
+          "bg": { "$value": "{color.info.50}", "$type": "color", "$description": "Info banner background" },
+          "border": { "$value": "{color.info.300}", "$type": "color", "$description": "Info banner border" },
+          "text": { "$value": "{color.info.800}", "$type": "color", "$description": "Info banner text" },
+          "icon": { "$value": "{color.info.600}", "$type": "color", "$description": "Info icon" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "color": {
+    "brand": {
+      "50": { "$value": "#EFF6FF", "$type": "color", "$description": "Lightest brand tint" },
+      "100": { "$value": "#DBEAFE", "$type": "color", "$description": "Brand background tint" },
+      "200": { "$value": "#BFDBFE", "$type": "color", "$description": "Brand border tint" },
+      "300": { "$value": "#93C5FD", "$type": "color", "$description": "Brand accent light" },
+      "400": { "$value": "#60A5FA", "$type": "color", "$description": "Brand accent active" },
+      "500": { "$value": "#3B82F6", "$type": "color", "$description": "Brand primary standard" },
+      "600": { "$value": "#1D4ED8", "$type": "color", "$description": "Brand primary accessible on light" },
+      "700": { "$value": "#1E40AF", "$type": "color", "$description": "Brand dark pressed" },
+      "800": { "$value": "#1E3A8A", "$type": "color", "$description": "Brand intense contrast" },
+      "900": { "$value": "#172554", "$type": "color", "$description": "Brand ultra-dark shade" }
+    },
+    "neutral": {
+      "0": { "$value": "#FFFFFF", "$type": "color", "$description": "Absolute pure white" },
+      "50": { "$value": "#F8FAFC", "$type": "color", "$description": "Canvas light background" },
+      "100": { "$value": "#F1F5F9", "$type": "color", "$description": "Card muted background light" },
+      "200": { "$value": "#E2E8F0", "$type": "color", "$description": "Border subtle light" },
+      "300": { "$value": "#CBD5E1", "$type": "color", "$description": "Border default light" },
+      "400": { "$value": "#94A3B8", "$type": "color", "$description": "Muted text or icon light" },
+      "500": { "$value": "#64748B", "$type": "color", "$description": "Secondary text on light" },
+      "600": { "$value": "#475569", "$type": "color", "$description": "Subtle dark tone" },
+      "700": { "$value": "#334155", "$type": "color", "$description": "Secondary text dark mode" },
+      "800": { "$value": "#1E293B", "$type": "color", "$description": "Surface dark background" },
+      "900": { "$value": "#0F172A", "$type": "color", "$description": "Canvas dark background" },
+      "950": { "$value": "#020617", "$type": "color", "$description": "Deepest canvas background" },
+      "1000": { "$value": "#000000", "$type": "color", "$description": "Absolute pure black" }
+    },
+    "success": {
+      "50": { "$value": "#F0FDF4", "$type": "color", "$description": "Success background tint" },
+      "100": { "$value": "#DCFCE7", "$type": "color", "$description": "Success badge light" },
+      "200": { "$value": "#BBF7D0", "$type": "color", "$description": "Success border light" },
+      "300": { "$value": "#86EFAC", "$type": "color", "$description": "Success light accent" },
+      "400": { "$value": "#4ADE80", "$type": "color", "$description": "Success high-visibility on dark" },
+      "500": { "$value": "#22C55E", "$type": "color", "$description": "Success base" },
+      "600": { "$value": "#16A34A", "$type": "color", "$description": "Success accessible on light" },
+      "700": { "$value": "#15803D", "$type": "color", "$description": "Success pressed" },
+      "800": { "$value": "#166534", "$type": "color", "$description": "Success text high contrast" },
+      "900": { "$value": "#14532D", "$type": "color", "$description": "Success deep dark" }
+    },
+    "warning": {
+      "50": { "$value": "#FFFBEB", "$type": "color", "$description": "Warning background tint" },
+      "100": { "$value": "#FEF3C7", "$type": "color", "$description": "Warning badge light" },
+      "200": { "$value": "#FDE68A", "$type": "color", "$description": "Warning border light" },
+      "300": { "$value": "#FCD34D", "$type": "color", "$description": "Warning light accent" },
+      "400": { "$value": "#FBBF24", "$type": "color", "$description": "Warning high-visibility on dark" },
+      "500": { "$value": "#F59E0B", "$type": "color", "$description": "Warning base" },
+      "600": { "$value": "#B45309", "$type": "color", "$description": "Warning accessible text on light" },
+      "700": { "$value": "#92400E", "$type": "color", "$description": "Warning dark pressed" },
+      "800": { "$value": "#78350F", "$type": "color", "$description": "Warning deep text" },
+      "900": { "$value": "#451A03", "$type": "color", "$description": "Warning darkest contrast" }
+    },
+    "danger": {
+      "50": { "$value": "#FEF2F2", "$type": "color", "$description": "Danger background tint" },
+      "100": { "$value": "#FEE2E2", "$type": "color", "$description": "Danger badge light" },
+      "200": { "$value": "#FECACA", "$type": "color", "$description": "Danger border light" },
+      "300": { "$value": "#FCA5A5", "$type": "color", "$description": "Danger light accent" },
+      "400": { "$value": "#F87171", "$type": "color", "$description": "Danger high-visibility on dark" },
+      "500": { "$value": "#EF4444", "$type": "color", "$description": "Danger base" },
+      "600": { "$value": "#DC2626", "$type": "color", "$description": "Danger accessible on light" },
+      "700": { "$value": "#B91C1C", "$type": "color", "$description": "Danger dark pressed" },
+      "800": { "$value": "#991B1B", "$type": "color", "$description": "Danger high contrast text" },
+      "900": { "$value": "#7F1D1D", "$type": "color", "$description": "Danger deep background" }
+    },
+    "info": {
+      "50": { "$value": "#F0F9FF", "$type": "color", "$description": "Info background tint" },
+      "100": { "$value": "#E0F2FE", "$type": "color", "$description": "Info badge light" },
+      "200": { "$value": "#BAE6FD", "$type": "color", "$description": "Info border light" },
+      "300": { "$value": "#7DD3FC", "$type": "color", "$description": "Info light accent" },
+      "400": { "$value": "#38BDF8", "$type": "color", "$description": "Info high-visibility on dark" },
+      "500": { "$value": "#0EA5E9", "$type": "color", "$description": "Info base" },
+      "600": { "$value": "#0284C7", "$type": "color", "$description": "Info accessible on light" },
+      "700": { "$value": "#0369A1", "$type": "color", "$description": "Info dark pressed" },
+      "800": { "$value": "#075985", "$type": "color", "$description": "Info high contrast text" },
+      "900": { "$value": "#0C4A6E", "$type": "color", "$description": "Info deep tone" }
+    }
+  }
+}

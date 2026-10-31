@@ -1,0 +1,19 @@
+{
+  "component": {
+    "input": {
+      "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+      "border": {
+        "default": { "$value": "{semantic.color.border.default}", "$type": "color" },
+        "focus": { "$value": "{semantic.color.border.focus}", "$type": "color" },
+        "error": { "$value": "{semantic.color.border.danger}", "$type": "color" }
+      },
+      "text": {
+        "value": { "$value": "{semantic.color.text.primary}", "$type": "color" },
+        "placeholder": { "$value": "{semantic.color.text.tertiary}", "$type": "color" },
+        "label": { "$value": "{semantic.color.text.primary}", "$type": "color" },
+        "helper": { "$value": "{semantic.color.text.secondary}", "$type": "color" },
+        "error": { "$value": "{semantic.color.text.danger}", "$type": "color" }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@shani/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for Shani Design System",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

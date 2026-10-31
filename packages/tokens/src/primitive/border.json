@@ -1,0 +1,10 @@
+{
+  "borderWidth": {
+    "none": { "$value": 0, "$type": "dimension", "$description": "No border" },
+    "hairline": { "$value": 1, "$type": "dimension", "$description": "1px hairline border" },
+    "thin": { "$value": 1, "$type": "dimension", "$description": "Standard border thickness" },
+    "medium": { "$value": 2, "$type": "dimension", "$description": "Active or focused border" },
+    "thick": { "$value": 3, "$type": "dimension", "$description": "Selected or prominent state" },
+    "heavy": { "$value": 4, "$type": "dimension", "$description": "High-emphasis border" }
+  }
+}

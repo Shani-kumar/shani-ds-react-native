@@ -1,0 +1,29 @@
+{
+  "component": {
+    "button": {
+      "primary": {
+        "bg": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "bgPressed": { "$value": "{semantic.color.action.primary.pressed}", "$type": "color" },
+        "bgDisabled": { "$value": "{semantic.color.action.primary.disabled}", "$type": "color" },
+        "text": { "$value": "{semantic.color.action.primary.text}", "$type": "color" },
+        "textDisabled": { "$value": "{semantic.color.action.primary.textDisabled}", "$type": "color" }
+      },
+      "secondary": {
+        "bg": { "$value": "{semantic.color.action.secondary.default}", "$type": "color" },
+        "bgPressed": { "$value": "{semantic.color.action.secondary.pressed}", "$type": "color" },
+        "bgDisabled": { "$value": "{semantic.color.action.secondary.disabled}", "$type": "color" },
+        "border": { "$value": "{semantic.color.action.secondary.border}", "$type": "color" },
+        "borderPressed": { "$value": "{semantic.color.action.secondary.borderPressed}", "$type": "color" },
+        "text": { "$value": "{semantic.color.action.secondary.text}", "$type": "color" },
+        "textDisabled": { "$value": "{semantic.color.action.secondary.textDisabled}", "$type": "color" }
+      },
+      "danger": {
+        "bg": { "$value": "{semantic.color.action.danger.default}", "$type": "color" },
+        "bgPressed": { "$value": "{semantic.color.action.danger.pressed}", "$type": "color" },
+        "bgDisabled": { "$value": "{semantic.color.action.danger.disabled}", "$type": "color" },
+        "text": { "$value": "{semantic.color.action.danger.text}", "$type": "color" },
+        "textDisabled": { "$value": "{semantic.color.action.danger.textDisabled}", "$type": "color" }
+      }
+    }
+  }
+}

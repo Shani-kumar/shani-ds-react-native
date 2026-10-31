@@ -1,0 +1,8 @@
+{
+  "breakpoints": {
+    "phone": { "$value": 0, "$type": "dimension", "$description": "Compact mobile devices (0px - 767px)" },
+    "tablet": { "$value": 768, "$type": "dimension", "$description": "Tablet / foldable devices (768px - 1023px)" },
+    "desktop": { "$value": 1024, "$type": "dimension", "$description": "Desktop workstations (1024px - 1279px)" },
+    "wide": { "$value": 1280, "$type": "dimension", "$description": "Wide screens / logistics dispatcher displays (1280px+)" }
+  }
+}

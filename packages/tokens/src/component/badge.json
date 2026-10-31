@@ -1,0 +1,30 @@
+{
+  "component": {
+    "badge": {
+      "neutral": {
+        "bg": { "$value": "{semantic.color.bg.muted}", "$type": "color" },
+        "text": { "$value": "{semantic.color.text.secondary}", "$type": "color" }
+      },
+      "brand": {
+        "bg": { "$value": "{semantic.color.bg.brandSubtle}", "$type": "color" },
+        "text": { "$value": "{semantic.color.text.brandEmphasized}", "$type": "color" }
+      },
+      "success": {
+        "bg": { "$value": "{semantic.color.feedback.success.bg}", "$type": "color" },
+        "text": { "$value": "{semantic.color.feedback.success.text}", "$type": "color" }
+      },
+      "warning": {
+        "bg": { "$value": "{semantic.color.feedback.warning.bg}", "$type": "color" },
+        "text": { "$value": "{semantic.color.feedback.warning.text}", "$type": "color" }
+      },
+      "danger": {
+        "bg": { "$value": "{semantic.color.feedback.danger.bg}", "$type": "color" },
+        "text": { "$value": "{semantic.color.feedback.danger.text}", "$type": "color" }
+      },
+      "info": {
+        "bg": { "$value": "{semantic.color.feedback.info.bg}", "$type": "color" },
+        "text": { "$value": "{semantic.color.feedback.info.text}", "$type": "color" }
+      }
+    }
+  }
+}

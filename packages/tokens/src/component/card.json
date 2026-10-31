@@ -1,0 +1,9 @@
+{
+  "component": {
+    "card": {
+      "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+      "bgElevated": { "$value": "{semantic.color.bg.surfaceRaised}", "$type": "color" },
+      "border": { "$value": "{semantic.color.border.subtle}", "$type": "color" }
+    }
+  }
+}
