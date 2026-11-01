@@ -24,6 +24,7 @@ You may ONLY import UI primitives, components, and tokens from the official pack
 ```tsx
 // 1. All UI components must come from @shani/ui
 import {
+  ThemeProvider,
   Box,
   Stack,
   HStack,
@@ -64,7 +65,51 @@ import { Search } from 'lucide-react-native';
 
 ---
 
-## 3. Strict Prohibitions (NEVER)
+## 3. App Setup (Root Provider)
+
+Every application consuming `@shani/ui` must wrap its root component tree in `<ThemeProvider>` to supply token context and dynamic theme resolution.
+
+### Real `ThemeProvider` Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `initialMode` | `'light' \| 'dark' \| 'system'` | `'system'` | Initial color theme mode. (Use `initialMode`, **never** `defaultMode`). |
+| `mode` | `'light' \| 'dark' \| 'system'` | `undefined` | Controlled color theme mode. |
+| `onModeChange` | `(mode: ThemeMode) => void` | `undefined` | Callback fired when theme mode changes. |
+| `overrides` | `ThemeOverrides \| DualThemeOverrides` | `undefined` | Token overrides for tenant or brand customization. |
+| `children` | `React.ReactNode` | *(Required)* | Application view hierarchy. |
+
+> [!NOTE]
+> Root provider setup (`<ThemeProvider>`) is a top-level application wrapper and is not validated by the screen AST validator (`shani-ds validate`), which audits screen-level layout, primitives, and token adherence.
+
+### Minimal Example (`App.tsx`)
+
+```tsx
+import React from 'react';
+import { ThemeProvider, Box, VStack, Text, Button } from '@shani/ui';
+
+export default function App() {
+  return (
+    <ThemeProvider initialMode="light">
+      <Box flex={1} bg="canvas" p="6" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <VStack spacing="4" align="center">
+          <Text variant="heading">Consumer App</Text>
+          <Text variant="body" color="secondary">
+            Testing @shani/ui from standalone tarball package
+          </Text>
+          <Button variant="primary" size="md" onPress={() => {}}>
+            Consumer Action
+          </Button>
+        </VStack>
+      </Box>
+    </ThemeProvider>
+  );
+}
+```
+
+---
+
+## 4. Strict Prohibitions (NEVER)
 
 1. **NEVER use raw hex codes or RGB strings** in screen code (e.g. `#1D4ED8`, `#FFFFFF`, `rgba(0,0,0,0.5)`). All colors must reference theme semantic tokens via `theme.colors.*` or component props.
 2. **NEVER use raw numbers for layout spacing, sizes, margins, padding, or border radius** (e.g. `margin: 12`, `padding: 15`, `borderRadius: 8`). All values must reference token scales (`spacing="3"`, `p="4"`, `theme.radius.md`).
@@ -76,7 +121,7 @@ import { Search } from 'lucide-react-native';
 
 ---
 
-## 4. Spacing & Size Token Scales
+## 5. Spacing & Size Token Scales
 
 Components accept strict token keys. Use real component prop names and allowed scale values:
 
@@ -99,7 +144,7 @@ Components accept strict token keys. Use real component prop names and allowed s
 
 ---
 
-## 5. Accessibility Requirements
+## 6. Accessibility Requirements
 
 Every interactive element MUST meet accessibility standards:
 
@@ -115,7 +160,7 @@ Every interactive element MUST meet accessibility standards:
 
 ---
 
-## 6. Screen Composition Patterns
+## 7. Screen Composition Patterns
 
 Follow standard logistics composition hierarchies:
 
@@ -155,7 +200,7 @@ export function ShipmentScreen() {
 
 ---
 
-## 7. Do / Don't Code Examples
+## 8. Do / Don't Code Examples
 
 ### Example 1: Waybill Card
 
@@ -262,7 +307,7 @@ import { TextField, Icon } from '@shani/ui';
 
 ---
 
-## 8. Pre-Submission Quality Checklist
+## 9. Pre-Submission Quality Checklist
 
 Before completing any implementation or refactoring task, run and pass every check:
 

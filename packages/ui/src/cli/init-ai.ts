@@ -30,6 +30,7 @@ You are an expert React Native engineer building mobile screens for logistics ap
 You may ONLY import UI primitives, components, and tokens from the official packages:
 \`\`\`tsx
 import {
+  ThemeProvider,
   Box,
   Stack,
   HStack,
@@ -58,6 +59,32 @@ import {
 Icons must ALWAYS be rendered through the \`@shani/ui\` \`Icon\` component using valid Lucide icon names:
 \`\`\`tsx
 <Icon name="Search" size="sm" color="secondary" />
+\`\`\`
+
+---
+
+## App Setup (Root Provider)
+Every application consuming \`@shani/ui\` must wrap its root component tree in \`<ThemeProvider>\`.
+- **Props:** \`initialMode="light" | "dark" | "system"\` (use \`initialMode\`, **never** \`defaultMode\`), \`mode\`, \`onModeChange\`, \`overrides\`, \`children\`.
+- **Note:** Root provider setup (\`<ThemeProvider>\`) is an app container wrapper and is not validated by the screen AST validator (\`shani-ds validate\`).
+
+\`\`\`tsx
+import React from 'react';
+import { ThemeProvider, Box, VStack, Text, Button } from '@shani/ui';
+
+export default function App() {
+  return (
+    <ThemeProvider initialMode="light">
+      <Box flex={1} bg="canvas" p="6" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <VStack spacing="4" align="center">
+          <Text variant="heading">Consumer App</Text>
+          <Text variant="body" color="secondary">Testing @shani/ui</Text>
+          <Button variant="primary" size="md" onPress={() => {}}>Action</Button>
+        </VStack>
+      </Box>
+    </ThemeProvider>
+  );
+}
 \`\`\`
 
 ---

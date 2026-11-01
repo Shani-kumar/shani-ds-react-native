@@ -64,8 +64,33 @@ Install the packaged `@shani/ui` tarball:
 npm install /absolute/path/to/shani-ds/shani-ui-0.1.0.tgz
 ```
 
-Verify that web exports build cleanly:
+Verify `App.tsx` wraps the application in `<ThemeProvider initialMode="light">`:
+```tsx
+import React from 'react';
+import { ThemeProvider, Box, VStack, Text, Button } from '@shani/ui';
+
+export default function App() {
+  return (
+    <ThemeProvider initialMode="light">
+      <Box flex={1} bg="canvas" style={{ justifyContent: 'center', alignItems: 'center' }} p="6">
+        <VStack spacing="4" align="center">
+          <Text variant="heading">Consumer App</Text>
+          <Text variant="body" color="secondary">
+            Testing @shani/ui from standalone tarball package
+          </Text>
+          <Button variant="primary" size="md" onPress={() => alert('Pressed')}>
+            Consumer Action
+          </Button>
+        </VStack>
+      </Box>
+    </ThemeProvider>
+  );
+}
+```
+
+Verify that TypeScript check passes and web exports build cleanly:
 ```bash
+npx tsc --noEmit
 npx expo export -p web
 ```
 
