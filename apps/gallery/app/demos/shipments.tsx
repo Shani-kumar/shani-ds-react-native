@@ -138,7 +138,7 @@ export default function ShipmentsListDemo() {
               {/* Search TextField */}
               <TextField
                 label="Search Shipments"
-                placeholder="Search by tracking number, consignee, or hub..."
+                placeholder="Search shipments"
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 prefix={<Icon name="Search" size="sm" color="secondary" />}

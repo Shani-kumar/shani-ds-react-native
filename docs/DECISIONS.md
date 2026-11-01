@@ -338,6 +338,14 @@
   - **Unit Regression Coverage:** Added explicit tests in `Stack.test.tsx` verifying that `Stack`, `HStack`, and `VStack` propagate the `wrap` prop to `flexWrap: 'wrap'` / `'nowrap'`.
 - **Why:** Delivers an unclipped, scrollbar-free demonstration of responsive layout primitives on mobile and desktop viewports.
 
+## ADR-029: Compact Input Placeholder Length on Narrow Viewports
+
+- **Context:** On the Shipments list demo screen, the search input placeholder was `"Search by tracking number, consignee, or hub..."`, which truncated with ellipsis (`"..."`) on 320px–390px mobile viewports alongside the search prefix icon.
+- **Decision:**
+  - **Concise Placeholder:** Shortened search placeholder to `"Search shipments"` across all screen widths.
+  - **Context in Helper Text:** Retained detailed search scope explanation in the associated `helperText` (`Displaying X matching waybills`), maintaining complete clarity without text clipping.
+- **Why:** Ensures clean, unclipped input rendering on compact mobile screens while preserving search context.
+
 
 
 
