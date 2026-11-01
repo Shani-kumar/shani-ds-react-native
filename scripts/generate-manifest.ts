@@ -206,7 +206,6 @@ if (require.main === module) {
   try {
     const manifest = generateManifest();
     const formattedJson = JSON.stringify(manifest, null, 2) + '\n';
-    const distTargetPath = path.resolve(__dirname, '../packages/ui/dist/components.json');
 
     if (isCheck) {
       if (!fs.existsSync(targetPath)) {
@@ -222,24 +221,10 @@ if (require.main === module) {
         process.exit(1);
       }
 
-      if (fs.existsSync(distTargetPath)) {
-        const distContent = fs.readFileSync(distTargetPath, 'utf-8');
-        if (distContent !== formattedJson) {
-          console.error(`\n❌ Manifest check failed: packages/ui/dist/components.json is out of date with packages/ui/components.json.`);
-          console.error(`   Run 'pnpm --filter @shani/ui build' to rebuild the package.\n`);
-          process.exit(1);
-        }
-      }
-
       console.log(`  ✓ packages/ui/components.json is up to date (${manifest.components.length} components verified).\n`);
     } else {
       fs.writeFileSync(targetPath, formattedJson, 'utf-8');
       console.log(`  ✓ Wrote packages/ui/components.json (${manifest.components.length} components documented).\n`);
-
-      if (fs.existsSync(path.dirname(distTargetPath))) {
-        fs.writeFileSync(distTargetPath, formattedJson, 'utf-8');
-        console.log(`  ✓ Synchronized packages/ui/dist/components.json.\n`);
-      }
     }
   } catch (err) {
     console.error('\n❌ Failed to generate component manifest:', err);

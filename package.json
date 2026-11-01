@@ -19,6 +19,7 @@
     "rules:check": "tsx scripts/sync-rules.ts --check",
     "manifest": "tsx scripts/generate-manifest.ts",
     "manifest:check": "tsx scripts/generate-manifest.ts --check",
+    "check:consumer": "tsx scripts/check-consumer.ts",
     "validate:screen": "tsx scripts/validate-screen.ts"
   },
   "engines": {
