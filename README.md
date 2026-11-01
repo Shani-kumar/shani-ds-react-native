@@ -20,7 +20,7 @@ shani-ds/
 ├── apps/
 │   └── gallery/         # Expo Router showcase web and mobile app
 ├── docs/
-│   ├── DECISIONS.md     # Architecture Decision Records (ADR-001 through ADR-025)
+│   ├── DECISIONS.md     # Architecture Decision Records (ADR-001 through ADR-030)
 │   ├── LEARNING.md      # Technical explanations and architecture notes
 │   └── ROADMAP.md       # Component backlog and release milestones
 └── scripts/
@@ -57,7 +57,7 @@ pnpm typecheck
 # ESLint code quality check
 pnpm lint
 
-# Jest unit test suite (23 suites, 137 tests)
+# Jest unit test suite (23 suites, 139 tests)
 pnpm test
 
 # WCAG 2.1 AA contrast audit (all 62 checks pass across Light and Dark themes)
