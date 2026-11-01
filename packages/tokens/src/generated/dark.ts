@@ -549,6 +549,44 @@ export const darkTheme: ThemeTokens = {
         }
       }
     },
+    "chip": {
+      "unselected": {
+        "bg": "#0F172A",
+        "border": "#334155",
+        "text": "#CBD5E1",
+        "icon": "#CBD5E1"
+      },
+      "selected": {
+        "bg": "#1D4ED8",
+        "border": "#1D4ED8",
+        "text": "#FFFFFF",
+        "icon": "#FFFFFF"
+      },
+      "disabled": {
+        "bg": "#1E293B",
+        "border": "#1E293B",
+        "text": "#64748B",
+        "icon": "#64748B"
+      },
+      "size": {
+        "sm": {
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+          "fontSize": 12,
+          "iconSize": 14,
+          "gap": 6
+        },
+        "md": {
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 10,
+          "fontSize": 14,
+          "iconSize": 16,
+          "gap": 8
+        }
+      }
+    },
     "icon": {
       "size": {
         "xs": 12,

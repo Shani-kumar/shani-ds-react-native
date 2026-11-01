@@ -481,6 +481,37 @@ export interface ComponentTokens {
     };
     minTouchTarget: number;
   };
+  chip: {
+    unselected: {
+      bg: string;
+      border: string;
+      text: string;
+      icon: string;
+    };
+    selected: {
+      bg: string;
+      border: string;
+      text: string;
+      icon: string;
+    };
+    disabled: {
+      bg: string;
+      border: string;
+      text: string;
+      icon: string;
+    };
+    size: Record<
+      'sm' | 'md',
+      {
+        minHeight: number;
+        paddingHorizontal: number;
+        paddingVertical: number;
+        fontSize: number;
+        iconSize: number;
+        gap: number;
+      }
+    >;
+  };
 }
 
 export interface ThemeTokens {

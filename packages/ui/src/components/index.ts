@@ -12,3 +12,5 @@ export * from './Card/Card';
 export * from './Badge/Badge';
 export * from './Skeleton/Skeleton';
 export * from './Timeline/Timeline';
+export * from './Chip';
+export * from './QuantityStepper';

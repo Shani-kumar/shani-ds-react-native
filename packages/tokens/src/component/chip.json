@@ -1,0 +1,42 @@
+{
+  "component": {
+    "chip": {
+      "unselected": {
+        "bg": { "$value": "{semantic.color.bg.surface}", "$type": "color" },
+        "border": { "$value": "{semantic.color.border.default}", "$type": "color" },
+        "text": { "$value": "{semantic.color.text.secondary}", "$type": "color" },
+        "icon": { "$value": "{semantic.color.text.secondary}", "$type": "color" }
+      },
+      "selected": {
+        "bg": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "border": { "$value": "{semantic.color.action.primary.default}", "$type": "color" },
+        "text": { "$value": "{semantic.color.action.primary.text}", "$type": "color" },
+        "icon": { "$value": "{semantic.color.action.primary.text}", "$type": "color" }
+      },
+      "disabled": {
+        "bg": { "$value": "{semantic.color.bg.muted}", "$type": "color" },
+        "border": { "$value": "{semantic.color.border.subtle}", "$type": "color" },
+        "text": { "$value": "{semantic.color.text.muted}", "$type": "color" },
+        "icon": { "$value": "{semantic.color.text.muted}", "$type": "color" }
+      },
+      "size": {
+        "sm": {
+          "minHeight": { "$value": 44, "$type": "dimension" },
+          "paddingHorizontal": { "$value": 12, "$type": "dimension" },
+          "paddingVertical": { "$value": 8, "$type": "dimension" },
+          "fontSize": { "$value": 12, "$type": "dimension" },
+          "iconSize": { "$value": 14, "$type": "dimension" },
+          "gap": { "$value": 6, "$type": "dimension" }
+        },
+        "md": {
+          "minHeight": { "$value": 44, "$type": "dimension" },
+          "paddingHorizontal": { "$value": 16, "$type": "dimension" },
+          "paddingVertical": { "$value": 10, "$type": "dimension" },
+          "fontSize": { "$value": 14, "$type": "dimension" },
+          "iconSize": { "$value": 16, "$type": "dimension" },
+          "gap": { "$value": 8, "$type": "dimension" }
+        }
+      }
+    }
+  }
+}

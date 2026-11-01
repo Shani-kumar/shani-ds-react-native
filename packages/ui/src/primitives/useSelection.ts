@@ -60,6 +60,9 @@ export function useSelection<T = string>(
   options?: UseSingleSelectionOptions<T>
 ): UseSelectionReturn<T> & { selected: T | null };
 export function useSelection<T = string>(
+  options: UseSelectionOptions<T>
+): UseSelectionReturn<T>;
+export function useSelection<T = string>(
   options: UseSelectionOptions<T> = {}
 ): UseSelectionReturn<T> {
   const { mode = 'single', disabled = false, allowEmpty = false } = options;

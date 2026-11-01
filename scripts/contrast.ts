@@ -317,6 +317,23 @@ const CHECKS: CheckDefinition[] = [
     getBg: t => t.colors.bg.canvas,
     minRatio: 3.0,
   },
+  // Chip token pairs
+  {
+    category: 'text',
+    fgName: 'chip.unselected.text',
+    getFg: t => t.components.chip.unselected.text,
+    bgName: 'chip.unselected.bg',
+    getBg: t => t.components.chip.unselected.bg,
+    minRatio: 4.5,
+  },
+  {
+    category: 'action',
+    fgName: 'chip.selected.text',
+    getFg: t => t.components.chip.selected.text,
+    bgName: 'chip.selected.bg',
+    getBg: t => t.components.chip.selected.bg,
+    minRatio: 4.5,
+  },
 ];
 
 export function runContrastAudit(): { results: ContrastResult[]; passed: boolean } {
