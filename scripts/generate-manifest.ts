@@ -49,6 +49,9 @@ const COMPONENT_FILES = [
   'Badge/Badge.tsx',
   'Skeleton/Skeleton.tsx',
   'Timeline/Timeline.tsx',
+  'Chip/Chip.tsx',
+  'Chip/ChipGroup.tsx',
+  'QuantityStepper/QuantityStepper.tsx',
 ];
 
 export function generateManifest(): DesignSystemManifest {
@@ -58,6 +61,7 @@ export function generateManifest(): DesignSystemManifest {
     shouldExtractLiteralValuesFromEnum: true,
     shouldRemoveUndefinedFromOptional: true,
     propFilter: (prop) => {
+      if (prop.name === 'ref') return false;
       if (prop.parent && prop.parent.fileName.includes('node_modules')) return false;
       return true;
     },
@@ -97,6 +101,9 @@ export function generateManifest(): DesignSystemManifest {
     'Badge',
     'Skeleton',
     'Timeline',
+    'Chip',
+    'ChipGroup',
+    'QuantityStepper',
   ];
 
   const components: ComponentDoc[] = [];

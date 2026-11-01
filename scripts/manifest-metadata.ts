@@ -783,5 +783,135 @@ export function OrderTracker() {
   return <Timeline steps={shipmentSteps} />;
 }`,
   },
+
+  Chip: {
+    category: 'Actions',
+    description:
+      'Interactive pill-shaped selection control with 44pt minimum touch target, active brand styling, and visible focus indicator.',
+    whenToUse: [
+      'Use Chip for interactive selection pills, filter toggles, or compact tag selection.',
+      'Use for standalone filter pills or within custom filter bars.',
+    ],
+    whenNotToUse: [
+      'Never use raw Pressable or TouchableOpacity for pills or filter toggles.',
+      'Do not use Chip as a pure read-only indicator; use Badge instead.',
+    ],
+    accessibilityNotes: [
+      'Enforces minimum 44pt touch target and announces accessibilityState selected and disabled.',
+      'Adapts accessibilityRole to radio or checkbox when orchestrated within ChipGroup.',
+    ],
+    propExamples: {
+      label: 'label="Express Air"',
+      selected: 'selected={true}',
+      onPress: 'onPress={() => setFilter("express")}',
+      disabled: 'disabled={false}',
+      size: 'size="md"',
+      leftIcon: 'leftIcon="Tag"',
+      testID: 'testID="express-chip"',
+      accessibilityLabel: 'accessibilityLabel="Express Air"',
+      accessibilityHint: 'accessibilityHint="Filters shipments"',
+      accessibilityRole: 'accessibilityRole="radio"',
+      style: "style={{ margin: 4 }}",
+      textStyle: "textStyle={{ fontWeight: 'bold' }}",
+    },
+    example: `import { Chip } from '@shani/ui';
+
+export function ExpressFilter() {
+  return <Chip label="Express Delivery" selected={true} leftIcon="Tag" onPress={() => {}} />;
+}`,
+  },
+
+  ChipGroup: {
+    category: 'Forms',
+    description:
+      'Orchestrates collections of Chips with single or multiple selection, automatic flex wrapping or horizontal scrolling, and ARIA radiogroup/checkbox compliance.',
+    whenToUse: [
+      'Selectable options use ChipGroup, never raw Pressable.',
+      'Use ChipGroup for shipment run-sheet status filters, parcel size pickers, and category selectors.',
+      'Use mode="single" for mutually exclusive filters, and mode="multiple" for multi-tag filters.',
+    ],
+    whenNotToUse: [
+      'Never roll custom flex-wrap Pressable rows for selectable options; always use ChipGroup.',
+      'Do not use for binary switches; use Switch or Checkbox instead.',
+    ],
+    accessibilityNotes: [
+      'Applies accessibilityRole="radiogroup" in single mode, and manages screen reader option roles automatically.',
+      'Guarantees all child items maintain 44pt minimum touch targets.',
+    ],
+    propExamples: {
+      label: 'label="Filter Status"',
+      mode: 'mode="single"',
+      options: 'options={statusOptions}',
+      value: 'value={selectedStatus}',
+      defaultValue: 'defaultValue="all"',
+      onChange: 'onChange={(val) => setSelectedStatus(val)}',
+      size: 'size="md"',
+      scrollable: 'scrollable={false}',
+      disabled: 'disabled={false}',
+      allowEmpty: 'allowEmpty={true}',
+      children: 'children={<Chip label="Custom" />}',
+      accessibilityLabel: 'accessibilityLabel="Filter by status"',
+      style: "style={{ width: '100%' }}",
+      testID: 'testID="status-filter-group"',
+    },
+    example: `import { ChipGroup, type ChipGroupItem } from '@shani/ui';
+
+const options: ChipGroupItem[] = [
+  { value: 'all', label: 'All Shipments' },
+  { value: 'in_transit', label: 'In Transit' },
+  { value: 'delivered', label: 'Delivered' },
+];
+
+export function ShipmentFilterBar() {
+  return <ChipGroup label="Status" options={options} defaultValue="all" onChange={() => {}} />;
+}`,
+  },
+
+  QuantityStepper: {
+    category: 'Forms',
+    description:
+      'Accessible stepped numeric counter with 44pt touch targets on plus/minus buttons, boundaries clamping, and VoiceOver adjustable support.',
+    whenToUse: [
+      'Quantities use QuantityStepper, never raw text inputs or +/- buttons.',
+      'Use for pallet quantities, package counts, weight tiers, and cargo unit adjustments.',
+      'Set min, max, and step boundaries to prevent invalid quantities.',
+    ],
+    whenNotToUse: [
+      'Never use raw text inputs or custom +/- buttons for numeric item counters.',
+      'Do not use for continuous or wide-range inputs (e.g. monetary amounts); use TextField instead.',
+    ],
+    accessibilityNotes: [
+      'Implements accessibilityRole="adjustable" and VoiceOver increment/decrement actions.',
+      'Plus and minus buttons guarantee 44x44pt touch targets and disable automatically at bounds.',
+    ],
+    propExamples: {
+      label: 'label="Pallet Count"',
+      value: 'value={pallets}',
+      defaultValue: 'defaultValue={1}',
+      min: 'min={1}',
+      max: 'max={20}',
+      step: 'step={1}',
+      unit: 'unit="pallets"',
+      onChange: 'onChange={(count) => setPallets(count)}',
+      disabled: 'disabled={false}',
+      accessibilityLabel: 'accessibilityLabel="Pallet Count"',
+      style: "style={{ width: 200 }}",
+      testID: 'testID="pallet-stepper"',
+    },
+    example: `import { QuantityStepper } from '@shani/ui';
+
+export function CargoQuantitySelector() {
+  return (
+    <QuantityStepper
+      label="Cargo Pallets"
+      defaultValue={2}
+      min={1}
+      max={10}
+      unit="pallets"
+      onChange={() => {}}
+    />
+  );
+}`,
+  },
 };
 

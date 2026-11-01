@@ -22,6 +22,7 @@ const NAV_GROUPS: NavGroup[] = [
       { title: 'Box & Stack', path: '/components/box-stack' },
       { title: 'Text', path: '/components/text' },
       { title: 'Icon', path: '/components/icon' },
+      { title: 'Headless Hooks', path: '/primitives', badge: 'Hooks' },
     ],
   },
   {
@@ -36,6 +37,8 @@ const NAV_GROUPS: NavGroup[] = [
       { title: 'Badge', path: '/components/badge' },
       { title: 'Skeleton', path: '/components/skeleton' },
       { title: 'Timeline', path: '/components/timeline' },
+      { title: 'Chip & ChipGroup', path: '/components/chip' },
+      { title: 'QuantityStepper', path: '/components/quantity-stepper' },
     ],
   },
   {

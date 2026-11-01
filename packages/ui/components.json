@@ -3788,6 +3788,396 @@
         }
       ],
       "example": "import { Timeline, type TimelineStep } from '@shani/ui';\n\nconst shipmentSteps: TimelineStep[] = [\n  { id: '1', title: 'Pickup Completed', state: 'completed', timestamp: '09:00 AM' },\n  { id: '2', title: 'In Transit', state: 'current', timestamp: '11:15 AM' },\n  { id: '3', title: 'Delivered', state: 'upcoming' },\n];\n\nexport function OrderTracker() {\n  return <Timeline steps={shipmentSteps} />;\n}"
+    },
+    {
+      "name": "Chip",
+      "importPath": "@shani/ui",
+      "description": "Interactive pill-shaped selection control with 44pt minimum touch target, active brand styling, and visible focus indicator.",
+      "category": "Actions",
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "whenToUse": [
+        "Use Chip for interactive selection pills, filter toggles, or compact tag selection.",
+        "Use for standalone filter pills or within custom filter bars."
+      ],
+      "whenNotToUse": [
+        "Never use raw Pressable or TouchableOpacity for pills or filter toggles.",
+        "Do not use Chip as a pure read-only indicator; use Badge instead."
+      ],
+      "accessibilityNotes": [
+        "Enforces minimum 44pt touch target and announces accessibilityState selected and disabled.",
+        "Adapts accessibilityRole to radio or checkbox when orchestrated within ChipGroup."
+      ],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Text label displayed inside the chip",
+          "example": "label=\"Express Air\""
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "defaultValue": "false",
+          "required": false,
+          "description": "Whether the chip is currently selected",
+          "example": "selected={true}"
+        },
+        {
+          "name": "onPress",
+          "type": "((event?: GestureResponderEvent) => void)",
+          "required": false,
+          "description": "Press handler callback",
+          "example": "onPress={() => setFilter(\"express\")}"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "defaultValue": "false",
+          "required": false,
+          "description": "Whether the chip is disabled",
+          "example": "disabled={false}"
+        },
+        {
+          "name": "size",
+          "type": "ChipSize",
+          "allowedValues": [
+            "sm",
+            "md"
+          ],
+          "defaultValue": "md",
+          "required": false,
+          "description": "Size tier enforcing minimum 44pt touch targets (default: 'md')",
+          "example": "size=\"md\""
+        },
+        {
+          "name": "leftIcon",
+          "type": "ReactNode | LucideIcon",
+          "required": false,
+          "description": "Optional leading icon name (e.g. 'Tag', 'Check'), Lucide component, or React element",
+          "example": "leftIcon=\"Tag\""
+        },
+        {
+          "name": "testID",
+          "type": "string",
+          "required": false,
+          "description": "Test identifier",
+          "example": "testID=\"express-chip\""
+        },
+        {
+          "name": "accessibilityLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessibility label for screen readers",
+          "example": "accessibilityLabel=\"Express Air\""
+        },
+        {
+          "name": "accessibilityHint",
+          "type": "string",
+          "required": false,
+          "description": "Accessibility hint describing the interaction",
+          "example": "accessibilityHint=\"Filters shipments\""
+        },
+        {
+          "name": "accessibilityRole",
+          "type": "AccessibilityRole",
+          "allowedValues": [
+            "none",
+            "button",
+            "togglebutton",
+            "link",
+            "search",
+            "image",
+            "keyboardkey",
+            "text",
+            "adjustable",
+            "imagebutton",
+            "header",
+            "summary",
+            "alert",
+            "checkbox",
+            "combobox",
+            "menu",
+            "menubar",
+            "menuitem",
+            "progressbar",
+            "radio",
+            "radiogroup",
+            "scrollbar",
+            "spinbutton",
+            "switch",
+            "tab",
+            "tabbar",
+            "tablist",
+            "timer",
+            "list",
+            "toolbar"
+          ],
+          "defaultValue": "button",
+          "required": false,
+          "description": "Accessibility role override (default: 'button', or 'radio' / 'checkbox' in groups)",
+          "example": "accessibilityRole=\"radio\""
+        },
+        {
+          "name": "style",
+          "type": "StyleProp<ViewStyle>",
+          "required": false,
+          "description": "Custom container style overrides",
+          "example": "style={{ margin: 4 }}"
+        },
+        {
+          "name": "textStyle",
+          "type": "StyleProp<TextStyle>",
+          "required": false,
+          "description": "Custom label text style overrides",
+          "example": "textStyle={{ fontWeight: 'bold' }}"
+        }
+      ],
+      "example": "import { Chip } from '@shani/ui';\n\nexport function ExpressFilter() {\n  return <Chip label=\"Express Delivery\" selected={true} leftIcon=\"Tag\" onPress={() => {}} />;\n}"
+    },
+    {
+      "name": "ChipGroup",
+      "importPath": "@shani/ui",
+      "description": "Orchestrates collections of Chips with single or multiple selection, automatic flex wrapping or horizontal scrolling, and ARIA radiogroup/checkbox compliance.",
+      "category": "Forms",
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "whenToUse": [
+        "Selectable options use ChipGroup, never raw Pressable.",
+        "Use ChipGroup for shipment run-sheet status filters, parcel size pickers, and category selectors.",
+        "Use mode=\"single\" for mutually exclusive filters, and mode=\"multiple\" for multi-tag filters."
+      ],
+      "whenNotToUse": [
+        "Never roll custom flex-wrap Pressable rows for selectable options; always use ChipGroup.",
+        "Do not use for binary switches; use Switch or Checkbox instead."
+      ],
+      "accessibilityNotes": [
+        "Applies accessibilityRole=\"radiogroup\" in single mode, and manages screen reader option roles automatically.",
+        "Guarantees all child items maintain 44pt minimum touch targets."
+      ],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Optional group header label",
+          "example": "label=\"Filter Status\""
+        },
+        {
+          "name": "mode",
+          "type": "SelectionMode",
+          "allowedValues": [
+            "single",
+            "multiple"
+          ],
+          "required": false,
+          "description": "Selection mode: 'single' for mutually exclusive, 'multiple' for multi-select (default: 'single')",
+          "example": "mode=\"single\""
+        },
+        {
+          "name": "value",
+          "type": "T | T[] | null",
+          "required": false,
+          "description": "Controlled selection value (single: T | null; multiple: T[])",
+          "example": "value={selectedStatus}"
+        },
+        {
+          "name": "defaultValue",
+          "type": "T | T[] | null",
+          "required": false,
+          "description": "Uncontrolled initial value (single: T | null; multiple: T[])",
+          "example": "defaultValue=\"all\""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T | T[] | null) => void)",
+          "required": false,
+          "description": "Selection change callback",
+          "example": "onChange={(val) => setSelectedStatus(val)}"
+        },
+        {
+          "name": "options",
+          "type": "ChipGroupItem<T>[]",
+          "required": false,
+          "description": "Available chip options when using data-driven rendering",
+          "example": "options={statusOptions}"
+        },
+        {
+          "name": "size",
+          "type": "ChipSize",
+          "allowedValues": [
+            "sm",
+            "md"
+          ],
+          "required": false,
+          "description": "Size tier passed down to chips (default: 'md')",
+          "example": "size=\"md\""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Whether the entire group is disabled",
+          "example": "disabled={false}"
+        },
+        {
+          "name": "scrollable",
+          "type": "boolean",
+          "required": false,
+          "description": "Whether to render chips in a horizontally scrollable container instead of wrapping (default: false)",
+          "example": "scrollable={false}"
+        },
+        {
+          "name": "allowEmpty",
+          "type": "boolean",
+          "required": false,
+          "description": "Whether deselecting the active item is allowed in single mode (default: false)",
+          "example": "allowEmpty={true}"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional custom child chips",
+          "example": "children={<Chip label=\"Custom\" />}"
+        },
+        {
+          "name": "testID",
+          "type": "string",
+          "required": false,
+          "description": "Test identifier",
+          "example": "testID=\"status-filter-group\""
+        },
+        {
+          "name": "accessibilityLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessibility label for the group",
+          "example": "accessibilityLabel=\"Filter by status\""
+        },
+        {
+          "name": "style",
+          "type": "StyleProp<ViewStyle>",
+          "required": false,
+          "description": "Custom container style",
+          "example": "style={{ width: '100%' }}"
+        }
+      ],
+      "example": "import { ChipGroup, type ChipGroupItem } from '@shani/ui';\n\nconst options: ChipGroupItem[] = [\n  { value: 'all', label: 'All Shipments' },\n  { value: 'in_transit', label: 'In Transit' },\n  { value: 'delivered', label: 'Delivered' },\n];\n\nexport function ShipmentFilterBar() {\n  return <ChipGroup label=\"Status\" options={options} defaultValue=\"all\" onChange={() => {}} />;\n}"
+    },
+    {
+      "name": "QuantityStepper",
+      "importPath": "@shani/ui",
+      "description": "Accessible stepped numeric counter with 44pt touch targets on plus/minus buttons, boundaries clamping, and VoiceOver adjustable support.",
+      "category": "Forms",
+      "whenToUse": [
+        "Quantities use QuantityStepper, never raw text inputs or +/- buttons.",
+        "Use for pallet quantities, package counts, weight tiers, and cargo unit adjustments.",
+        "Set min, max, and step boundaries to prevent invalid quantities."
+      ],
+      "whenNotToUse": [
+        "Never use raw text inputs or custom +/- buttons for numeric item counters.",
+        "Do not use for continuous or wide-range inputs (e.g. monetary amounts); use TextField instead."
+      ],
+      "accessibilityNotes": [
+        "Implements accessibilityRole=\"adjustable\" and VoiceOver increment/decrement actions.",
+        "Plus and minus buttons guarantee 44x44pt touch targets and disable automatically at bounds."
+      ],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Optional label displayed above the stepper control",
+          "example": "label=\"Pallet Count\""
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": "Controlled numeric counter value",
+          "example": "value={pallets}"
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "description": "Uncontrolled initial value (default: 0)",
+          "example": "defaultValue={1}"
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "defaultValue": "0",
+          "required": false,
+          "description": "Minimum selectable value (default: 0)",
+          "example": "min={1}"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "description": "Maximum selectable value (default: Infinity)",
+          "example": "max={20}"
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "defaultValue": "1",
+          "required": false,
+          "description": "Step increment/decrement delta (default: 1)",
+          "example": "step={1}"
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "required": false,
+          "description": "Optional unit text displayed beside the number (e.g. 'kg', 'items', 'pallets')",
+          "example": "unit=\"pallets\""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: number) => void)",
+          "required": false,
+          "description": "Change callback with updated numeric count",
+          "example": "onChange={(count) => setPallets(count)}"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "defaultValue": "false",
+          "required": false,
+          "description": "Whether the stepper is disabled",
+          "example": "disabled={false}"
+        },
+        {
+          "name": "testID",
+          "type": "string",
+          "required": false,
+          "description": "Test identifier",
+          "example": "testID=\"pallet-stepper\""
+        },
+        {
+          "name": "accessibilityLabel",
+          "type": "string",
+          "required": false,
+          "description": "Screen reader accessibility label",
+          "example": "accessibilityLabel=\"Pallet Count\""
+        },
+        {
+          "name": "style",
+          "type": "StyleProp<ViewStyle>",
+          "required": false,
+          "description": "Custom container style",
+          "example": "style={{ width: 200 }}"
+        }
+      ],
+      "example": "import { QuantityStepper } from '@shani/ui';\n\nexport function CargoQuantitySelector() {\n  return (\n    <QuantityStepper\n      label=\"Cargo Pallets\"\n      defaultValue={2}\n      min={1}\n      max={10}\n      unit=\"pallets\"\n      onChange={() => {}}\n    />\n  );\n}"
     }
   ]
 }

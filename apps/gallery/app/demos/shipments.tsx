@@ -14,12 +14,12 @@ import {
   Skeleton,
   Icon,
   Divider,
+  ChipGroup,
   useTheme,
   type BadgeVariant,
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
 import { DemoContainer } from '../../src/components/DemoContainer';
-import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 interface ShipmentRecord {
   id: string;
@@ -149,21 +149,21 @@ export default function ShipmentsListDemo() {
               />
 
               {/* Filter Chips */}
-              <VStack spacing="2">
-                <Text variant="caption">Status Filter:</Text>
-                <HStack spacing="2" wrap={true}>
-                  {(['All', 'Out for Delivery', 'In Transit', 'Delivered', 'Delayed'] as FilterType[]).map(
-                    (filter) => (
-                      <SegmentedOption
-                        key={filter}
-                        label={filter}
-                        selected={activeFilter === filter}
-                        onPress={() => setActiveFilter(filter)}
-                      />
-                    )
-                  )}
-                </HStack>
-              </VStack>
+              <ChipGroup
+                label="Status Filter"
+                mode="single"
+                value={activeFilter}
+                onChange={(val) => {
+                  if (val) setActiveFilter(val as FilterType);
+                }}
+                options={[
+                  { value: 'All', label: 'All' },
+                  { value: 'Out for Delivery', label: 'Out for Delivery' },
+                  { value: 'In Transit', label: 'In Transit' },
+                  { value: 'Delivered', label: 'Delivered' },
+                  { value: 'Delayed', label: 'Delayed' },
+                ]}
+              />
             </VStack>
           </Card>
 

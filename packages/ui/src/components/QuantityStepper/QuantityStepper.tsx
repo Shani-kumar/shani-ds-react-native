@@ -206,3 +206,5 @@ export const QuantityStepper = forwardRef<View, QuantityStepperProps>(function Q
     </View>
   );
 });
+
+QuantityStepper.displayName = 'QuantityStepper';

@@ -174,6 +174,8 @@ function ChipGroupInner<T = string>(
   );
 }
 
-export const ChipGroup = forwardRef(ChipGroupInner) as <T = string>(
+export const ChipGroup = forwardRef(ChipGroupInner) as (<T = string>(
   props: ChipGroupProps<T> & { ref?: React.Ref<View> }
-) => React.ReactElement;
+) => React.ReactElement) & { displayName?: string };
+
+ChipGroup.displayName = 'ChipGroup';

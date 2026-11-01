@@ -108,6 +108,9 @@ const KNOWN_UI_EXPORTS = new Set([
   'Badge',
   'Skeleton',
   'Timeline',
+  'Chip',
+  'ChipGroup',
+  'QuantityStepper',
   // Hooks
   'useTheme',
   'useStyles',
@@ -116,6 +119,8 @@ const KNOWN_UI_EXPORTS = new Set([
   'useTextField',
   'useToggle',
   'useDisclosure',
+  'useSelection',
+  'useCounter',
   // Theme & Utilities
   'createTheme',
   'lightTheme',

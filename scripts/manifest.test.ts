@@ -17,9 +17,9 @@ describe('Component Manifest Generator (Step 5.2)', () => {
     expect(onDisk).toBe(formatted);
   });
 
-  it('documents all 19 exported components with complete metadata', () => {
+  it('documents all 22 exported components with complete metadata', () => {
     const manifest = generateManifest();
-    expect(manifest.components.length).toBe(19);
+    expect(manifest.components.length).toBe(22);
 
     const expectedComponents = [
       'Box',
@@ -41,6 +41,9 @@ describe('Component Manifest Generator (Step 5.2)', () => {
       'Badge',
       'Skeleton',
       'Timeline',
+      'Chip',
+      'ChipGroup',
+      'QuantityStepper',
     ];
 
     for (const name of expectedComponents) {

@@ -3,8 +3,8 @@ import { checkAllSnippets } from './check-snippets';
 describe('Design system code snippets typecheck', () => {
   const { totalSnippets, results } = checkAllSnippets();
 
-  it('found all 19 component code snippets', () => {
-    expect(totalSnippets).toBe(19);
+  it('found all 22 component code snippets', () => {
+    expect(totalSnippets).toBe(22);
   });
 
   results.forEach(({ file, diagnostics }) => {

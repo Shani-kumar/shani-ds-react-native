@@ -252,3 +252,5 @@ export const Chip = forwardRef<View, ChipProps>(function Chip(
     </Pressable>
   );
 });
+
+Chip.displayName = 'Chip';

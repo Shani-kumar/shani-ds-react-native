@@ -44,9 +44,14 @@ import {
   Badge,
   Skeleton,
   Timeline,
+  Chip,
+  ChipGroup,
+  QuantityStepper,
   useTheme,
   useStyles,
   useResponsive,
+  useSelection,
+  useCounter,
 } from '@shani/ui';
 
 // 2. Tokens, themes, or token types from @shani/tokens or @shani/ui
@@ -141,6 +146,8 @@ Components accept strict token keys. Use real component prop names and allowed s
 | `Badge` | `variant` | `'neutral'`, `'brand'`, `'success'`, `'warning'`, `'danger'`, `'info'` |
 | `Icon` | `size` | `'xs'` (14pt), `'sm'` (16pt), `'md'` (20pt), `'lg'` (24pt), `'xl'` (32pt) |
 | `Skeleton` | `variant` | `'text'`, `'rectangular'`, `'circular'` |
+| `Chip`, `ChipGroup` | `size` | `'sm'` (44pt touch min), `'md'` (44pt) |
+| `QuantityStepper` | `min`, `max`, `step` | numbers |
 
 ---
 
@@ -197,6 +204,10 @@ export function ShipmentScreen() {
 - **Header (Top-Right):** Utility and secondary icon actions (e.g. `Printer`, `Share2`, `MoreVertical`) must be ghost `IconButton` elements with mandatory `accessibilityLabel`.
 - **Footer (Bottom-Right):** Exactly ONE primary or secondary main action (e.g. `"Track Live"` with `ChevronRight`).
 - **Footer Layout:** Left metadata (e.g. ETA) takes `flex: 1, minWidth: 140`; right button uses `style={{ flexGrow: 1, flexBasis: 120, maxWidth: '100%' }}` so it sits on the right on wide viewports and wraps to full width on narrow viewports without stretching vertically.
+
+### 4. Interactive Selection & Steppers Rule
+- **Selectable Options / Filter Bars:** Use `ChipGroup` for single or multiple selection (e.g. status filters, tag lists), NEVER raw Pressable or custom pill views.
+- **Quantities & Steppers:** Use `QuantityStepper` for numeric adjustments, item counts, or pallet quantities, NEVER raw text inputs or +/- buttons.
 
 ---
 
