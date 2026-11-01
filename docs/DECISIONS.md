@@ -412,6 +412,20 @@
   - **Tooling & CI Integration:** Added `pnpm validate:screen <file or folder>`, created `scripts/validate-screen.test.ts` with passing/failing fixtures (`scripts/__fixtures__/`), validated all gallery demo screens, and added the check to the pre-submission checklist in `docs/ai/rules.md`.
 - **Why:** Delivers deterministic, zero-hallucination verification for AI-generated screens and developer pull requests with clear line numbers, messages, and actionable replacement hints.
 
+## ADR-035: AI Screen Generation Experiment & Context Adherence Benchmark (Step 5.5)
+
+- **Context:** To prove the effectiveness of the Shani Design System AI layer (`GEMINI.md`, `CLAUDE.md`, `AGENTS.md`, `packages/ui/components.json`, `docs/ai/guidelines.md`), we require an empirical, reproducible test harness comparing unconstrained AI screen generation against context-guided generation for a realistic logistics workflow.
+- **Decision:**
+  - **Structured Experiment Harness (`ai-demo/`):** Established an experiment directory evaluating a "Schedule Shipment Pickup" mobile screen across two controlled runs:
+    1. **Run 1 (Without Context, `ai-demo/without-context/`):** Baseline prompt run in an unconfigured AI workspace without access to Shani DS rules, tokens, or manifests.
+    2. **Run 2 (With Context, `ai-demo/with-context/`):** Prompt run inside the Shani DS workspace with canonical rules contracts and AST component schemas.
+  - **Artifact Retention Protocol:** Defined explicit standards in each subfolder README for saving the exact prompt used, generated source code (`PickupScreen.tsx`), rendered screenshots, and terminal AST validation reports.
+  - **Evaluation Matrix (`ai-demo/COMPARISON.md`):** Built a structured evaluation template tracking token compliance, raw color/numeric violations, touch target ergonomics, refinement iterations, and developer velocity.
+  - **Standardized Prompts & Gallery Preview (`ai-demo/PROMPTS.md`):** Provided verbatim copy-paste prompts for both runs and clear integration steps for previewing the screen in `apps/gallery/app/demos/pickup.tsx` and adding a navigation link to `apps/gallery/app/index.tsx`.
+  - **Zero Fabrication Mandate:** Maintained data integrity by establishing the clean template structure and test harness without fabricating synthetic AI outputs.
+- **Why:** Delivers clear, verifiable proof of how machine-readable design system rules reduce developer refactoring overhead and eliminate AI hallucinations.
+
+
 
 
 
