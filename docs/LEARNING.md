@@ -591,6 +591,24 @@ const isWideWeb = Platform.OS === 'web' && width > 768;
 
 > "To make our design system reliable for AI screen generation and human developers alike, we eliminated documentation drift at the root. We built an automated TypeScript AST extractor that parses all 19 components into `packages/ui/components.json` with real union types, default values, accessibility guidelines, and compiling code examples. Both our live gallery documentation and AI tools consume this single manifest. We enforce zero-drift in CI with `pnpm manifest:check` and compile every code snippet with TypeScript using `pnpm snippets:check`."
 
+---
+
+## 18. AI Screen Construction, Figma MCP Integration & Prompt Engineering (Step 5.3)
+
+### 1. Bridging the Gap from Figma to Code with MCP & Code Connect
+
+- **The Problem:** Handing an AI agent a screenshot or a vague verbal prompt produces inconsistent React Native layouts. Even when using a component library, LLMs struggle to infer whether a design frame is an `outlined` or `elevated` Card, which spacing token to apply, and how component variants map to Figma components.
+- **The Architectural Solution:**
+  1. **Figma Dev Mode MCP Server:** By configuring the Model Context Protocol (MCP) server for Figma, AI coding agents can read raw node trees, inspect layer properties, and extract bound variable collections (`color/action/primary/default`, `spacing/4`) directly from Figma's API.
+  2. **Formal Variable Mapping (`docs/ai/figma-mapping.md`):** We mapped Figma 3-tier variables directly to `@shani/tokens` (primitive, semantic, component), providing a deterministic translation dictionary for AI tools.
+  3. **Figma Code Connect:** Documented Code Connect configurations (`figma.connect`) that embed production `@shani/ui` TypeScript snippets directly inside Figma Dev Mode, so developers see true React Native code in the Figma canvas.
+  4. **Strict Compositional Guidelines (`docs/ai/guidelines.md`):** Codified the 4-layer screen anatomy, layout patterns (`VStack` of cards, `HStack` headers, sticky bottom action bar), typographic hierarchy rules (hero ETA is the only display, section titles use title), and 44pt touch target mandates.
+  5. **Battle-Tested Prompt Templates (`docs/ai/prompt-templates.md`):** Provided ready-to-use prompt templates for building logistics screens from scratch, building from Figma Dev Mode specs, refactoring legacy screens, and extending compound components.
+
+### 2. Interview Talking Point
+
+> "To make Shani DS truly AI-ready, we didn't just write a component library—we built the translation layer between design and code. In `docs/ai/`, we documented our layout patterns, typographic hierarchy rules, and 44pt industrial touch target standards. We mapped our 3-tier tokens directly to Figma variables and established setup specifications for the Figma Dev Mode MCP Server and Figma Code Connect. Using our structured prompt templates, autonomous AI agents and engineers can query Figma nodes and generate production-grade, accessible React Native screens on the first attempt."
+
 
 
 

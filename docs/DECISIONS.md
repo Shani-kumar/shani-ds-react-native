@@ -384,6 +384,20 @@
   - **Snippet Typechecking & Drift Enforcement:** Enhanced `scripts/check-snippets.ts` and created `scripts/manifest.test.ts` to typecheck all 19 code snippets against the TypeScript compiler and verify that `packages/ui/components.json` is identical to generated code (`pnpm manifest:check`). Added `"manifest"` and `"manifest:check"` to `package.json`.
 - **Why:** Eliminates documentation drift between AI prompts and human-facing docs, equips AI models with exact component prop definitions and constraints, and guarantees compiling examples at CI time.
 
+## ADR-033: AI Screen Guidelines, Figma MCP Mapping & Prompt Templates (Step 5.3)
+
+- **Context:** To ensure external engineers, autonomous agents, and LLMs build cohesive logistics screens, the design system requires clear compositional blueprints, Figma-to-code translation matrices, Dev Mode MCP server instructions, and battle-tested prompt templates.
+- **Decision:**
+  - **Screen Building Guidelines (`docs/ai/guidelines.md`):** Documented the 4-layer screen anatomy, layout patterns (`VStack` of cards, `HStack` headers, sticky bottom action bar), card slot anatomy (`CardHeader`, `CardContent`, `CardFooter`), typographic hierarchy rules (single display hero per screen, section titles use `title`, entity IDs use `heading`), industrial mobile ergonomics (4pt spacing scale, 44pt touch target minimums), and complete walkthroughs of our live demo screens.
+  - **Figma Mapping & Tooling Specification (`docs/ai/figma-mapping.md`):** Formally mapped Figma 3-tier variables (primitive, semantic, component) to `@shani/tokens` and mapped Figma components to `@shani/ui` props. Provided complete setup instructions and JSON configuration for the Figma Dev Mode MCP Server and Figma Code Connect (`@figma/code-connect`) with production examples (`Button.figma.tsx`, `Card.figma.tsx`).
+  - **Ready-to-Use Prompt Templates (`docs/ai/prompt-templates.md`):** Created 5 copy-paste prompt templates for AI workflows:
+    1. Build from Scratch (Proof of Delivery workflow).
+    2. Build from Scratch (Warehouse Inventory Audit workflow).
+    3. Build from Figma Spec via Dev Mode MCP.
+    4. Refactor Legacy React Native Screen to Shani DS.
+    5. New Compound Component Composition.
+- **Why:** Empowers AI agents and developers to generate pixel-perfect, accessible, and responsive logistics screens that integrate seamlessly with Figma design workflows.
+
 
 
 
