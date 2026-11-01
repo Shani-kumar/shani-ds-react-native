@@ -184,7 +184,7 @@ Attach `ai-demo/figma-input.png` to both AI sessions.
 
 ## 6. Comparing and Documenting Results
 
-Open `ai-demo/COMPARISON.md` and record the measurements:
+Open `ai-demo/README.md` and record the measurements:
 
 | Evaluation Dimension | Without Context | With Context |
 | :--- | :--- | :--- |
