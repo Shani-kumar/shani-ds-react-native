@@ -32,7 +32,7 @@ export default function SkeletonPage() {
         </VStack>
       }
       playgroundControls={
-        <HStack spacing="2" align="center">
+        <HStack spacing="2" align="center" wrap={true}>
           {(['rectangular', 'text', 'circular'] as SkeletonVariant[]).map((v) => (
             <Button
               key={v}
@@ -63,10 +63,41 @@ export default function SkeletonPage() {
         </VStack>
       }
       propsData={[
-        { name: 'variant', type: "'rectangular' | 'text' | 'circular'", default: "'rectangular'", description: 'Placeholder shape geometry.' },
-        { name: 'width', type: 'number | string', default: "'100%'", description: 'Placeholder width in points or percentage.' },
-        { name: 'height', type: 'number | string', default: 'undefined', description: 'Placeholder height in points.' },
-        { name: 'borderRadius', type: 'keyof RadiusScale', default: 'undefined', description: 'Custom border radius override.' },
+        {
+          name: 'variant',
+          type: "'rectangular' | 'text' | 'circular'",
+          default: "'rectangular'",
+          description: 'Placeholder shape geometry. Text sets radius.xs; circular sets radius.full; rectangular sets radius.md.',
+          example: 'variant="text"',
+        },
+        {
+          name: 'width',
+          type: 'number | string',
+          default: "'100%'",
+          description: 'Placeholder width in points or percentage string.',
+          example: 'width="60%"',
+        },
+        {
+          name: 'height',
+          type: 'number | string',
+          default: 'None',
+          description: 'Placeholder height in points or percentage string (defaults: text=16, rectangular=40, circular=40).',
+          example: 'height={20}',
+        },
+        {
+          name: 'borderRadius',
+          type: "'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | number",
+          default: 'None',
+          description: 'Custom border radius token key or numeric pixel value override.',
+          example: 'borderRadius="full"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (margin, flex, minWidth). Shimmer animation and surface colors are token-governed.',
+          example: 'style={{ marginBottom: 8 }}',
+        },
       ]}
       dos={[
         'Mirror the exact layout and dimensions of the incoming shipment cards to prevent cumulative layout shift (CLS).',

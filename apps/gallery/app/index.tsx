@@ -13,7 +13,6 @@ import {
   useTheme,
 } from '@shani/ui';
 import { GalleryHeader } from '../src/components/GalleryHeader';
-import { useGallery } from '../src/context/GalleryContext';
 
 interface NavItem {
   title: string;
@@ -47,7 +46,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     title: 'Accessibility & Contrast Audit',
-    description: 'Full automated WCAG 2.1 AA report with all 58 contrast checks across Light and Dark themes.',
+    description: 'Full automated WCAG 2.1 AA report with all 62 contrast checks across Light and Dark themes.',
     path: '/accessibility',
     category: 'Foundation',
     badge: 'WCAG AA',
@@ -129,18 +128,24 @@ const NAV_ITEMS: NavItem[] = [
 export default function HomeScreen() {
   const router = useRouter();
   const { mode, resolvedMode } = useTheme();
-  const { brand } = useGallery();
+
+  const modeLabel =
+    mode === 'system'
+      ? `System (${resolvedMode === 'dark' ? 'Dark' : 'Light'})`
+      : mode === 'dark'
+      ? 'Mode: Dark'
+      : 'Mode: Light';
 
   return (
     <Box flex={1} bg="canvas">
-      <GalleryHeader subtitle="Multi-Brand React Native Logistics Design System" />
+      <GalleryHeader subtitle="React Native design system for logistics" />
       <ScrollView contentContainerStyle={{ padding: 24 }}>
         <VStack spacing="6">
           {/* Welcome Card */}
           <Card variant="elevated" padding="lg">
             <CardHeader>
               <VStack spacing="1">
-                <Text variant="heading">Shani Design System Showcase</Text>
+                <Text variant="title">Shani Design System Showcase</Text>
                 <Text variant="caption">
                   Production-grade cross-platform React Native design system engineered for 15+ logistics and courier applications.
                 </Text>
@@ -149,16 +154,11 @@ export default function HomeScreen() {
             <CardContent>
               <VStack spacing="4">
                 <HStack spacing="2" align="center" wrap={true}>
-                  <Badge variant="brand">Mode: {mode} ({resolvedMode})</Badge>
-                  <Badge variant={brand === 'apex' ? 'warning' : 'neutral'}>
-                    Tenant: {brand === 'apex' ? 'Apex Fleet' : 'Shani Core'}
-                  </Badge>
+                  <Badge variant="brand">{modeLabel}</Badge>
                   <Badge variant="success">WCAG 2.1 AA Compliant</Badge>
                 </HStack>
-                <Text variant="body">
-                  Toggle the theme switcher or brand switcher in the header above. Notice how all
-                  colors, shadows, and interactive components react in real time through the zero-runtime
-                  theme engine without any flash of unstyled content or layout shifts.
+                <Text variant="body" style={{ maxWidth: 720 }}>
+                  Shani Design System delivers accessible, high-contrast components built strictly with design tokens. Explore production-grade primitives and logistics workflows optimized for cross-platform performance.
                 </Text>
               </VStack>
             </CardContent>
@@ -166,12 +166,12 @@ export default function HomeScreen() {
 
           {/* Component & Token Directory */}
           <VStack spacing="4">
-            <Text variant="heading">Design System Directory</Text>
+            <Text variant="title">Design System Directory</Text>
             <VStack spacing="3">
               {NAV_ITEMS.map((item) => (
                 <Card key={item.path} variant="outlined" padding="md">
                   <HStack justify="between" align="center" wrap={true} spacing="3">
-                    <VStack spacing="1" style={{ flex: 1, minWidth: 200, paddingRight: 8 }}>
+                    <VStack spacing="1" style={{ flex: 1, minWidth: 140, paddingRight: 8 }}>
                       <HStack spacing="2" align="center" wrap={true}>
                         <Text variant="title">{item.title}</Text>
                         <Badge variant="neutral" size="sm">{item.category}</Badge>

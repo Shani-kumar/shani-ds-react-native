@@ -25,12 +25,12 @@ export default function CardPage() {
       description="Surface container primitive supporting outlined, elevated, and filled variants with composable header, content, and footer slots."
       category="Display"
       playground={
-        <Box style={{ width: '100%', maxWidth: 380 }}>
+        <Box style={{ width: '100%' }}>
           <Card variant={variant} padding={padding}>
             <CardHeader>
-              <HStack justify="between" align="center">
-                <Text variant="title">Waybill #840192</Text>
-                <Badge variant="brand" size="sm">Priority Air</Badge>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>Waybill #840192</Text>
+                <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>Priority Air</Badge>
               </HStack>
             </CardHeader>
             <CardContent>
@@ -40,7 +40,7 @@ export default function CardPage() {
               </VStack>
             </CardContent>
             <CardFooter>
-              <HStack justify="between" align="center" style={{ width: '100%' }}>
+              <HStack justify="between" align="center" wrap={true} spacing="2" style={{ width: '100%' }}>
                 <Text variant="caption">Weight: 42.0 kg</Text>
                 <Button variant="secondary" size="sm">View Manifest</Button>
               </HStack>
@@ -50,7 +50,7 @@ export default function CardPage() {
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['outlined', 'elevated', 'filled'] as CardVariant[]).map((v) => (
               <Button
@@ -63,7 +63,7 @@ export default function CardPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Padding:</Text>
             {(['none', 'sm', 'md', 'lg'] as CardPadding[]).map((p) => (
               <Button
@@ -95,9 +95,55 @@ export default function CardPage() {
         </VStack>
       }
       propsData={[
-        { name: 'variant', type: "'outlined' | 'elevated' | 'filled'", default: "'outlined'", description: 'Container surface style.' },
-        { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Internal token padding tier (none=0, sm=8, md=16, lg=24).' },
-        { name: 'children', type: 'React.ReactNode', default: 'undefined', description: 'Composable card body, header, and footer content.' },
+        {
+          name: 'children',
+          type: 'React element or tree',
+          default: 'required',
+          description: 'Composable card body content, typically combining CardHeader, CardContent, and CardFooter.',
+          example: 'children={<CardContent><Text>Manifest</Text></CardContent>}',
+        },
+        {
+          name: 'variant',
+          type: "'outlined' | 'elevated' | 'filled'",
+          default: "'outlined'",
+          description: 'Container surface style. Outlined has a 1px border; Elevated adds elevation and shadow.md; Filled uses bg.surfaceRaised.',
+          example: 'variant="elevated"',
+        },
+        {
+          name: 'padding',
+          type: "'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+          default: "'md'",
+          description: 'Internal token padding tier (none=0, xs=4, sm=8, md=16, lg=24, xl=32).',
+          example: 'padding="lg"',
+        },
+        {
+          name: 'onPress',
+          type: '(event: GestureResponderEvent) => void',
+          default: 'None',
+          description: 'Optional press handler callback that turns the Card into an accessible interactive button.',
+          example: 'onPress={() => openDetails()}',
+        },
+        {
+          name: 'accessibilityRole',
+          type: 'AccessibilityRole',
+          default: 'None',
+          description: 'Screen reader accessibility role. Automatically sets "button" when onPress is provided.',
+          example: 'accessibilityRole="button"',
+        },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'None',
+          description: 'Spoken description for screen readers when card is interactive.',
+          example: 'accessibilityLabel="View shipment tracking route #490"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (margin, flex, minWidth). Background colors, borders, and shadows are token-governed.',
+          example: 'style={{ width: \'100%\' }}',
+        },
       ]}
       dos={[
         'Use elevated cards to lift interactive items (e.g. delivery run sheet items) off the background canvas.',

@@ -37,7 +37,7 @@ export default function IconButtonPage() {
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['primary', 'secondary', 'tertiary', 'ghost', 'danger'] as ButtonVariant[]).map((v) => (
               <Button
@@ -50,7 +50,7 @@ export default function IconButtonPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Shape:</Text>
             <Button
               variant={shape === 'circle' ? 'primary' : 'secondary'}
@@ -67,7 +67,7 @@ export default function IconButtonPage() {
               Square
             </Button>
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size:</Text>
             {(['sm', 'md', 'lg'] as ButtonSize[]).map((s) => (
               <Button
@@ -86,7 +86,7 @@ export default function IconButtonPage() {
         <VStack spacing="4">
           <Text variant="label">Action Bar Icons</Text>
           <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline">
-            <HStack spacing="4" align="center">
+            <HStack spacing="4" align="center" wrap={true}>
               <IconButton
                 name="Filter"
                 accessibilityLabel="Filter shipments"
@@ -116,11 +116,76 @@ export default function IconButtonPage() {
         </VStack>
       }
       propsData={[
-        { name: 'accessibilityLabel', type: 'string', default: 'STRICTLY MANDATORY', description: 'Screen reader label. TypeScript throws a compile-time error if omitted.' },
-        { name: 'name', type: 'LucideIconName', default: 'required', description: 'PascalCase name of Lucide icon.' },
-        { name: 'variant', type: "'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger'", default: "'secondary'", description: 'Visual style tier.' },
-        { name: 'shape', type: "'circle' | 'square'", default: "'square'", description: 'Corner geometry.' },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button touch area (min 44x44pt).' },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'required',
+          description: 'Spoken description for screen readers. Strictly required in TypeScript to prevent unlabeled icon buttons.',
+          example: 'accessibilityLabel="Scan package barcode"',
+        },
+        {
+          name: 'name',
+          type: 'string',
+          default: 'None',
+          description: "PascalCase name of any supported Lucide icon (e.g. 'Printer', 'Share2', 'QrCode'). Use either 'name' or 'icon'.",
+          example: 'name="QrCode"',
+        },
+        {
+          name: 'icon',
+          type: 'Lucide icon component',
+          default: 'None',
+          description: "Direct Lucide icon component reference. Requires import from 'lucide-react-native'.",
+          example: 'icon={QrCode}',
+        },
+        {
+          name: 'variant',
+          type: "'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger'",
+          default: "'ghost'",
+          description: 'Visual style tier establishing action hierarchy.',
+          example: 'variant="primary"',
+        },
+        {
+          name: 'shape',
+          type: "'square' | 'circle'",
+          default: "'square'",
+          description: 'Corner geometry (square uses theme.radius.md; circle uses theme.radius.full).',
+          example: 'shape="circle"',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          default: "'md'",
+          description: 'Button touch area strictly enforcing ≥44x44pt minimums (sm=44x44, md=48x48, lg=56x56).',
+          example: 'size="md"',
+        },
+        {
+          name: 'onPress',
+          type: '(event: GestureResponderEvent) => void',
+          default: 'None',
+          description: 'Callback invoked on tap or press release.',
+          example: 'onPress={() => handleScan()}',
+        },
+        {
+          name: 'loading',
+          type: 'boolean',
+          default: 'false',
+          description: 'Displays a spinner indicator and temporarily disables taps.',
+          example: 'loading={false}',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Disables press interactions and applies muted tokens with accessible contrast.',
+          example: 'disabled={false}',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout positioning only (margin). Touch target dimensions and colors must come from tokens.',
+          example: 'style={{ marginLeft: 8 }}',
+        },
       ]}
       dos={[
         'Always provide descriptive accessibilityLabels explaining the action (e.g. "Scan tracking barcode").',

@@ -91,12 +91,62 @@ export default function CheckboxPage() {
         </VStack>
       }
       propsData={[
-        { name: 'checked', type: 'boolean', default: 'false', description: 'Whether the checkbox is selected.' },
-        { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Displays horizontal minus dash for partial subset selection.' },
-        { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents interaction and applies muted opacity.' },
-        { name: 'label', type: 'string', default: 'undefined', description: 'Label text beside the checkbox.' },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Size tier. All sizes meet 44x44pt touch minimum.' },
-        { name: 'onChange', type: '(checked: boolean) => void', default: 'undefined', description: 'Callback fired on toggle.' },
+        {
+          name: 'checked',
+          type: 'boolean',
+          default: 'false',
+          description: 'Controlled checked boolean state.',
+          example: 'checked={isSelected}',
+        },
+        {
+          name: 'onChange',
+          type: '(checked: boolean) => void',
+          default: 'None',
+          description: 'Callback invoked with the new boolean state when toggled.',
+          example: 'onChange={(val) => setIsSelected(val)}',
+        },
+        {
+          name: 'indeterminate',
+          type: 'boolean',
+          default: 'false',
+          description: 'Displays a horizontal minus icon representing partial subset selection.',
+          example: 'indeterminate={hasPartialSelection}',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Disables press interactions and applies accessible muted tokens.',
+          example: 'disabled={false}',
+        },
+        {
+          name: 'label',
+          type: 'string | React element',
+          default: 'None',
+          description: 'Visible label text or React element rendered adjacent to the checkbox.',
+          example: 'label="Hazardous Cargo Handling"',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          default: "'md'",
+          description: 'Size tier for box and icon (sm=16pt, md=20pt, lg=24pt). Touch container enforces ≥44x44pt.',
+          example: 'size="md"',
+        },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'None',
+          description: 'Spoken description for screen readers. Defaults to string label if omitted.',
+          example: 'accessibilityLabel="Confirm pallet weights"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout positioning only (margin, flex). Box dimensions, borders, and colors must come from tokens.',
+          example: 'style={{ marginVertical: 4 }}',
+        },
       ]}
       dos={[
         'Use indeterminate when a parent checkbox controls a list where some, but not all, items are checked.',
@@ -111,7 +161,8 @@ export default function CheckboxPage() {
         'Checkbox maps states to native accessibilityState: { checked: indeterminate ? "mixed" : checked }.',
         'TalkBack and VoiceOver announce indeterminate checkboxes as "mixed, checkbox".',
       ]}
-      codeSnippet={`import { Checkbox } from '@shani/ui';
+      codeSnippet={`import { useState } from 'react';
+import { Checkbox } from '@shani/ui';
 
 export function ManifestSelection() {
   const [selected, setSelected] = useState(false);

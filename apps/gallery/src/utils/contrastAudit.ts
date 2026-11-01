@@ -59,6 +59,10 @@ const AUDIT_CHECKS: CheckDefinition[] = [
   { category: 'ui', fgName: 'feedback.warning.icon', getFg: (t) => t.colors.feedback.warning.icon, bgName: 'feedback.warning.bg', getBg: (t) => t.colors.feedback.warning.bg, minRatio: 3.0 },
   { category: 'ui', fgName: 'feedback.danger.icon', getFg: (t) => t.colors.feedback.danger.icon, bgName: 'feedback.danger.bg', getBg: (t) => t.colors.feedback.danger.bg, minRatio: 3.0 },
   { category: 'ui', fgName: 'feedback.info.icon', getFg: (t) => t.colors.feedback.info.icon, bgName: 'feedback.info.bg', getBg: (t) => t.colors.feedback.info.bg, minRatio: 3.0 },
+
+  // Focus indicators (WCAG 2.1 SC 1.4.11 Non-text contrast >= 3.0:1)
+  { category: 'ui', fgName: 'border.focus', getFg: (t) => t.colors.border.focus, bgName: 'bg.surface', getBg: (t) => t.colors.bg.surface, minRatio: 3.0 },
+  { category: 'ui', fgName: 'border.focus', getFg: (t) => t.colors.border.focus, bgName: 'bg.canvas', getBg: (t) => t.colors.bg.canvas, minRatio: 3.0 },
 ];
 
 export function getFullContrastReport(

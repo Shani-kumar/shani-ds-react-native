@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { ScrollView, View, type TextStyle } from 'react-native';
+import { ScrollView, View, Pressable, type TextStyle } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+  useReducedMotion,
+  Easing,
+} from 'react-native-reanimated';
 import {
   Box,
   VStack,
@@ -11,6 +19,7 @@ import {
   CardContent,
   Badge,
   Divider,
+  Icon,
   useTheme,
 } from '@shani/ui';
 import { GalleryHeader } from '../src/components/GalleryHeader';
@@ -18,9 +27,237 @@ import { getContrastRatio } from '../src/utils/contrast';
 
 type TokenCategory = 'colors' | 'spacing' | 'typography' | 'radius' | 'shadows' | 'motion';
 
+function DurationDemoCard({
+  name,
+  duration,
+  usage,
+  shouldReduceMotion,
+}: {
+  name: string;
+  duration: number;
+  usage: string;
+  shouldReduceMotion: boolean;
+}) {
+  const { theme } = useTheme();
+  const offset = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
+
+  const handleReplay = () => {
+    if (shouldReduceMotion) return;
+    offset.value = 0;
+    offset.value = withTiming(140, { duration });
+  };
+
+  return (
+    <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 200, maxWidth: '100%' }}>
+      <VStack spacing="3">
+        <HStack justify="between" align="center" wrap={true} spacing="2">
+          <HStack spacing="2" align="center">
+            <Badge variant="brand">{name}</Badge>
+            <Text variant="title">{duration}ms</Text>
+          </HStack>
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon="Play"
+            onPress={handleReplay}
+            disabled={shouldReduceMotion}
+          >
+            Replay
+          </Button>
+        </HStack>
+        <Box
+          p="2"
+          bg="canvas"
+          borderRadius="md"
+          borderColor="subtle"
+          borderWidth="hairline"
+          style={{ width: '100%', height: 48, justifyContent: 'center', overflow: 'hidden' }}
+        >
+          <Animated.View
+            style={[
+              {
+                width: 32,
+                height: 32,
+                backgroundColor: theme.colors.action.primary.default,
+                borderRadius: theme.radius.sm,
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+              animatedStyle,
+            ]}
+          >
+            <Icon name="Truck" size="xs" color="inverse" />
+          </Animated.View>
+        </Box>
+        <Text variant="caption" color="secondary">
+          {usage}
+        </Text>
+      </VStack>
+    </Card>
+  );
+}
+
+function EasingDemoCard({
+  name,
+  bezier,
+  description,
+  shouldReduceMotion,
+}: {
+  name: string;
+  bezier: [number, number, number, number];
+  description: string;
+  shouldReduceMotion: boolean;
+}) {
+  const { theme } = useTheme();
+  const offset = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
+
+  const handlePlay = () => {
+    if (shouldReduceMotion) return;
+    offset.value = 0;
+    offset.value = withTiming(140, {
+      duration: 500,
+      easing: Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3]),
+    });
+  };
+
+  return (
+    <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 200, maxWidth: '100%' }}>
+      <VStack spacing="3">
+        <HStack justify="between" align="center" wrap={true} spacing="2">
+          <Badge variant="neutral">{name}</Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            leftIcon="Play"
+            onPress={handlePlay}
+            disabled={shouldReduceMotion}
+          >
+            Play
+          </Button>
+        </HStack>
+        <Box
+          p="2"
+          bg="canvas"
+          borderRadius="md"
+          borderColor="subtle"
+          borderWidth="hairline"
+          style={{ width: '100%', height: 44, justifyContent: 'center', overflow: 'hidden' }}
+        >
+          <Animated.View
+            style={[
+              {
+                width: 28,
+                height: 28,
+                backgroundColor: theme.colors.action.primary.pressed,
+                borderRadius: theme.radius.full,
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+              animatedStyle,
+            ]}
+          >
+            <Icon name="ArrowRight" size="xs" color="inverse" />
+          </Animated.View>
+        </Box>
+        <HStack justify="between" align="center" wrap={true} spacing="2">
+          <Text variant="caption" color="secondary" style={{ flex: 1, minWidth: 0 }}>
+            {description}
+          </Text>
+          <Text variant="caption" style={{ fontFamily: 'monospace', fontSize: 10 }}>
+            [{bezier.join(', ')}]
+          </Text>
+        </HStack>
+      </VStack>
+    </Card>
+  );
+}
+
+function SpringDemoCard({
+  name,
+  spring,
+  usage,
+  shouldReduceMotion,
+}: {
+  name: string;
+  spring: { damping: number; mass: number; stiffness: number };
+  usage: string;
+  shouldReduceMotion: boolean;
+}) {
+  const { theme } = useTheme();
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handleTap = () => {
+    if (shouldReduceMotion) return;
+    scale.value = 0.82;
+    scale.value = withSpring(1, {
+      damping: spring.damping,
+      mass: spring.mass,
+      stiffness: spring.stiffness,
+    });
+  };
+
+  return (
+    <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 200, maxWidth: '100%' }}>
+      <VStack spacing="3">
+        <HStack justify="between" align="center" wrap={true} spacing="2">
+          <Badge variant="warning">{name}</Badge>
+          <Text variant="caption" color="secondary">
+            d:{spring.damping} • m:{spring.mass} • s:{spring.stiffness}
+          </Text>
+        </HStack>
+        <Divider />
+        <Pressable
+          onPress={handleTap}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`Test ${name} spring micro-animation`}
+          style={{ width: '100%', alignItems: 'center', paddingVertical: theme.spacing[2] }}
+        >
+          <Animated.View
+            style={[
+              {
+                width: 120,
+                height: 52,
+                backgroundColor: theme.colors.bg.surfaceRaised,
+                borderColor: theme.colors.border.brand,
+                borderWidth: theme.borderWidth.thin,
+                borderRadius: theme.radius.md,
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+              animatedStyle,
+            ]}
+          >
+            <HStack spacing="2" align="center">
+              <Icon name="Zap" size="xs" color="brand" />
+              <Text variant="label" color="brand">Tap to Test</Text>
+            </HStack>
+          </Animated.View>
+        </Pressable>
+        <Text variant="caption" color="secondary">
+          {usage}
+        </Text>
+      </VStack>
+    </Card>
+  );
+}
+
 export default function TokensScreen() {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState<TokenCategory>('colors');
+  const shouldReduceMotion = Boolean(useReducedMotion());
 
   // Key contrast pairs from WCAG 2.1 AA audit
   const contrastPairs = [
@@ -130,80 +367,80 @@ export default function TokensScreen() {
 
       <ScrollView contentContainerStyle={{ padding: 24 }}>
         <VStack spacing="6">
-          {/* TAB 1: COLORS & CONTRAST */}
+          {/* TAB 1: COLORS */}
           {activeTab === 'colors' ? (
             <VStack spacing="6">
-              {/* Automated Contrast Audit Table */}
+              {/* Semantic Intent Colors */}
               <Card variant="elevated" padding="lg">
                 <CardHeader>
-                  <VStack spacing="1">
-                    <HStack justify="between" align="center" wrap={true} spacing="2">
-                      <Text variant="heading" style={{ flex: 1, minWidth: 200 }}>Live WCAG 2.1 Contrast Audit</Text>
-                      <Badge variant="success">All 58 Passed AA</Badge>
-                    </HStack>
-                    <Text variant="caption">
-                      Contrast ratios computed live against active theme tokens. All normal text
-                      strictly meets ≥ 4.5:1.
-                    </Text>
-                  </VStack>
+                  <Text variant="title">Semantic Intent Colors</Text>
                 </CardHeader>
                 <CardContent>
-                  <VStack spacing="3">
-                    {contrastPairs.map((pair) => {
-                      const ratio = getContrastRatio(pair.fgHex, pair.bgHex);
-                      const passed = ratio >= pair.minRatio;
-                      return (
-                        <Card key={pair.label} variant="outlined" padding="sm">
-                          <HStack justify="between" align="center">
-                            <VStack spacing="1" style={{ flex: 1, paddingRight: 16 }}>
-                              <Text variant="label">{pair.label}</Text>
-                              <HStack spacing="2" align="center">
-                                <Text variant="caption">
-                                  {pair.fgToken} ({pair.fgHex}) on {pair.bgToken} ({pair.bgHex})
+                  <VStack spacing="4">
+                    <Text variant="caption">
+                      Verified light/dark semantic color mappings designed for high-contrast logistics screens.
+                    </Text>
+                    <HStack spacing="4" wrap={true}>
+                      {contrastPairs.map((pair) => {
+                        const ratio = getContrastRatio(pair.fgHex, pair.bgHex);
+                        const passed = ratio >= pair.minRatio;
+                        return (
+                          <Card
+                            key={pair.label}
+                            variant="outlined"
+                            padding="sm"
+                            style={{ flex: 1, minWidth: 200, maxWidth: '100%' }}
+                          >
+                            <VStack spacing="2">
+                              <HStack justify="between" align="center" wrap={true}>
+                                <Text variant="label" style={{ flex: 1, minWidth: 0 }}>
+                                  {pair.label}
                                 </Text>
+                                <Badge variant={passed ? 'success' : 'danger'} size="sm">
+                                  {ratio}:1 (AA)
+                                </Badge>
                               </HStack>
-                            </VStack>
-                            <HStack spacing="3" align="center">
-                              {/* Swatch Preview */}
                               <View
                                 style={{
+                                  padding: theme.spacing[3],
                                   backgroundColor: pair.bgHex,
                                   borderColor: theme.colors.border.subtle,
                                   borderWidth: theme.borderWidth.hairline,
                                   borderRadius: theme.radius.sm,
-                                  paddingHorizontal: theme.spacing[2],
-                                  paddingVertical: theme.spacing[1],
                                 }}
                               >
-                                <Text
-                                  variant="caption"
-                                  style={{ color: pair.fgHex, fontWeight: '600' }}
-                                >
-                                  Preview
+                                <Text variant="body" style={{ color: pair.fgHex, fontWeight: '600' }}>
+                                  Sample Text: #SHN-84912
                                 </Text>
                               </View>
-                              <Badge variant={passed ? 'success' : 'danger'}>
-                                {ratio}:1 ({passed ? 'PASS' : 'FAIL'})
-                              </Badge>
-                            </HStack>
-                          </HStack>
-                        </Card>
-                      );
-                    })}
+                              <HStack justify="between" align="center" wrap={true}>
+                                <Text variant="caption">{pair.fgToken} ({pair.fgHex})</Text>
+                                <Text variant="caption">on {pair.bgToken} ({pair.bgHex})</Text>
+                              </HStack>
+                            </VStack>
+                          </Card>
+                        );
+                      })}
+                    </HStack>
                   </VStack>
                 </CardContent>
               </Card>
 
-              {/* Semantic Action Colors */}
+              {/* Action Tokens */}
               <Card variant="outlined" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Semantic Action Tokens</Text>
+                  <Text variant="title">Semantic Action Tokens</Text>
                 </CardHeader>
                 <CardContent>
                   <VStack spacing="4">
                     <HStack spacing="3" wrap={true}>
                       {Object.entries(theme.colors.action).map(([key, actionGroup]) => (
-                        <Card key={key} variant="outlined" padding="sm" style={{ width: 180 }}>
+                        <Card
+                          key={key}
+                          variant="outlined"
+                          padding="sm"
+                          style={{ flex: 1, minWidth: 140, maxWidth: '100%' }}
+                        >
                           <VStack spacing="2">
                             <Text variant="label">{key}</Text>
                             <View
@@ -231,7 +468,7 @@ export default function TokensScreen() {
               {/* Primitive Palette Scales */}
               <Card variant="outlined" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Primitive Scales (50 - 900)</Text>
+                  <Text variant="title">Primitive Scales (50 - 900)</Text>
                 </CardHeader>
                 <CardContent>
                   <VStack spacing="4">
@@ -284,7 +521,7 @@ export default function TokensScreen() {
             <Card variant="elevated" padding="lg">
               <CardHeader>
                 <VStack spacing="1">
-                  <Text variant="heading">4pt Spacing Scale</Text>
+                  <Text variant="title">4pt Spacing Scale</Text>
                   <Text variant="caption">
                     Every padding, margin, and gap is strictly mapped to the 4pt grid scale.
                   </Text>
@@ -292,28 +529,36 @@ export default function TokensScreen() {
               </CardHeader>
               <CardContent>
                 <VStack spacing="3">
-                  {Object.entries(theme.spacing).map(([key, value]) => (
-                    <Card key={key} variant="outlined" padding="sm">
-                      <HStack justify="between" align="center">
-                        <HStack spacing="3" align="center" style={{ width: 140 }}>
-                          <Badge variant="brand" size="sm">
-                            spacing[{key}]
-                          </Badge>
-                          <Text variant="body">{value}pt</Text>
+                  {Object.entries(theme.spacing).map(([key, value]) => {
+                    const maxSpacing = 96;
+                    const pct = (Number(value) / maxSpacing) * 100;
+                    return (
+                      <Card key={key} variant="outlined" padding="sm">
+                        <HStack align="center" style={{ width: '100%' }}>
+                          {/* Fixed-width label column */}
+                          <HStack spacing="2" align="center" style={{ width: 120, flexShrink: 0 }}>
+                            <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>
+                              spacing[{key}]
+                            </Badge>
+                            <Text variant="caption" style={{ fontWeight: '600', flexShrink: 0 }}>
+                              {value}pt
+                            </Text>
+                          </HStack>
+                          {/* Flexible bar column scaling cleanly relative to available width */}
+                          <View style={{ flex: 1, minWidth: 0, paddingLeft: theme.spacing[3], overflow: 'hidden' }}>
+                            <View
+                              style={{
+                                height: 18,
+                                width: `${Math.max(pct, 2)}%`,
+                                backgroundColor: theme.colors.action.primary.default,
+                                borderRadius: theme.radius.xs,
+                              }}
+                            />
+                          </View>
                         </HStack>
-                        <View style={{ flex: 1, paddingLeft: 16 }}>
-                          <View
-                            style={{
-                              height: 20,
-                              width: Math.min(value * 3, 300),
-                              backgroundColor: theme.colors.action.primary.default,
-                              borderRadius: theme.radius.xs,
-                            }}
-                          />
-                        </View>
-                      </HStack>
-                    </Card>
-                  ))}
+                      </Card>
+                    );
+                  })}
                 </VStack>
               </CardContent>
             </Card>
@@ -324,14 +569,14 @@ export default function TokensScreen() {
             <VStack spacing="6">
               <Card variant="elevated" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Typography Scales</Text>
+                  <Text variant="title">Typography Scales</Text>
                 </CardHeader>
                 <CardContent>
                   <VStack spacing="4">
                     {Object.entries(theme.typography.fontSize).map(([key, size]) => (
                       <Card key={key} variant="outlined" padding="sm">
                         <VStack spacing="1">
-                          <HStack justify="between" align="center">
+                          <HStack justify="between" align="center" wrap={true} spacing="2">
                             <Badge variant="neutral" size="sm">
                               fontSize.{key}
                             </Badge>
@@ -348,6 +593,8 @@ export default function TokensScreen() {
                                 theme.typography.lineHeight[
                                   key as keyof typeof theme.typography.lineHeight
                                 ],
+                              flexShrink: 1,
+                              minWidth: 0,
                             }}
                           >
                             Logistics Waybill: #SHN-94812
@@ -361,12 +608,17 @@ export default function TokensScreen() {
 
               <Card variant="outlined" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Font Weights</Text>
+                  <Text variant="title">Font Weights</Text>
                 </CardHeader>
                 <CardContent>
                   <HStack spacing="4" wrap={true}>
                     {Object.entries(theme.typography.fontWeight).map(([key, weight]) => (
-                      <Card key={key} variant="outlined" padding="sm" style={{ minWidth: 140 }}>
+                      <Card
+                        key={key}
+                        variant="outlined"
+                        padding="sm"
+                        style={{ flex: 1, minWidth: 120, maxWidth: '100%' }}
+                      >
                         <VStack spacing="1">
                           <Badge variant="brand" size="sm">{key}</Badge>
                           <Text variant="title" style={{ fontWeight: weight as TextStyle['fontWeight'] }}>
@@ -386,12 +638,17 @@ export default function TokensScreen() {
           {activeTab === 'radius' ? (
             <Card variant="elevated" padding="lg">
               <CardHeader>
-                <Text variant="heading">Border Radius Scale</Text>
+                <Text variant="title">Border Radius Scale</Text>
               </CardHeader>
               <CardContent>
                 <HStack spacing="4" wrap={true}>
                   {Object.entries(theme.radius).map(([key, radius]) => (
-                    <Card key={key} variant="outlined" padding="sm" style={{ width: 140, alignItems: 'center' }}>
+                    <Card
+                      key={key}
+                      variant="outlined"
+                      padding="sm"
+                      style={{ flex: 1, minWidth: 120, maxWidth: '100%', alignItems: 'center' }}
+                    >
                       <VStack spacing="2" align="center">
                         <Badge variant="neutral" size="sm">{key}</Badge>
                         <View
@@ -417,17 +674,19 @@ export default function TokensScreen() {
           {activeTab === 'shadows' ? (
             <Card variant="elevated" padding="lg">
               <CardHeader>
-                <Text variant="heading">Elevation & Drop Shadows</Text>
+                <Text variant="title">Elevation & Drop Shadows</Text>
               </CardHeader>
               <CardContent>
-                <HStack spacing="6" wrap={true}>
+                <HStack spacing="4" wrap={true}>
                   {Object.entries(theme.shadow).map(([key, shadowToken]) => (
                     <Card
                       key={key}
                       variant="outlined"
                       padding="lg"
                       style={{
-                        width: 180,
+                        flex: 1,
+                        minWidth: 140,
+                        maxWidth: '100%',
                         backgroundColor: theme.colors.bg.surface,
                         elevation: shadowToken.elevation,
                         shadowColor: shadowToken.shadowColor,
@@ -450,50 +709,144 @@ export default function TokensScreen() {
             </Card>
           ) : null}
 
-          {/* TAB 6: MOTION */}
+          {/* TAB 6: MOTION (LIVE) */}
           {activeTab === 'motion' ? (
             <VStack spacing="6">
+              {/* Reduced Motion System Warning (if active) */}
+              {shouldReduceMotion ? (
+                <Box
+                  p="3"
+                  bg="brandSubtle"
+                  borderRadius="md"
+                  borderColor="subtle"
+                  borderWidth="hairline"
+                >
+                  <HStack spacing="2" align="center">
+                    <Icon name="Info" size="sm" color="brand" />
+                    <Text variant="caption" color="brand">
+                      Reduce motion is on, animations are disabled.
+                    </Text>
+                  </HStack>
+                </Box>
+              ) : null}
+
+              {/* Component Motion Usage Cross-Reference */}
+              <Card variant="outlined" padding="md">
+                <VStack spacing="2">
+                  <HStack spacing="2" align="center">
+                    <Icon name="Layers" size="sm" color="brand" />
+                    <Text variant="label" style={{ fontWeight: '700' }}>
+                      Design System Component Motion Usages:
+                    </Text>
+                  </HStack>
+                  <Text variant="caption" color="secondary">
+                    • Button: Press micro-scale uses motion.spring.snappy (damping 26, mass 0.8, stiffness 300)
+                  </Text>
+                  <Text variant="caption" color="secondary">
+                    • Switch: Thumb translation uses motion.spring.snappy (instant fallback on reduced motion)
+                  </Text>
+                  <Text variant="caption" color="secondary">
+                    • Skeleton: Opacity shimmer pulse uses motion.duration.normal (250ms) with repeat
+                  </Text>
+                </VStack>
+              </Card>
+
+              {/* 1. Live Duration Tokens with Replay */}
               <Card variant="elevated" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Duration & Easing Tokens</Text>
+                  <VStack spacing="1">
+                    <Text variant="title">Live Duration Tokens</Text>
+                    <Text variant="caption">
+                      Interactive sliding preview. Tap Replay to trigger timing animation with exact duration tokens.
+                    </Text>
+                  </VStack>
                 </CardHeader>
                 <CardContent>
                   <HStack spacing="4" wrap={true}>
                     {Object.entries(theme.motion.duration).map(([key, duration]) => (
-                      <Card key={key} variant="outlined" padding="sm" style={{ width: 150 }}>
-                        <VStack spacing="1">
-                          <Badge variant="brand" size="sm">{key}</Badge>
-                          <Text variant="title">{duration}ms</Text>
-                          <Text variant="caption">
-                            {key === 'fast'
-                              ? 'Hover, press scale'
-                              : key === 'normal'
-                              ? 'Fade, expansion'
-                              : 'Modal, bottom sheet'}
-                          </Text>
-                        </VStack>
-                      </Card>
+                      <DurationDemoCard
+                        key={key}
+                        name={key}
+                        duration={duration}
+                        shouldReduceMotion={shouldReduceMotion}
+                        usage={
+                          key === 'instant'
+                            ? 'Accessibility: Zero-latency reduced motion'
+                            : key === 'fast'
+                            ? 'Micro-interactions: buttons, switches, checkboxes'
+                            : key === 'normal'
+                            ? 'Standard transitions: expand/collapse, cards'
+                            : key === 'slow'
+                            ? 'Major transitions: modals, page sheets'
+                            : 'Progressive multi-step animations'
+                        }
+                      />
                     ))}
                   </HStack>
                 </CardContent>
               </Card>
 
+              {/* 2. Visual Easing Comparison */}
               <Card variant="outlined" padding="lg">
                 <CardHeader>
-                  <Text variant="heading">Spring Physics Tokens</Text>
+                  <VStack spacing="1">
+                    <Text variant="title">Cubic Bezier Easing Curves</Text>
+                    <Text variant="caption">
+                      Visual comparison of acceleration and deceleration curves running at 500ms.
+                    </Text>
+                  </VStack>
+                </CardHeader>
+                <CardContent>
+                  <HStack spacing="4" wrap={true}>
+                    {Object.entries(theme.motion.easing).map(([key, bezier]) => (
+                      <EasingDemoCard
+                        key={key}
+                        name={key}
+                        bezier={bezier as [number, number, number, number]}
+                        shouldReduceMotion={shouldReduceMotion}
+                        description={
+                          key === 'standard'
+                            ? 'Standard material curve for general UI element motion'
+                            : key === 'accelerate'
+                            ? 'Accelerates out of view for elements exiting screen'
+                            : key === 'decelerate'
+                            ? 'Decelerates into place for incoming elements'
+                            : 'Constant velocity linear motion for spinners and loaders'
+                        }
+                      />
+                    ))}
+                  </HStack>
+                </CardContent>
+              </Card>
+
+              {/* 3. Interactive Spring Physics on Tap */}
+              <Card variant="outlined" padding="lg">
+                <CardHeader>
+                  <VStack spacing="1">
+                    <Text variant="title">Spring Physics Tokens (Interactive)</Text>
+                    <Text variant="caption">
+                      Tap any card to feel the spring physics driven by damping, mass, and stiffness tokens.
+                    </Text>
+                  </VStack>
                 </CardHeader>
                 <CardContent>
                   <HStack spacing="4" wrap={true}>
                     {Object.entries(theme.motion.spring).map(([key, spring]) => (
-                      <Card key={key} variant="outlined" padding="md" style={{ width: 200 }}>
-                        <VStack spacing="2">
-                          <Badge variant="warning">{key}</Badge>
-                          <Divider />
-                          <Text variant="caption">Damping: {spring.damping}</Text>
-                          <Text variant="caption">Stiffness: {spring.stiffness}</Text>
-                          <Text variant="caption">Mass: {spring.mass}</Text>
-                        </VStack>
-                      </Card>
+                      <SpringDemoCard
+                        key={key}
+                        name={key}
+                        spring={spring}
+                        shouldReduceMotion={shouldReduceMotion}
+                        usage={
+                          key === 'default'
+                            ? 'Standard natural spring for UI gestures'
+                            : key === 'snappy'
+                            ? 'Snappy response for switches, buttons, and chips'
+                            : key === 'bouncier'
+                            ? 'Playful accent feedback for completed milestones'
+                            : 'Smooth bottom sheet drag settling and sheet dismiss'
+                        }
+                      />
                     ))}
                   </HStack>
                 </CardContent>

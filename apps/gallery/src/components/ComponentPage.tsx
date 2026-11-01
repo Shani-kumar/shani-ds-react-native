@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import {
   Box,
@@ -5,6 +6,7 @@ import {
   HStack,
   Text,
   Badge,
+  Button,
   Card,
   CardHeader,
   CardContent,
@@ -19,6 +21,7 @@ export interface PropItem {
   type: string;
   default?: string;
   description: string;
+  example?: string;
 }
 
 export interface ComponentPageProps {
@@ -49,6 +52,11 @@ export const ComponentPage = ({
   codeSnippet,
 }: ComponentPageProps) => {
   const { theme } = useTheme();
+  type ViewportOption = 'fill' | 'tablet' | 'phone';
+  const [previewViewport, setPreviewViewport] = useState<ViewportOption>('fill');
+
+  const previewMaxWidth =
+    previewViewport === 'phone' ? 390 : previewViewport === 'tablet' ? 768 : '100%';
 
   return (
     <Box flex={1} bg="canvas">
@@ -63,26 +71,69 @@ export const ComponentPage = ({
                 <Text variant="heading">{title}</Text>
                 <Badge variant="brand">{category}</Badge>
               </HStack>
-              <Text variant="body">{description}</Text>
+              <Text variant="body" style={{ maxWidth: 720 }}>{description}</Text>
             </VStack>
           </Card>
 
           {/* 1. Live Interactive Playground */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Live Interactive Playground</Text>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title">Live Interactive Playground</Text>
+                <HStack spacing="1" align="center" wrap={true}>
+                  <Text variant="caption" color="secondary" style={{ marginRight: theme.spacing[1] }}>
+                    Width:
+                  </Text>
+                  <Button
+                    variant={previewViewport === 'fill' ? 'primary' : 'ghost'}
+                    size="sm"
+                    onPress={() => setPreviewViewport('fill')}
+                  >
+                    Fill
+                  </Button>
+                  <Button
+                    variant={previewViewport === 'tablet' ? 'primary' : 'ghost'}
+                    size="sm"
+                    onPress={() => setPreviewViewport('tablet')}
+                  >
+                    Tablet (768)
+                  </Button>
+                  <Button
+                    variant={previewViewport === 'phone' ? 'primary' : 'ghost'}
+                    size="sm"
+                    onPress={() => setPreviewViewport('phone')}
+                  >
+                    Phone (390)
+                  </Button>
+                </HStack>
+              </HStack>
             </CardHeader>
             <CardContent>
               <VStack spacing="4">
                 <Box
-                  p="8"
-                  bg="canvas"
-                  borderRadius="md"
-                  borderColor="subtle"
-                  borderWidth="hairline"
-                  style={{ alignItems: 'center', justifyContent: 'center', minHeight: 120 }}
+                  style={{
+                    width: '100%',
+                    alignItems: 'center',
+                  }}
                 >
-                  {playground}
+                  <Box
+                    p="6"
+                    bg="canvas"
+                    borderRadius="md"
+                    borderColor="subtle"
+                    borderWidth="hairline"
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minHeight: 120,
+                      width: '100%',
+                      maxWidth: previewMaxWidth,
+                    }}
+                  >
+                    <Box style={{ width: '100%', alignItems: 'center' }}>
+                      {playground}
+                    </Box>
+                  </Box>
                 </Box>
                 {playgroundControls ? (
                   <VStack spacing="3">
@@ -98,7 +149,7 @@ export const ComponentPage = ({
           {/* 2. All-States Matrix */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">All-States Matrix</Text>
+              <Text variant="title">All-States Matrix</Text>
             </CardHeader>
             <CardContent>
               <VStack spacing="4">{allStates}</VStack>
@@ -108,27 +159,91 @@ export const ComponentPage = ({
           {/* 3. Component Props API */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Component Props API</Text>
+              <Text variant="title">Component Props API</Text>
             </CardHeader>
             <CardContent>
               <VStack spacing="3">
                 {propsData.map((prop) => (
                   <Card key={prop.name} variant="outlined" padding="sm">
-                    <VStack spacing="1">
-                      <HStack justify="between" align="center">
-                        <HStack spacing="2" align="center">
+                    <VStack spacing="2">
+                      <HStack justify="between" align="start" wrap={true} spacing="2">
+                        <HStack
+                          spacing="2"
+                          align="center"
+                          wrap={true}
+                          style={{ flex: 1, minWidth: 0, maxWidth: '100%' }}
+                        >
                           <Text variant="label" style={{ fontWeight: '700' }}>
                             {prop.name}
                           </Text>
-                          <Badge variant="neutral" size="sm">
+                          <Badge variant="neutral" size="sm" style={{ flexShrink: 1, maxWidth: '100%' }}>
                             {prop.type}
                           </Badge>
                         </HStack>
-                        {prop.default ? (
-                          <Text variant="caption">Default: {prop.default}</Text>
-                        ) : null}
+                        {(() => {
+                          const def = prop.default?.trim();
+                          const isRequired = def === 'required' || def?.toLowerCase().includes('mandatory');
+                          const isNone = !def || def === 'undefined';
+
+                          if (isRequired) {
+                            return (
+                              <Badge variant="danger" size="sm" style={{ flexShrink: 0, marginTop: 2 }}>
+                                Required
+                              </Badge>
+                            );
+                          }
+
+                          if (isNone) {
+                            return (
+                              <HStack spacing="1" align="center" style={{ flexShrink: 0, marginTop: 2 }}>
+                                <Text variant="caption" color="secondary">
+                                  Default: None
+                                </Text>
+                              </HStack>
+                            );
+                          }
+
+                          return (
+                            <HStack spacing="1" align="center" style={{ flexShrink: 0, marginTop: 2 }}>
+                              <Text variant="caption" color="secondary">
+                                Default:
+                              </Text>
+                              <Text
+                                variant="caption"
+                                style={{
+                                  fontFamily: theme.typography.fontFamily.mono,
+                                  fontWeight: '600',
+                                }}
+                              >
+                                {def}
+                              </Text>
+                            </HStack>
+                          );
+                        })()}
                       </HStack>
-                      <Text variant="caption">{prop.description}</Text>
+                      <Text variant="caption" style={{ flexShrink: 1, minWidth: 0 }}>
+                        {prop.description}
+                      </Text>
+                      {prop.example ? (
+                        <Box
+                          p="2"
+                          bg="canvas"
+                          borderRadius="sm"
+                          borderColor="subtle"
+                          borderWidth="hairline"
+                          style={{ width: '100%' }}
+                        >
+                          <Text
+                            variant="caption"
+                            style={{
+                              fontFamily: 'monospace',
+                              color: theme.colors.text.secondary,
+                            }}
+                          >
+                            {`Example: ${prop.example}`}
+                          </Text>
+                        </Box>
+                      ) : null}
                     </VStack>
                   </Card>
                 ))}
@@ -139,12 +254,12 @@ export const ComponentPage = ({
           {/* 4. Do's & Don'ts */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Do's & Don'ts</Text>
+              <Text variant="title">Do's & Don'ts</Text>
             </CardHeader>
             <CardContent>
               <HStack spacing="4" style={{ alignItems: 'flex-start' }} wrap={true}>
                 {/* Do's */}
-                <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 280 }}>
+                <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 180, maxWidth: '100%' }}>
                   <VStack spacing="3">
                     <HStack spacing="2" align="center">
                       <Badge variant="success">DO</Badge>
@@ -161,7 +276,7 @@ export const ComponentPage = ({
                 </Card>
 
                 {/* Don'ts */}
-                <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 280 }}>
+                <Card variant="outlined" padding="md" style={{ flex: 1, minWidth: 180, maxWidth: '100%' }}>
                   <VStack spacing="3">
                     <HStack spacing="2" align="center">
                       <Badge variant="danger">DON'T</Badge>
@@ -184,7 +299,7 @@ export const ComponentPage = ({
           <Card variant="outlined" padding="lg">
             <CardHeader>
               <HStack spacing="2" align="center">
-                <Text variant="heading">Accessibility & Assistive Tech</Text>
+                <Text variant="title">Accessibility & Assistive Tech</Text>
                 <Badge variant="success">WCAG AA</Badge>
               </HStack>
             </CardHeader>
@@ -203,7 +318,7 @@ export const ComponentPage = ({
           {/* 6. Copy-Paste Code Snippet */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Copy-Paste Usage Snippet</Text>
+              <Text variant="title">Copy-Paste Usage Snippet</Text>
             </CardHeader>
             <CardContent>
               <View
@@ -213,6 +328,8 @@ export const ComponentPage = ({
                   borderWidth: theme.borderWidth.hairline,
                   borderRadius: theme.radius.sm,
                   padding: theme.spacing[4],
+                  maxWidth: '100%',
+                  overflow: 'hidden',
                 }}
               >
                 <Text

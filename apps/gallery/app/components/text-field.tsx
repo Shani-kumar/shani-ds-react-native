@@ -22,7 +22,7 @@ export default function TextFieldPage() {
       description="Accessible text input built on useTextField with error association, secure text toggles, and tokenized border states."
       category="Forms"
       playground={
-        <Box style={{ width: '100%', maxWidth: 360 }}>
+        <Box style={{ width: '100%' }}>
           <TextField
             label="Shipment Tracking Number"
             placeholder="e.g. SHN-000000-XX"
@@ -92,15 +92,104 @@ export default function TextFieldPage() {
         </VStack>
       }
       propsData={[
-        { name: 'label', type: 'string', default: 'undefined', description: 'Field label rendered above the input.' },
-        { name: 'placeholder', type: 'string', default: 'undefined', description: 'Hint text displayed when input is empty.' },
-        { name: 'helperText', type: 'string', default: 'undefined', description: 'Descriptive guidance rendered below input.' },
-        { name: 'error', type: 'boolean | string', default: 'undefined', description: 'Error message that highlights border in danger and updates accessibilityHint.' },
-        { name: 'prefix', type: 'React.ReactNode', default: 'undefined', description: 'Leading icon or element rendered inside input.' },
-        { name: 'suffix', type: 'React.ReactNode', default: 'undefined', description: 'Trailing icon or element rendered inside input.' },
-        { name: 'secureTextEntry', type: 'boolean', default: 'false', description: 'Masks characters for security.' },
-        { name: 'showSecureToggle', type: 'boolean', default: 'false', description: 'Renders an accessible visibility toggle button.' },
-        { name: 'required', type: 'boolean', default: 'false', description: 'Appends a required indicator to the label.' },
+        {
+          name: 'label',
+          type: 'string',
+          default: 'None',
+          description: 'Visible field label rendered above the input. Recommended for all forms.',
+          example: 'label="Tracking Number"',
+        },
+        {
+          name: 'value',
+          type: 'string',
+          default: 'None',
+          description: 'Controlled text input value managed by React state.',
+          example: 'value={trackingId}',
+        },
+        {
+          name: 'onChangeText',
+          type: '(text: string) => void',
+          default: 'None',
+          description: 'Callback invoked with new string content on every keystroke.',
+          example: 'onChangeText={(val) => setTrackingId(val)}',
+        },
+        {
+          name: 'placeholder',
+          type: 'string',
+          default: 'None',
+          description: 'Transient placeholder hint text displayed when input is empty.',
+          example: 'placeholder="e.g. SHN-849102-US"',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          default: 'None',
+          description: 'Descriptive guidance or format hint rendered below the field.',
+          example: 'helperText="Format: SHN-XXXXXX-US"',
+        },
+        {
+          name: 'error',
+          type: 'boolean | string',
+          default: 'None',
+          description: 'Error message string or boolean flag that switches border to danger token and binds to accessibilityHint.',
+          example: 'error="Invalid barcode format"',
+        },
+        {
+          name: 'prefix',
+          type: 'React element',
+          default: 'None',
+          description: 'Leading icon or adornment element rendered inside the input box.',
+          example: 'prefix={<Icon name="Search" size="sm" color="secondary" />}',
+        },
+        {
+          name: 'suffix',
+          type: 'React element',
+          default: 'None',
+          description: 'Trailing icon or action adornment element rendered inside the input box.',
+          example: 'suffix={<Icon name="Check" size="sm" color="success" />}',
+        },
+        {
+          name: 'secureTextEntry',
+          type: 'boolean',
+          default: 'false',
+          description: 'Masks typed characters for secure credentials and PIN codes.',
+          example: 'secureTextEntry={true}',
+        },
+        {
+          name: 'showSecureToggle',
+          type: 'boolean',
+          default: 'false',
+          description: 'Renders an accessible visibility toggle button when secureTextEntry is true.',
+          example: 'showSecureToggle={true}',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          default: "'md'",
+          description: 'Input height tier (sm=44pt, md=48pt, lg=56pt). All tiers enforce ≥44pt touch targets.',
+          example: 'size="md"',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Disables editing and applies muted theme background and border tokens.',
+          example: 'disabled={false}',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          default: 'false',
+          description: 'Appends a required indicator to the label and marks accessibilityState.',
+          example: 'required={true}',
+        },
+        {
+          name: 'containerStyle',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer wrapper layout constraints only (margin, flex). Border styles, focus ring, and padding are token-governed.',
+          example: 'containerStyle={{ marginBottom: 12 }}',
+        },
       ]}
       dos={[
         'Always provide a visible label or accessibilityLabel for screen reader clarity.',

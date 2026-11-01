@@ -13,9 +13,11 @@ import {
   TextField,
   Skeleton,
   Icon,
+  Divider,
   type BadgeVariant,
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
+import { DemoContainer } from '../../src/components/DemoContainer';
 
 interface ShipmentRecord {
   id: string;
@@ -33,7 +35,7 @@ const SHIPMENTS_DATA: ShipmentRecord[] = [
   {
     id: 'shp-1',
     trackingNumber: 'SHN-849102-US',
-    consignee: 'Apex Retail Distribution',
+    consignee: 'Pacific Retail Distribution',
     destination: 'Springfield Regional Hub',
     status: 'Out for Delivery',
     statusVariant: 'brand',
@@ -107,18 +109,21 @@ export default function ShipmentsListDemo() {
   }, [searchQuery, activeFilter]);
 
   return (
-    <Box flex={1} bg="canvas">
-      <GalleryHeader title="Shipments Fleet List" subtitle="Logistics Demo 2" showBack={true} />
+    <DemoContainer title="Shipments Fleet List" subtitle="Realistic courier waybill dispatch workflow">
+      <Box flex={1} bg="canvas">
+        <GalleryHeader title="Shipments Fleet List" subtitle="Logistics Demo 2" showBack={true} />
 
       <ScrollView contentContainerStyle={{ padding: 24 }}>
         <VStack spacing="6">
           {/* Search & Filter Controls */}
           <Card variant="elevated" padding="lg">
             <VStack spacing="4">
-              <HStack justify="between" align="center">
-                <VStack spacing="1">
-                  <Text variant="heading">Active Waybills</Text>
-                  <Text variant="caption">Filter and inspect fleet parcels in real time</Text>
+              <HStack justify="between" align="center" wrap={true} spacing="3">
+                <VStack spacing="1" style={{ flex: 1, minWidth: 180 }}>
+                  <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>Active Waybills</Text>
+                  <Text variant="caption" style={{ flexShrink: 1, minWidth: 0 }}>
+                    Filter and inspect fleet parcels in real time
+                  </Text>
                 </VStack>
                 <Button
                   variant={isLoading ? 'primary' : 'secondary'}
@@ -184,9 +189,9 @@ export default function ShipmentsListDemo() {
             </VStack>
           ) : (
             <VStack spacing="4">
-              <HStack justify="between" align="center">
-                <Text variant="heading">Waybill Results ({filteredShipments.length})</Text>
-                <Badge variant="neutral" size="sm">Fleet Active</Badge>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>Waybill Results ({filteredShipments.length})</Text>
+                <Badge variant="neutral" size="sm" style={{ flexShrink: 0 }}>Fleet Active</Badge>
               </HStack>
 
               {filteredShipments.length === 0 ? (
@@ -201,52 +206,66 @@ export default function ShipmentsListDemo() {
                 filteredShipments.map((shipment) => (
                   <Card key={shipment.id} variant="outlined" padding="md">
                     <VStack spacing="3">
-                      <HStack justify="between" align="center">
-                        <VStack spacing="0">
-                          <Text variant="title">{shipment.trackingNumber}</Text>
-                          <Text variant="caption" color="secondary">
+                      {/* Top row: Tracking number (flex: 1, wraps) on the left; icon-only utility actions (Print) top-right */}
+                      <HStack justify="between" align="center" wrap={true} spacing="2">
+                        <VStack spacing="0" style={{ flex: 1, minWidth: 140 }}>
+                          <Text variant="heading" style={{ flexShrink: 1, minWidth: 0 }}>
+                            {shipment.trackingNumber}
+                          </Text>
+                          <Text variant="caption" color="secondary" style={{ flexShrink: 1, minWidth: 0 }}>
                             {shipment.consignee}
                           </Text>
                         </VStack>
-                        <Badge variant={shipment.statusVariant} dot={true}>
-                          {shipment.status}
-                        </Badge>
+                        <IconButton
+                          name="Printer"
+                          accessibilityLabel={`Print label for ${shipment.trackingNumber}`}
+                          variant="ghost"
+                          size="sm"
+                        />
                       </HStack>
 
-                      <HStack spacing="4" align="center">
-                        <HStack spacing="1" align="center">
-                          <Icon name="MapPin" size="xs" color="secondary" />
-                          <Text variant="caption">{shipment.destination}</Text>
+                      {/* Below: status Badge, then location and package info (wraps) */}
+                      <VStack spacing="2">
+                        <HStack spacing="2" align="center" wrap={true}>
+                          <Badge variant={shipment.statusVariant} dot={true} style={{ flexShrink: 0 }}>
+                            {shipment.status}
+                          </Badge>
                         </HStack>
-                        <HStack spacing="1" align="center">
-                          <Icon name="Layers" size="xs" color="secondary" />
-                          <Text variant="caption">{shipment.pieces} pkgs ({shipment.weight})</Text>
+                        <HStack spacing="4" align="center" wrap={true}>
+                          <HStack spacing="1" align="center" style={{ flexShrink: 1, minWidth: 0 }}>
+                            <Icon name="MapPin" size="xs" color="secondary" />
+                            <Text variant="caption" style={{ flexShrink: 1, minWidth: 0 }}>
+                              {shipment.destination}
+                            </Text>
+                          </HStack>
+                          <HStack spacing="1" align="center" style={{ flexShrink: 1, minWidth: 0 }}>
+                            <Icon name="Layers" size="xs" color="secondary" />
+                            <Text variant="caption" style={{ flexShrink: 1, minWidth: 0 }}>
+                              {shipment.pieces} pkgs ({shipment.weight})
+                            </Text>
+                          </HStack>
                         </HStack>
-                      </HStack>
+                      </VStack>
 
-                      <HStack justify="between" align="center">
-                        <HStack spacing="1" align="center">
+                      <Divider />
+
+                      {/* Footer row: ETA on the left, ONE main action ("Track Live" with chevron) on the right */}
+                      <HStack justify="between" align="center" wrap={true} spacing="3" style={{ width: '100%' }}>
+                        <HStack spacing="1" align="center" wrap={true} style={{ flex: 1, minWidth: 140 }}>
                           <Icon name="Clock" size="xs" color="brand" />
-                          <Text variant="label" style={{ fontWeight: '600' }}>
+                          <Text variant="label" style={{ fontWeight: '600', flexShrink: 1, minWidth: 0 }}>
                             {shipment.eta}
                           </Text>
                         </HStack>
-                        <HStack spacing="2" align="center">
-                          <IconButton
-                            name="Printer"
-                            accessibilityLabel={`Print label for ${shipment.trackingNumber}`}
-                            variant="ghost"
-                            size="sm"
-                          />
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            rightIcon="ChevronRight"
-                            onPress={() => router.push('/demos/tracking')}
-                          >
-                            Track Live
-                          </Button>
-                        </HStack>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          rightIcon="ChevronRight"
+                          onPress={() => router.push('/demos/tracking')}
+                          style={{ flexGrow: 1, flexBasis: 120, maxWidth: '100%' }}
+                        >
+                          Track Live
+                        </Button>
                       </HStack>
                     </VStack>
                   </Card>
@@ -257,5 +276,6 @@ export default function ShipmentsListDemo() {
         </VStack>
       </ScrollView>
     </Box>
+  </DemoContainer>
   );
 }

@@ -18,6 +18,7 @@ import {
   type TimelineStep,
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
+import { DemoContainer } from '../../src/components/DemoContainer';
 
 const TRACKING_STEPS: TimelineStep[] = [
   {
@@ -54,16 +55,17 @@ export default function ShipmentTrackingDemo() {
   const [notificationEnabled, setNotificationEnabled] = useState(true);
 
   return (
-    <Box flex={1} bg="canvas">
-      <GalleryHeader title="Shipment Tracking" subtitle="Logistics Demo 1" showBack={true} />
+    <DemoContainer title="Shipment Tracking" subtitle="Milestone stepper and parcel delivery workflow">
+      <Box flex={1} bg="canvas">
+        <GalleryHeader title="Shipment Tracking" subtitle="Logistics Demo 1" showBack={true} />
 
       <ScrollView contentContainerStyle={{ padding: 24 }}>
         <VStack spacing="6">
           {/* Top Status & Tracking ID Banner */}
           <Card variant="elevated" padding="lg">
             <VStack spacing="3">
-              <HStack justify="between" align="center">
-                <HStack spacing="2" align="center">
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <HStack spacing="2" align="center" wrap={true}>
                   <Badge variant="brand" dot={true}>Out for Delivery</Badge>
                   <Badge variant="neutral" size="sm">Priority Air</Badge>
                 </HStack>
@@ -76,7 +78,7 @@ export default function ShipmentTrackingDemo() {
               </HStack>
 
               <VStack spacing="1">
-                <Text variant="display">#SHN-849102-US</Text>
+                <Text variant="heading" style={{ flexShrink: 1, minWidth: 0 }}>#SHN-849102-US</Text>
                 <Text variant="caption">Carrier: Shani Express Logistics • Flight 402B</Text>
               </VStack>
             </VStack>
@@ -85,12 +87,12 @@ export default function ShipmentTrackingDemo() {
           {/* 1. ETA Card */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <HStack justify="between" align="center">
-                <HStack spacing="2" align="center">
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <HStack spacing="2" align="center" wrap={true} style={{ flexShrink: 1, minWidth: 0 }}>
                   <Icon name="Clock" size="md" color="brand" />
-                  <Text variant="heading">Estimated Delivery</Text>
+                  <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>Estimated Delivery</Text>
                 </HStack>
-                <Badge variant="success">On Schedule</Badge>
+                <Badge variant="success" style={{ flexShrink: 0 }}>On Schedule</Badge>
               </HStack>
             </CardHeader>
             <CardContent>
@@ -104,20 +106,21 @@ export default function ShipmentTrackingDemo() {
 
                 <Divider />
 
-                <HStack justify="between" align="center">
-                  <HStack spacing="3" align="center">
+                <HStack justify="between" align="center" wrap={true} spacing="3">
+                  <HStack spacing="3" align="center" wrap={true} style={{ flexShrink: 1, minWidth: 0 }}>
                     <Box
                       p="2"
                       bg="surfaceRaised"
                       borderRadius="full"
                       borderColor="subtle"
                       borderWidth="hairline"
+                      style={{ flexShrink: 0 }}
                     >
                       <Icon name="Truck" size="md" color="brand" />
                     </Box>
-                    <VStack spacing="0">
-                      <Text variant="label">Courier: Sarah Jenkins</Text>
-                      <Text variant="caption">Vehicle: Electric Sprinter Van 14</Text>
+                    <VStack spacing="0" style={{ flexShrink: 1, minWidth: 0 }}>
+                      <Text variant="label" style={{ flexShrink: 1, minWidth: 0 }}>Courier: Sarah Jenkins</Text>
+                      <Text variant="caption" style={{ flexShrink: 1, minWidth: 0 }}>Vehicle: Electric Sprinter Van 14</Text>
                     </VStack>
                   </HStack>
                   <Button
@@ -136,9 +139,9 @@ export default function ShipmentTrackingDemo() {
           {/* 2. Timeline Stepper */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <HStack justify="between" align="center">
-                <Text variant="heading">Shipment Progress</Text>
-                <Badge variant="neutral" size="sm">3 of 4 Milestones</Badge>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>Shipment Progress</Text>
+                <Badge variant="neutral" size="sm" style={{ flexShrink: 0 }}>3 of 4 Milestones</Badge>
               </HStack>
             </CardHeader>
             <CardContent>
@@ -149,51 +152,53 @@ export default function ShipmentTrackingDemo() {
           {/* 3. Details Card */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Consignment & Cargo Details</Text>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title">Consignment & Cargo Details</Text>
+                <IconButton
+                  name="Bell"
+                  accessibilityLabel={notificationEnabled ? 'Mute delivery notifications' : 'Enable delivery notifications'}
+                  variant="ghost"
+                  size="sm"
+                  onPress={() => setNotificationEnabled(!notificationEnabled)}
+                />
+              </HStack>
             </CardHeader>
             <CardContent>
               <VStack spacing="3">
-                <HStack justify="between" align="center">
-                  <Text variant="caption">Origin Depot:</Text>
-                  <Text variant="body">Los Angeles Logistics Park (LAX-9)</Text>
+                <HStack justify="between" align="center" wrap={true} spacing="2">
+                  <Text variant="caption" style={{ flexShrink: 0 }}>Origin Depot:</Text>
+                  <Text variant="body" style={{ flexShrink: 1, minWidth: 0, textAlign: 'right' }}>Los Angeles Logistics Park (LAX-9)</Text>
                 </HStack>
                 <Divider />
-                <HStack justify="between" align="center">
-                  <Text variant="caption">Destination Address:</Text>
-                  <Text variant="body">742 Evergreen Terrace, Springfield</Text>
+                <HStack justify="between" align="center" wrap={true} spacing="2">
+                  <Text variant="caption" style={{ flexShrink: 0 }}>Destination Address:</Text>
+                  <Text variant="body" style={{ flexShrink: 1, minWidth: 0, textAlign: 'right' }}>742 Evergreen Terrace, Springfield</Text>
                 </HStack>
                 <Divider />
-                <HStack justify="between" align="center">
-                  <Text variant="caption">Weight & Volume:</Text>
-                  <Text variant="body">18.4 kg (0.12 m³)</Text>
+                <HStack justify="between" align="center" wrap={true} spacing="2">
+                  <Text variant="caption" style={{ flexShrink: 0 }}>Weight & Volume:</Text>
+                  <Text variant="body" style={{ flexShrink: 1, minWidth: 0, textAlign: 'right' }}>18.4 kg (0.12 m³)</Text>
                 </HStack>
                 <Divider />
-                <HStack justify="between" align="center">
-                  <Text variant="caption">Service Tier:</Text>
-                  <Badge variant="brand" size="sm">Overnight Guaranteed</Badge>
+                <HStack justify="between" align="center" wrap={true} spacing="2">
+                  <Text variant="caption" style={{ flexShrink: 0 }}>Service Tier:</Text>
+                  <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>Overnight Guaranteed</Badge>
                 </HStack>
                 <Divider />
-                <HStack justify="between" align="center">
-                  <Text variant="caption">Proof of Delivery:</Text>
-                  <Badge variant="neutral" size="sm">Contactless Photo Required</Badge>
+                <HStack justify="between" align="center" wrap={true} spacing="2">
+                  <Text variant="caption" style={{ flexShrink: 0 }}>Proof of Delivery:</Text>
+                  <Badge variant="neutral" size="sm" style={{ flexShrink: 0 }}>Contactless Photo Required</Badge>
                 </HStack>
               </VStack>
             </CardContent>
             <CardFooter>
-              <HStack justify="between" align="center" style={{ width: '100%' }}>
-                <Button
-                  variant={notificationEnabled ? 'primary' : 'secondary'}
-                  size="sm"
-                  leftIcon="Bell"
-                  onPress={() => setNotificationEnabled(!notificationEnabled)}
-                >
-                  {notificationEnabled ? 'Alerts Active' : 'Enable Alerts'}
-                </Button>
+              <HStack justify="end" align="center" wrap={true} spacing="2" style={{ width: '100%' }}>
                 <Button
                   variant="secondary"
                   size="sm"
                   leftIcon="FileText"
                   onPress={() => console.log('Downloading PDF')}
+                  style={{ flexGrow: 1, flexBasis: 140, maxWidth: '100%' }}
                 >
                   Download Waybill
                 </Button>
@@ -203,6 +208,7 @@ export default function ShipmentTrackingDemo() {
         </VStack>
       </ScrollView>
     </Box>
+  </DemoContainer>
   );
 }
 

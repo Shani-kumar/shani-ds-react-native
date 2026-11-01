@@ -39,7 +39,7 @@ export default function BadgePage() {
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['neutral', 'brand', 'success', 'warning', 'danger', 'info'] as BadgeVariant[]).map((v) => (
               <Button
@@ -52,7 +52,7 @@ export default function BadgePage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size & Dot:</Text>
             <Button
               variant={size === 'sm' ? 'primary' : 'secondary'}
@@ -94,11 +94,48 @@ export default function BadgePage() {
         </VStack>
       }
       propsData={[
-        { name: 'variant', type: "'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'", default: "'neutral'", description: 'Semantic feedback color pairing.' },
-        { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Badge dimensions and font scale.' },
-        { name: 'dot', type: 'boolean', default: 'false', description: 'Renders a colored status indicator dot before label.' },
-        { name: 'icon', type: 'LucideIcon', default: 'undefined', description: 'Optional leading icon component.' },
-        { name: 'children', type: 'React.ReactNode', default: 'required', description: 'Badge label content.' },
+        {
+          name: 'children',
+          type: 'string | React element',
+          default: 'required',
+          description: 'Badge text label content describing state or category.',
+          example: 'children="Out for Delivery"',
+        },
+        {
+          name: 'variant',
+          type: "'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'",
+          default: "'neutral'",
+          description: 'Semantic feedback color pairing. All pairings strictly verified for WCAG AA (≥4.5:1) text contrast.',
+          example: 'variant="success"',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md'",
+          default: "'md'",
+          description: 'Badge dimensions and font scale (sm uses caption 12pt; md uses label 14pt).',
+          example: 'size="sm"',
+        },
+        {
+          name: 'dot',
+          type: 'boolean',
+          default: 'false',
+          description: 'Renders a colored status indicator dot before the label to denote live state.',
+          example: 'dot={true}',
+        },
+        {
+          name: 'icon',
+          type: 'Lucide icon component or string',
+          default: 'None',
+          description: "Optional leading icon rendered before label. Accepts PascalCase string name (e.g. 'Truck') or direct Lucide component.",
+          example: 'icon="Clock"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (margin, flexShrink). Badge height, radius, padding, and colors come from tokens.',
+          example: 'style={{ flexShrink: 0 }}',
+        },
       ]}
       dos={[
         'Use semantic variants according to their true feedback state (success=green, warning=amber, danger=red).',

@@ -28,7 +28,7 @@ export default function IconPage() {
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size:</Text>
             {(['xs', 'sm', 'md', 'lg', 'xl'] as IconSize[]).map((s) => (
               <Button
@@ -41,7 +41,7 @@ export default function IconPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Color:</Text>
             {(['primary', 'secondary', 'brand', 'success', 'warning', 'danger'] as IconColor[]).map((c) => (
               <Button
@@ -60,7 +60,7 @@ export default function IconPage() {
         <VStack spacing="4">
           <Text variant="label">Logistics Status Icons</Text>
           <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline">
-            <HStack spacing="6" align="center">
+            <HStack spacing="6" align="center" wrap={true}>
               <VStack spacing="1" align="center">
                 <Icon name="PackageCheck" size="md" color="success" />
                 <Text variant="caption">Delivered</Text>
@@ -82,13 +82,58 @@ export default function IconPage() {
         </VStack>
       }
       propsData={[
-        { name: 'name', type: 'LucideIconName', default: 'required', description: 'PascalCase name of any supported Lucide icon (e.g. Truck, Package, Clock).' },
-        { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Icon size token: xs=12, sm=16, md=20, lg=24, xl=32.' },
-        { name: 'color', type: 'IconColor', default: "'primary'", description: 'Semantic color mapping from theme tokens.' },
-        { name: 'accessibilityLabel', type: 'string', default: 'undefined', description: 'Spoken description. If omitted, icon is treated as decorative (accessible={false}).' },
+        {
+          name: 'name',
+          type: 'string',
+          default: 'None',
+          description: "PascalCase string name of any Lucide icon (e.g. 'Truck', 'Clock', 'Package'). Use either 'name' or 'icon'.",
+          example: 'name="Truck"',
+        },
+        {
+          name: 'icon',
+          type: 'Lucide icon component',
+          default: 'None',
+          description: "Direct Lucide icon component. Requires import from 'lucide-react-native'.",
+          example: 'icon={Truck}',
+        },
+        {
+          name: 'size',
+          type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number",
+          default: "'md'",
+          description: 'Icon size token (xs=12, sm=16, md=20, lg=24, xl=32) or numeric pixel size.',
+          example: 'size="md"',
+        },
+        {
+          name: 'color',
+          type: "'primary' | 'secondary' | 'tertiary' | 'brand' | 'danger' | 'warning' | 'success' | 'info' | 'inverse'",
+          default: "'primary'",
+          description: 'Semantic color mapping from theme tokens. Resolves to contrast-checked palette values.',
+          example: 'color="success"',
+        },
+        {
+          name: 'strokeWidth',
+          type: 'number',
+          default: '2',
+          description: 'Stroke width in pixels for SVG icon line thickness.',
+          example: 'strokeWidth={2}',
+        },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'None',
+          description: 'Spoken description for screen readers. If omitted, icon is decorative (accessible={false}). When provided, sets accessibilityRole="image".',
+          example: 'accessibilityLabel="Delivered package"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout positioning only (margin, transform). Icon dimensions and colors must come from tokens.',
+          example: 'style={{ marginLeft: 8 }}',
+        },
       ]}
       dos={[
-        'Use semantic color tokens (success, warning, brand) to signify status.',
+        "Use either 'name=\"Truck\"' or 'icon={Truck}' with semantic color tokens (success, warning, brand).",
         'Provide accessibilityLabel if the icon conveys standalone information without adjacent text.',
         'Match icon sizes to typography scale (sm with caption, md with body, lg with title).',
       ]}
@@ -101,11 +146,17 @@ export default function IconPage() {
         'When accessibilityLabel is provided, Icon automatically sets accessibilityRole="image".',
       ]}
       codeSnippet={`import { Icon, HStack, Text } from '@shani/ui';
+import { CheckCircle } from 'lucide-react-native';
 
 export function DeliveryStatus() {
   return (
     <HStack spacing="2" align="center">
+      {/* Option 1: Via PascalCase string name */}
       <Icon name="CheckCircle" size="sm" color="success" />
+
+      {/* Option 2: Via direct Lucide component */}
+      <Icon icon={CheckCircle} size="sm" color="success" />
+
       <Text variant="body">Signature Received</Text>
     </HStack>
   );

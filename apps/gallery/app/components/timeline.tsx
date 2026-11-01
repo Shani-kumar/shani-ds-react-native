@@ -56,7 +56,7 @@ export default function TimelinePage() {
       description="Vertical milestone stepper for courier deliveries and logistics tracking waybills with accessible list semantics and active focus rings."
       category="Display"
       playground={
-        <Card variant="outlined" padding="md" style={{ width: '100%', maxWidth: 440 }}>
+        <Card variant="outlined" padding="md" style={{ width: '100%' }}>
           <Timeline steps={steps} />
         </Card>
       }
@@ -108,11 +108,62 @@ export default function TimelinePage() {
         </VStack>
       }
       propsData={[
-        { name: 'steps', type: 'TimelineStep[]', default: 'required', description: 'Array of sequential milestones with title, timestamp, description, and state.' },
-        { name: 'steps[].state', type: "'completed' | 'current' | 'upcoming'", default: 'required', description: 'Milestone state determining line and dot styling.' },
-        { name: 'steps[].title', type: 'string', default: 'required', description: 'Headline name of the milestone.' },
-        { name: 'steps[].timestamp', type: 'string', default: 'undefined', description: 'Milestone time of completion or scheduled ETA.' },
-        { name: 'steps[].description', type: 'string', default: 'undefined', description: 'Detailed location notes or status description.' },
+        {
+          name: 'steps',
+          type: 'TimelineStep[]',
+          default: 'required',
+          description: 'Array of sequential logistics milestone objects rendered as a vertical progress stepper.',
+          example: 'steps={trackingSteps}',
+        },
+        {
+          name: 'steps[].id',
+          type: 'string',
+          default: 'required',
+          description: 'Unique key identifier for the step.',
+          example: 'id="step-1"',
+        },
+        {
+          name: 'steps[].state',
+          type: "'completed' | 'current' | 'upcoming'",
+          default: 'required',
+          description: 'Milestone progress state driving indicator colors, icon glyphs, and connecting line tokens.',
+          example: 'state="current"',
+        },
+        {
+          name: 'steps[].title',
+          type: 'string',
+          default: 'required',
+          description: 'Milestone title. Rendered as title variant for current step, and label for completed/upcoming.',
+          example: 'title="Out for Courier Delivery"',
+        },
+        {
+          name: 'steps[].timestamp',
+          type: 'string',
+          default: 'None',
+          description: 'Completion time or estimated arrival timestamp. Automatically wraps below title when space is tight.',
+          example: 'timestamp="02:15 PM • Oct 31"',
+        },
+        {
+          name: 'steps[].description',
+          type: 'string',
+          default: 'None',
+          description: 'Detailed depot, manifest, or transit notes rendered in caption text below title.',
+          example: 'description="Courier has departed the facility with 12 stops remaining"',
+        },
+        {
+          name: 'steps[].icon',
+          type: 'Lucide icon component or React element',
+          default: 'None',
+          description: 'Optional custom icon component overriding the default checkmark/focus dot.',
+          example: 'icon={Truck}',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (margin, width). Line widths, indicator geometry, and text styles are token-governed.',
+          example: "style={{ width: '100%' }}",
+        },
       ]}
       dos={[
         'Use Timeline to structure sequential logistics workflows (e.g. pickup -> sort -> transit -> delivery).',
@@ -127,9 +178,9 @@ export default function TimelinePage() {
         'Timeline applies accessibilityRole="list" and marks each item with spoken step numbers (e.g. "Step 2 of 4, current: Sorted at Hub").',
         'Ensures users of assistive technologies understand exactly where an order is along its transit route.',
       ]}
-      codeSnippet={`import { Timeline } from '@shani/ui';
+      codeSnippet={`import { Timeline, type TimelineStep } from '@shani/ui';
 
-const shipmentSteps = [
+const shipmentSteps: TimelineStep[] = [
   { id: '1', title: 'Pickup Completed', state: 'completed', timestamp: '09:00 AM' },
   { id: '2', title: 'In Transit', state: 'current', timestamp: '11:15 AM' },
   { id: '3', title: 'Delivered', state: 'upcoming' },

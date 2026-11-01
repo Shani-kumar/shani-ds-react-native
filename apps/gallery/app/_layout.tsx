@@ -1,55 +1,34 @@
 import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useWindowDimensions, Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Box, useTheme } from '@shani/ui';
-import { GalleryProvider } from '../src/context/GalleryContext';
+import { Box, useTheme, ThemeProvider, useBreakpoint } from '@shani/ui';
+import { DocsSidebar } from '../src/components/DocsSidebar';
+import { DocsTopBar } from '../src/components/DocsTopBar';
 
 function RootContent() {
   const { theme, resolvedMode } = useTheme();
-  const { width } = useWindowDimensions();
-  const isWideWeb = Platform.OS === 'web' && width > 768;
+  const { isTabletOrLarger } = useBreakpoint();
 
-  if (isWideWeb) {
+  // 600px and above: documentation layout with left sidebar, top bar with theme switcher, and 960px max content
+  if (isTabletOrLarger) {
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: theme.colors.bg.canvas,
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingVertical: theme.spacing[6],
-          paddingHorizontal: theme.spacing[4],
-        }}
-      >
+      <View style={{ flex: 1, backgroundColor: theme.colors.bg.canvas, height: '100%' }}>
         <StatusBar style={resolvedMode === 'dark' ? 'light' : 'dark'} />
-        {/* Responsive Phone Frame for Wide Screens */}
-        <View
-          style={{
-            width: '100%',
-            maxWidth: 480,
-            height: '100%',
-            maxHeight: 900,
-            backgroundColor: theme.colors.bg.surface,
-            borderRadius: theme.radius['2xl'],
-            borderWidth: theme.borderWidth.thin,
-            borderColor: theme.colors.border.subtle,
-            overflow: 'hidden',
-            elevation: theme.shadow.lg.elevation,
-            shadowColor: theme.shadow.lg.shadowColor,
-            shadowOffset: theme.shadow.lg.shadowOffset,
-            shadowOpacity: theme.shadow.lg.shadowOpacity,
-            shadowRadius: theme.shadow.lg.shadowRadius,
-          }}
-        >
-          <Box flex={1} bg="canvas">
-            <Slot />
-          </Box>
+        <DocsTopBar />
+        <View style={{ flex: 1, flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <DocsSidebar />
+          <View style={{ flex: 1, backgroundColor: theme.colors.bg.canvas, height: '100%' }}>
+            <View style={{ flex: 1, width: '100%', maxWidth: 960, alignSelf: 'center' }}>
+              <Slot />
+            </View>
+          </View>
         </View>
       </View>
     );
   }
 
+  // Below 600px (phones, Expo Go): full width, no frame, normal mobile layout
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.bg.canvas }}>
       <StatusBar style={resolvedMode === 'dark' ? 'light' : 'dark'} />
@@ -63,9 +42,9 @@ function RootContent() {
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <GalleryProvider>
+      <ThemeProvider initialMode="light">
         <RootContent />
-      </GalleryProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

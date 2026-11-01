@@ -28,7 +28,7 @@ export default function SwitchPage() {
         </VStack>
       }
       playgroundControls={
-        <HStack spacing="2" align="center">
+        <HStack spacing="2" align="center" wrap={true}>
           <Button
             variant={checked ? 'primary' : 'secondary'}
             size="sm"
@@ -67,10 +67,55 @@ export default function SwitchPage() {
         </VStack>
       }
       propsData={[
-        { name: 'checked', type: 'boolean', default: 'false', description: 'Whether the switch is toggled on.' },
-        { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents user interaction.' },
-        { name: 'label', type: 'string', default: 'undefined', description: 'Primary label text.' },
-        { name: 'onChange', type: '(checked: boolean) => void', default: 'undefined', description: 'Callback invoked when toggle state changes.' },
+        {
+          name: 'checked',
+          type: 'boolean',
+          default: 'false',
+          description: 'Controlled checked boolean state.',
+          example: 'checked={isEnabled}',
+        },
+        {
+          name: 'onChange',
+          type: '(checked: boolean) => void',
+          default: 'None',
+          description: 'Callback invoked with the new boolean state when toggled.',
+          example: 'onChange={(val) => setIsEnabled(val)}',
+        },
+        {
+          name: 'label',
+          type: 'string | React element',
+          default: 'None',
+          description: 'Visible label text or React element rendered adjacent to the switch.',
+          example: 'label="Automatic GPS Tracking"',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          default: "'md'",
+          description: 'Switch track and thumb size tier (sm=36x20, md=44x24, lg=52x28). Minimum touch target enforces ≥44x44pt.',
+          example: 'size="md"',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Disables user interactions and applies accessible muted tokens.',
+          example: 'disabled={false}',
+        },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'None',
+          description: 'Spoken description for screen readers. Defaults to label text if omitted.',
+          example: 'accessibilityLabel="High-priority dispatch alerts"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout positioning only (margin, flex). Track dimensions, spring animations, and colors come from tokens.',
+          example: 'style={{ marginVertical: 4 }}',
+        },
       ]}
       dos={[
         'Use switches for instantaneous binary state settings (e.g. Turn on Geofencing).',
@@ -85,7 +130,8 @@ export default function SwitchPage() {
         'Switch applies accessibilityRole="switch" and accessibilityState={{ checked }}.',
         'The thumb translates across the track using Reanimated on the UI thread, instantly disabling animation if useReducedMotion() is active.',
       ]}
-      codeSnippet={`import { Switch } from '@shani/ui';
+      codeSnippet={`import { useState } from 'react';
+import { Switch } from '@shani/ui';
 
 export function DispatchSettings() {
   const [enabled, setEnabled] = useState(true);

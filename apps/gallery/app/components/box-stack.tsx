@@ -25,21 +25,21 @@ export default function BoxStackPage() {
       playground={
         <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline" style={{ width: '100%' }}>
           <Stack direction={direction} spacing={spacing} align={align}>
-            <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline">
-              <Text variant="label">Parcel A (Express)</Text>
+            <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
+              <Text variant="label" numberOfLines={1}>Parcel A (Express)</Text>
             </Box>
-            <Box p="3" bg="surfaceRaised" borderRadius="sm" borderColor="default" borderWidth="hairline">
-              <Text variant="label">Parcel B (Standard)</Text>
+            <Box p="3" bg="surfaceRaised" borderRadius="sm" borderColor="default" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
+              <Text variant="label" numberOfLines={1}>Parcel B (Standard)</Text>
             </Box>
-            <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline">
-              <Text variant="label">Parcel C (Freight)</Text>
+            <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
+              <Text variant="label" numberOfLines={1}>Parcel C (Freight)</Text>
             </Box>
           </Stack>
         </Box>
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Direction:</Text>
             <Button
               variant={direction === 'vertical' ? 'primary' : 'secondary'}
@@ -56,7 +56,7 @@ export default function BoxStackPage() {
               Horizontal
             </Button>
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Alignment:</Text>
             {(['stretch', 'center', 'start'] as StackAlign[]).map((a) => (
               <Button
@@ -69,7 +69,7 @@ export default function BoxStackPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Spacing:</Text>
             {(['2', '4', '6', '8'] as SpacingKey[]).map((sp) => (
               <Button
@@ -88,7 +88,7 @@ export default function BoxStackPage() {
         <VStack spacing="4">
           <Text variant="label">HStack with Divider Injection</Text>
           <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline">
-            <HStack spacing="4" align="center" divider={<Divider orientation="vertical" />}>
+            <HStack spacing="4" align="center" wrap={true} divider={<Divider orientation="vertical" />}>
               <Text variant="caption">Origin: LAX</Text>
               <Text variant="caption">Transit: ORD</Text>
               <Text variant="caption">Dest: JFK</Text>
@@ -104,11 +104,62 @@ export default function BoxStackPage() {
         </VStack>
       }
       propsData={[
-        { name: 'direction', type: "'horizontal' | 'vertical'", default: "'vertical'", description: 'Linear distribution axis for child components.' },
-        { name: 'spacing', type: 'SpacingKey', default: 'undefined', description: 'Space between children mapped to strict 4pt tokens (e.g. 1=4pt, 4=16pt).' },
-        { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", default: "'stretch'", description: 'Cross-axis alignment.' },
-        { name: 'justify', type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'", default: "'start'", description: 'Main-axis alignment.' },
-        { name: 'divider', type: 'React.ReactNode', default: 'undefined', description: 'Divider component automatically injected between each child.' },
+        {
+          name: 'children',
+          type: 'React element or tree',
+          default: 'required',
+          description: 'Child components linearly stacked with automated token spacing.',
+          example: 'children={<Text>Manifest</Text>}',
+        },
+        {
+          name: 'direction',
+          type: "'horizontal' | 'vertical'",
+          default: "'vertical'",
+          description: 'Linear distribution axis for child components (HStack defaults to horizontal, VStack to vertical).',
+          example: 'direction="horizontal"',
+        },
+        {
+          name: 'spacing',
+          type: "'none' | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '10' | '12' | '16'",
+          default: 'None',
+          description: 'Space between children mapped to strict 4pt grid tokens (1=4pt, 2=8pt, 4=16pt, 6=24pt).',
+          example: 'spacing="4"',
+        },
+        {
+          name: 'align',
+          type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
+          default: "'stretch'",
+          description: 'Cross-axis alignment for items inside the stack.',
+          example: 'align="center"',
+        },
+        {
+          name: 'justify',
+          type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'",
+          default: "'start'",
+          description: 'Main-axis distribution alignment.',
+          example: 'justify="between"',
+        },
+        {
+          name: 'wrap',
+          type: 'boolean',
+          default: 'false',
+          description: 'Enables flex wrapping onto multiple rows/columns on narrow mobile viewports.',
+          example: 'wrap={true}',
+        },
+        {
+          name: 'divider',
+          type: 'React element',
+          default: 'None',
+          description: 'Divider element automatically injected between adjacent children.',
+          example: 'divider={<Divider orientation="vertical" />}',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (flex, minWidth, width). Spacing, padding, and borders must come from tokens.',
+          example: 'style={{ flex: 1, minWidth: 0 }}',
+        },
       ]}
       dos={[
         'Use Stack, HStack, and VStack for all linear content spacing instead of manual margins.',

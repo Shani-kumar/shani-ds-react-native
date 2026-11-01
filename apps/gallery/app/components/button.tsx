@@ -39,7 +39,7 @@ export default function ButtonPage() {
       }
       playgroundControls={
         <VStack spacing="3">
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['primary', 'secondary', 'tertiary', 'danger', 'ghost'] as ButtonVariant[]).map((v) => (
               <Button
@@ -52,7 +52,7 @@ export default function ButtonPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size:</Text>
             {(['sm', 'md', 'lg'] as ButtonSize[]).map((s) => (
               <Button
@@ -65,7 +65,7 @@ export default function ButtonPage() {
               </Button>
             ))}
           </HStack>
-          <HStack spacing="2" align="center">
+          <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Toggles:</Text>
             <Button
               variant={loading ? 'primary' : 'secondary'}
@@ -108,13 +108,90 @@ export default function ButtonPage() {
         </VStack>
       }
       propsData={[
-        { name: 'variant', type: "'primary' | 'secondary' | 'tertiary' | 'danger' | 'ghost'", default: "'primary'", description: 'Visual style tier.' },
-        { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size tier. All sizes strictly meet ≥44pt touch minimum.' },
-        { name: 'loading', type: 'boolean', default: 'false', description: 'Displays an activity indicator and announces busy state.' },
-        { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables press interactions and applies disabled tokens.' },
-        { name: 'leftIcon', type: 'LucideIconName', default: 'undefined', description: 'Icon rendered before button text.' },
-        { name: 'rightIcon', type: 'LucideIconName', default: 'undefined', description: 'Icon rendered after button text.' },
-        { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Expands button to fill parent container width.' },
+        {
+          name: 'children',
+          type: 'string | React element',
+          default: 'required',
+          description: 'Button text label or nested content describing the primary action.',
+          example: 'children="Confirm Waybill"',
+        },
+        {
+          name: 'variant',
+          type: "'primary' | 'secondary' | 'tertiary' | 'danger' | 'ghost'",
+          default: "'primary'",
+          description: 'Visual style tier establishing action hierarchy.',
+          example: 'variant="primary"',
+        },
+        {
+          name: 'size',
+          type: "'sm' | 'md' | 'lg'",
+          default: "'md'",
+          description: 'Button size tier. All sizes strictly meet ≥44x44pt touch target minimums (sm=44pt, md=48pt, lg=56pt).',
+          example: 'size="md"',
+        },
+        {
+          name: 'onPress',
+          type: '(event: GestureResponderEvent) => void',
+          default: 'None',
+          description: 'Callback invoked on tap or press release.',
+          example: 'onPress={() => handleDispatch()}',
+        },
+        {
+          name: 'leftIcon',
+          type: 'Lucide icon component, name, or React element',
+          default: 'None',
+          description: "Leading icon rendered before button text. Accepts PascalCase string name (e.g. 'Truck') or direct Lucide component.",
+          example: 'leftIcon="Truck"',
+        },
+        {
+          name: 'rightIcon',
+          type: 'Lucide icon component, name, or React element',
+          default: 'None',
+          description: "Trailing icon rendered after button text. Accepts PascalCase string name (e.g. 'ChevronRight') or direct Lucide component.",
+          example: 'rightIcon="ChevronRight"',
+        },
+        {
+          name: 'loading',
+          type: 'boolean',
+          default: 'false',
+          description: 'Displays an activity indicator, disables taps, and sets accessibilityState.busy.',
+          example: 'loading={isSubmitting}',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          default: 'false',
+          description: 'Disables press interactions and applies muted tokens with accessible contrast.',
+          example: 'disabled={!isFormValid}',
+        },
+        {
+          name: 'fullWidth',
+          type: 'boolean',
+          default: 'false',
+          description: 'Expands button to occupy 100% width of its parent container.',
+          example: 'fullWidth={true}',
+        },
+        {
+          name: 'accessibilityLabel',
+          type: 'string',
+          default: 'None',
+          description: 'Spoken label for screen readers. Defaults to the string value of children if omitted.',
+          example: 'accessibilityLabel="Confirm consignment dispatch"',
+        },
+        {
+          name: 'accessibilityHint',
+          type: 'string',
+          default: 'None',
+          description: 'Additional guidance describing the consequence of performing the action.',
+          example: 'accessibilityHint="Navigates to tracking summary"',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<ViewStyle>',
+          default: 'None',
+          description: 'Outer layout constraints only (margin, flex, alignSelf). Padding, height, radius, and colors come from tokens.',
+          example: 'style={{ marginTop: 16 }}',
+        },
       ]}
       dos={[
         'Use primary for the single most important action on a screen (e.g. Complete Delivery).',

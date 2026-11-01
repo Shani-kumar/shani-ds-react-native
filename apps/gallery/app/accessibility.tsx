@@ -17,10 +17,11 @@ import {
 import { GalleryHeader } from '../src/components/GalleryHeader';
 import { getFullContrastReport, type ContrastReportItem } from '../src/utils/contrastAudit';
 
+type FilterChip = 'All' | 'Light' | 'Dark' | 'Text' | 'Action' | 'Feedback' | 'UI';
+
 export default function AccessibilityScreen() {
   const { theme } = useTheme();
-  const [themeFilter, setThemeFilter] = useState<'all' | 'light' | 'dark'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [activeFilter, setActiveFilter] = useState<FilterChip>('All');
 
   const allReports = useMemo(() => {
     return getFullContrastReport();
@@ -28,14 +29,27 @@ export default function AccessibilityScreen() {
 
   const filteredReports = useMemo(() => {
     return allReports.filter((item) => {
-      const matchesTheme = themeFilter === 'all' || item.theme === themeFilter;
-      const matchesCat = categoryFilter === 'all' || item.category === categoryFilter;
-      return matchesTheme && matchesCat;
+      if (activeFilter === 'All') return true;
+      if (activeFilter === 'Light') return item.theme === 'light';
+      if (activeFilter === 'Dark') return item.theme === 'dark';
+      if (activeFilter === 'Text') return item.category === 'text';
+      if (activeFilter === 'Action') return item.category === 'action';
+      if (activeFilter === 'Feedback') return item.category === 'feedback';
+      if (activeFilter === 'UI') return item.category === 'ui';
+      return true;
     });
-  }, [allReports, themeFilter, categoryFilter]);
+  }, [allReports, activeFilter]);
 
   const passedCount = useMemo(() => {
     return allReports.filter((r) => r.passed).length;
+  }, [allReports]);
+
+  const lightPassedCount = useMemo(() => {
+    return allReports.filter((r) => r.theme === 'light' && r.passed).length;
+  }, [allReports]);
+
+  const darkPassedCount = useMemo(() => {
+    return allReports.filter((r) => r.theme === 'dark' && r.passed).length;
   }, [allReports]);
 
   return (
@@ -49,13 +63,13 @@ export default function AccessibilityScreen() {
             <CardHeader>
               <HStack justify="between" align="center" wrap={true} spacing="2">
                 <VStack spacing="1" style={{ flex: 1, minWidth: 200, paddingRight: 8 }}>
-                  <Text variant="heading">WCAG 2.1 AA Compliance Audit</Text>
+                  <Text variant="title">WCAG 2.1 AA Compliance Audit</Text>
                   <Text variant="caption">
                     Automated color contrast verification covering all semantic color pairs in light and dark themes.
                   </Text>
                 </VStack>
                 <Badge variant="success" size="md">
-                  {passedCount}/{allReports.length} Checks Passing (100%)
+                  {passedCount} of {allReports.length} pass AA
                 </Badge>
               </HStack>
             </CardHeader>
@@ -64,19 +78,19 @@ export default function AccessibilityScreen() {
                 <Card variant="outlined" padding="sm" style={{ flex: 1, minWidth: 140 }}>
                   <VStack spacing="1">
                     <Text variant="caption">Total Checks</Text>
-                    <Text variant="title">58 Pairs</Text>
+                    <Text variant="title">{allReports.length} Pairs</Text>
                   </VStack>
                 </Card>
                 <Card variant="outlined" padding="sm" style={{ flex: 1, minWidth: 140 }}>
                   <VStack spacing="1">
                     <Text variant="caption">Light Theme Checks</Text>
-                    <Text variant="title">29 Passing</Text>
+                    <Text variant="title">{lightPassedCount} Passing</Text>
                   </VStack>
                 </Card>
                 <Card variant="outlined" padding="sm" style={{ flex: 1, minWidth: 140 }}>
                   <VStack spacing="1">
                     <Text variant="caption">Dark Theme Checks</Text>
-                    <Text variant="title">29 Passing</Text>
+                    <Text variant="title">{darkPassedCount} Passing</Text>
                   </VStack>
                 </Card>
                 <Card variant="outlined" padding="sm" style={{ flex: 1, minWidth: 140 }}>
@@ -89,58 +103,28 @@ export default function AccessibilityScreen() {
             </CardContent>
           </Card>
 
-          {/* Filter Bar */}
+          {/* Filter Bar with Filter Chips and Summary */}
           <Card variant="outlined" padding="md">
             <VStack spacing="3">
-              <HStack spacing="2" align="center" wrap={true}>
-                <Text variant="caption">Theme:</Text>
-                <Button
-                  variant={themeFilter === 'all' ? 'primary' : 'ghost'}
-                  size="sm"
-                  onPress={() => setThemeFilter('all')}
-                >
-                  All (58)
-                </Button>
-                <Button
-                  variant={themeFilter === 'light' ? 'primary' : 'ghost'}
-                  size="sm"
-                  leftIcon="Sun"
-                  onPress={() => setThemeFilter('light')}
-                >
-                  Light Theme (29)
-                </Button>
-                <Button
-                  variant={themeFilter === 'dark' ? 'primary' : 'ghost'}
-                  size="sm"
-                  leftIcon="Moon"
-                  onPress={() => setThemeFilter('dark')}
-                >
-                  Dark Theme (29)
-                </Button>
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="label" style={{ fontWeight: '700' }}>Filter Checks:</Text>
+                <Text variant="caption" color="secondary">
+                  {passedCount} of {allReports.length} pass AA
+                </Text>
               </HStack>
-
-              <Divider />
-
               <HStack spacing="2" align="center" wrap={true}>
-                <Text variant="caption">Category:</Text>
-                {['all', 'text', 'action', 'feedback', 'ui'].map((cat) => (
-                  <Button
-                    key={cat}
-                    variant={categoryFilter === cat ? 'primary' : 'ghost'}
-                    size="sm"
-                    onPress={() => setCategoryFilter(cat)}
-                  >
-                    {cat === 'all'
-                      ? 'All Categories'
-                      : cat === 'text'
-                      ? 'Text (≥4.5:1)'
-                      : cat === 'action'
-                      ? 'Action Buttons (≥4.5:1)'
-                      : cat === 'feedback'
-                      ? 'Feedback Badges (≥4.5:1)'
-                      : 'UI Icons (≥3.0:1)'}
-                  </Button>
-                ))}
+                {(['All', 'Light', 'Dark', 'Text', 'Action', 'Feedback', 'UI'] as FilterChip[]).map(
+                  (chip) => (
+                    <Button
+                      key={chip}
+                      variant={activeFilter === chip ? 'primary' : 'ghost'}
+                      size="sm"
+                      onPress={() => setActiveFilter(chip)}
+                    >
+                      {chip}
+                    </Button>
+                  )
+                )}
               </HStack>
             </VStack>
           </Card>
@@ -148,68 +132,113 @@ export default function AccessibilityScreen() {
           {/* Contrast Pairs Report Table */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <HStack justify="between" align="center">
-                <Text variant="heading">
+              <HStack justify="between" align="center" wrap={true} spacing="2">
+                <Text variant="title" style={{ flexShrink: 1, minWidth: 0 }}>
                   Contrast Audit Pairs ({filteredReports.length})
                 </Text>
-                <Badge variant="brand" size="sm">WCAG 2.1 AA</Badge>
+                <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>WCAG 2.1 AA</Badge>
               </HStack>
             </CardHeader>
             <CardContent>
               <VStack spacing="3">
                 {filteredReports.map((item: ContrastReportItem, idx: number) => (
-                  <Card key={`${item.theme}-${item.fgName}-${item.bgName}-${idx}`} variant="outlined" padding="sm">
-                    <HStack justify="between" align="center">
-                      {/* Left: Metadata */}
-                      <VStack spacing="1" style={{ flex: 1, paddingRight: 16 }}>
-                        <HStack spacing="2" align="center">
+                  <Card key={`${item.theme}-${item.fgName}-${item.bgName}-${idx}`} variant="outlined" padding="md">
+                    <VStack spacing="3" style={{ width: '100%' }}>
+                      {/* 1. Top line: theme badge and category badge */}
+                      <HStack justify="between" align="center" wrap={true} spacing="2" style={{ width: '100%' }}>
+                        <HStack spacing="2" align="center" wrap={true}>
                           <Badge
-                            variant={item.theme === 'light' ? 'brand' : 'warning'}
+                            variant={item.theme === 'light' ? 'brand' : 'neutral'}
                             size="sm"
                           >
                             {item.theme.toUpperCase()}
                           </Badge>
                           <Badge variant="neutral" size="sm">
-                            {item.category}
+                            {item.category.toUpperCase()}
                           </Badge>
-                          <Text variant="label">{item.fgName}</Text>
                         </HStack>
-                        <Text variant="caption">
-                          on <Text variant="caption" style={{ fontWeight: '600' }}>{item.bgName}</Text> ({item.bgHex})
+                      </HStack>
+
+                      {/* 2. Middle: pair name and on <background name> */}
+                      <VStack spacing="0" style={{ width: '100%' }}>
+                        <Text variant="label" style={{ fontWeight: '700', flexShrink: 1, minWidth: 0 }}>
+                          {item.fgName}
+                        </Text>
+                        <Text variant="caption" color="secondary" style={{ flexShrink: 1, minWidth: 0 }}>
+                          on <Text variant="caption" style={{ fontWeight: '600' }}>{item.bgName}</Text>
                         </Text>
                       </VStack>
 
-                      {/* Right: Live Swatch & Ratio Badge */}
-                      <HStack spacing="3" align="center">
+                      {/* 3. Small live preview swatch with "Aa" + hex values in an aligned row */}
+                      <HStack spacing="2" align="center" wrap={true} style={{ width: '100%' }}>
                         <View
                           style={{
+                            width: 36,
+                            height: 28,
                             backgroundColor: item.bgHex,
                             borderColor: theme.colors.border.subtle,
                             borderWidth: theme.borderWidth.hairline,
                             borderRadius: theme.radius.sm,
-                            paddingHorizontal: theme.spacing[2],
-                            paddingVertical: theme.spacing[1],
-                            minWidth: 70,
                             alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
                           }}
                         >
                           <Text
+                            variant="label"
+                            style={{
+                              color: item.fgHex,
+                              fontWeight: '700',
+                              lineHeight: 18,
+                            }}
+                          >
+                            Aa
+                          </Text>
+                        </View>
+                        <HStack spacing="1" align="center" wrap={true} style={{ flexShrink: 1, minWidth: 0 }}>
+                          <Text
                             variant="caption"
-                            style={{ color: item.fgHex, fontWeight: '700' }}
+                            style={{
+                              fontFamily: 'monospace',
+                              color: theme.colors.text.secondary,
+                              fontSize: 11,
+                            }}
                           >
                             {item.fgHex}
                           </Text>
-                        </View>
-                        <VStack spacing="1" align="end" style={{ minWidth: 90 }}>
-                          <Badge variant={item.passed ? 'success' : 'danger'}>
+                          <Text variant="caption" color="secondary" style={{ fontSize: 10 }}>
+                            on
+                          </Text>
+                          <Text
+                            variant="caption"
+                            style={{
+                              fontFamily: 'monospace',
+                              color: theme.colors.text.secondary,
+                              fontSize: 11,
+                            }}
+                          >
+                            {item.bgHex}
+                          </Text>
+                        </HStack>
+                      </HStack>
+
+                      <Divider />
+
+                      {/* 4. Right/bottom group: ratio pill, PASS/FAIL status, required threshold together in same position */}
+                      <HStack justify="between" align="center" wrap={true} spacing="2" style={{ width: '100%' }}>
+                        <HStack spacing="2" align="center">
+                          <Badge variant={item.passed ? 'success' : 'danger'} size="sm">
+                            {item.passed ? '✓ PASS' : '✗ FAIL'}
+                          </Badge>
+                          <Badge variant="neutral" size="sm">
                             {item.ratio}:1
                           </Badge>
-                          <Text variant="caption" style={{ fontSize: 10 }}>
-                            Req: ≥{item.minRatio}:1
-                          </Text>
-                        </VStack>
+                        </HStack>
+                        <Text variant="caption" color="secondary" style={{ fontSize: 11, fontWeight: '500' }}>
+                          Req: ≥{item.minRatio}:1
+                        </Text>
                       </HStack>
-                    </HStack>
+                    </VStack>
                   </Card>
                 ))}
               </VStack>
@@ -219,7 +248,7 @@ export default function AccessibilityScreen() {
           {/* Architectural Accessibility Rules Card */}
           <Card variant="outlined" padding="lg">
             <CardHeader>
-              <Text variant="heading">Design System Accessibility Standards</Text>
+              <Text variant="title">Design System Accessibility Standards</Text>
             </CardHeader>
             <CardContent>
               <VStack spacing="3">

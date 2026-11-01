@@ -43,7 +43,7 @@ export default function TextPage() {
         <VStack spacing="4">
           <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline">
             <VStack spacing="3">
-              <Text variant="display">Display: 30pt Semibold</Text>
+              <Text variant="display">Display: 32pt Semibold</Text>
               <Text variant="heading">Heading: 24pt Semibold</Text>
               <Text variant="title">Title: 18pt Medium</Text>
               <Text variant="body">Body: 16pt Regular - Standard courier instructions and shipment manifest notes.</Text>
@@ -54,11 +54,62 @@ export default function TextPage() {
         </VStack>
       }
       propsData={[
-        { name: 'variant', type: "'display' | 'heading' | 'title' | 'body' | 'label' | 'caption'", default: "'body'", description: 'Typography scale mapping font size, line height, and weight.' },
-        { name: 'color', type: 'TextColor', default: "'primary'", description: 'Semantic text token (primary, secondary, tertiary, brand, danger, etc.).' },
-        { name: 'align', type: "'auto' | 'left' | 'right' | 'center' | 'justify'", default: "'left'", description: 'Text alignment.' },
-        { name: 'maxFontSizeMultiplier', type: 'number', default: '2.0', description: 'Caps Dynamic Type scaling to prevent text truncation in fixed logistics cards.' },
-        { name: 'allowFontScaling', type: 'boolean', default: 'true', description: 'Enables system text accessibility scaling.' },
+        {
+          name: 'children',
+          type: 'React text or node',
+          default: 'required',
+          description: 'Text string or nested React elements to render within the typography scale.',
+          example: 'children="Priority Overnight Waybill"',
+        },
+        {
+          name: 'variant',
+          type: "'display' | 'heading' | 'title' | 'body' | 'label' | 'caption'",
+          default: "'body'",
+          description: 'Typography scale token mapping font size, line height, and default weight (display=32pt, heading=24pt, title=18pt, body=16pt, label=14pt, caption=12pt).',
+          example: 'variant="title"',
+        },
+        {
+          name: 'color',
+          type: "'primary' | 'secondary' | 'tertiary' | 'brand' | 'danger' | 'warning' | 'success' | 'info' | 'inverse'",
+          default: "'primary'",
+          description: 'Semantic text token. All color pairings are strictly validated for WCAG 2.1 AA (≥4.5:1) compliance.',
+          example: 'color="brand"',
+        },
+        {
+          name: 'weight',
+          type: "'regular' | 'medium' | 'semibold' | 'bold'",
+          default: 'None',
+          description: 'Optional font weight override. If omitted, uses variant defaults (e.g. semibold for heading, regular for body).',
+          example: 'weight="semibold"',
+        },
+        {
+          name: 'align',
+          type: "'auto' | 'left' | 'right' | 'center' | 'justify'",
+          default: "'left'",
+          description: 'Text alignment across available container width.',
+          example: 'align="center"',
+        },
+        {
+          name: 'maxFontSizeMultiplier',
+          type: 'number',
+          default: '2.0',
+          description: 'Caps Dynamic Type scaling to prevent text truncation in fixed logistics cards while supporting low-vision users.',
+          example: 'maxFontSizeMultiplier={2.0}',
+        },
+        {
+          name: 'allowFontScaling',
+          type: 'boolean',
+          default: 'true',
+          description: 'Enables OS-level font accessibility scaling for assistive technology.',
+          example: 'allowFontScaling={true}',
+        },
+        {
+          name: 'style',
+          type: 'StyleProp<TextStyle>',
+          default: 'None',
+          description: 'Outer layout overrides only (flexShrink, maxWidth, textTransform). Font sizes and colors must use tokens.',
+          example: 'style={{ flexShrink: 1, minWidth: 0 }}',
+        },
       ]}
       dos={[
         'Use semantic variants (heading, title, body) rather than overriding fontSize directly.',
@@ -75,11 +126,23 @@ export default function TextPage() {
       ]}
       codeSnippet={`import { Text, VStack } from '@shani/ui';
 
+// 1. Plain Text usage:
+export function StatusLabel() {
+  return (
+    <Text variant="body" color="primary">
+      Package Out for Delivery
+    </Text>
+  );
+}
+
+// 2. Composing with layout:
 export function WaybillHeader() {
   return (
     <VStack spacing="1">
       <Text variant="heading">Shipment #849102</Text>
-      <Text variant="caption" color="secondary">Created at 08:30 AM • Priority Overnight</Text>
+      <Text variant="caption" color="secondary">
+        Created at 08:30 AM • Priority Overnight
+      </Text>
     </VStack>
   );
 }`}
