@@ -57,7 +57,7 @@ pnpm typecheck
 # ESLint code quality check
 pnpm lint
 
-# Jest unit test suite (25 suites, 152 tests)
+# Jest unit test suite (26 suites, 155 tests)
 pnpm test
 
 # WCAG 2.1 AA contrast audit (all 62 checks pass across Light and Dark themes)
@@ -74,6 +74,9 @@ pnpm rules:check
 
 # Verify machine-readable component manifest against code
 pnpm manifest:check
+
+# AST validation of screens against Shani DS rules and component manifest
+pnpm validate:screen <file or folder>
 ```
 
 ---

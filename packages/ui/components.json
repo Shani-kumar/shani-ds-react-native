@@ -3107,6 +3107,20 @@
           "example": "defaultValue=\"1Z999\""
         },
         {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Transient placeholder hint text",
+          "example": "placeholder=\"e.g. SHN-000000-XX\""
+        },
+        {
+          "name": "placeholderTextColor",
+          "type": "string",
+          "required": false,
+          "description": "Color for placeholder text",
+          "example": "placeholderTextColor=\"secondary\""
+        },
+        {
           "name": "onChangeText",
           "type": "((text: string) => void)",
           "required": false,

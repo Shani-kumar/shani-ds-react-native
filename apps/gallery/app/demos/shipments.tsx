@@ -14,6 +14,7 @@ import {
   Skeleton,
   Icon,
   Divider,
+  useTheme,
   type BadgeVariant,
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
@@ -94,6 +95,7 @@ type FilterType = 'All' | 'Out for Delivery' | 'In Transit' | 'Delivered' | 'Del
 
 export default function ShipmentsListDemo() {
   const router = useRouter();
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('All');
   const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +116,7 @@ export default function ShipmentsListDemo() {
       <Box flex={1} bg="canvas">
         <GalleryHeader title="Shipments Fleet List" subtitle="Logistics Demo 2" showBack={true} />
 
-      <ScrollView contentContainerStyle={{ padding: 24 }}>
+      <ScrollView contentContainerStyle={{ padding: theme.spacing[6] }}>
         <VStack spacing="6">
           {/* Search & Filter Controls */}
           <Card variant="elevated" padding="lg">

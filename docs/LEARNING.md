@@ -609,6 +609,24 @@ const isWideWeb = Platform.OS === 'web' && width > 768;
 
 > "To make Shani DS truly AI-ready, we didn't just write a component library—we built the translation layer between design and code. In `docs/ai/`, we documented our layout patterns, typographic hierarchy rules, and 44pt industrial touch target standards. We mapped our 3-tier tokens directly to Figma variables and established setup specifications for the Figma Dev Mode MCP Server and Figma Code Connect. Using our structured prompt templates, autonomous AI agents and engineers can query Figma nodes and generate production-grade, accessible React Native screens on the first attempt."
 
+---
+
+## 19. Deterministic AI Screen Auditing with TypeScript AST (Step 5.4)
+
+### 1. Why Regex Fails and AST Succeeds
+
+- **The Problem:** Regex-based linters for design systems are notoriously brittle: they cannot distinguish between `#1D4ED8` in a comment vs inside a style object, fail on multi-line JSX attribute expressions, and cannot check if a prop exists on a specific component without building full scope trees.
+- **The Solution:** We constructed an AST validator using the official TypeScript Compiler API (`ts.createSourceFile`). The validator visits the abstract syntax tree and evaluates code nodes according to exact semantic boundaries:
+  1. **Import Declarations:** Rejects forbidden primitives (`Text`, `TextInput`, `Button`, `Pressable` from `'react-native'`) and checks `@shani/ui` component imports against `components.json`.
+  2. **String Literals:** Matches raw hex colors (`#...`), rgb, and hsl strings.
+  3. **Property Assignments:** Inspects numeric literals inside style objects for spacing, padding, margin, radius, fontSize, and lineHeight, allowing only token references (`theme.spacing[4]`, `p="4"`).
+  4. **JSX Elements:** Compares element tags and attributes against component manifest schemas, catching hallucinated props and invalid union values (e.g. `variant="invalid"`).
+- **CI & Developer Feedback:** Each violation outputs file, line, column, error category, message, and an actionable replacement hint. `pnpm validate:screen <file or folder>` exits with code 1 on any violation.
+
+### 2. Interview Talking Point
+
+> "To prevent AI hallucinations from slipping into production codebases, we built a TypeScript AST screen auditor (`pnpm validate:screen`). Instead of fragile regex patterns, it traverses the AST using the TypeScript Compiler API, catching raw hex codes, magic numeric margins, forbidden React Native primitive imports, and hallucinated props or invalid variant strings against `components.json`. This provides automated guardrails that can validate AI-generated screens in CI before code review."
+
 
 
 

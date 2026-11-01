@@ -57,3 +57,4 @@ export function formatPropsForGallery(props: ComponentPropDoc[]): PropItem[] {
     };
   });
 }
+

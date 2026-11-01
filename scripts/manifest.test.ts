@@ -76,3 +76,4 @@ describe('Component Manifest Generator (Step 5.2)', () => {
     expect(hasErrors).toBe(false);
   });
 });
+

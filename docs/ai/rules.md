@@ -273,4 +273,7 @@ Before completing any implementation or refactoring task, run and pass every che
 5. `pnpm tokens:drift` — No token compiler drift detected.
 6. `pnpm snippets:check` — All component documentation snippets compile.
 7. `pnpm rules:check` — Rules files in sync with `docs/ai/rules.md`.
-8. Check that no raw hex colors, raw numbers, or raw React Native primitives are introduced.
+8. `pnpm manifest:check` — Machine-readable component manifest in sync with source.
+9. `pnpm validate:screen <file or folder>` — 0 AST design system rule violations.
+10. Check that no raw hex colors, raw numbers, or raw React Native primitives are introduced.
+

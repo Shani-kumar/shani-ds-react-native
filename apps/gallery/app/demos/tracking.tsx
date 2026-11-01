@@ -15,6 +15,7 @@ import {
   IconButton,
   Divider,
   Icon,
+  useTheme,
   type TimelineStep,
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
@@ -52,6 +53,7 @@ const TRACKING_STEPS: TimelineStep[] = [
 ];
 
 export default function ShipmentTrackingDemo() {
+  const { theme } = useTheme();
   const [notificationEnabled, setNotificationEnabled] = useState(true);
 
   return (
@@ -59,7 +61,7 @@ export default function ShipmentTrackingDemo() {
       <Box flex={1} bg="canvas">
         <GalleryHeader title="Shipment Tracking" subtitle="Logistics Demo 1" showBack={true} />
 
-      <ScrollView contentContainerStyle={{ padding: 24 }}>
+      <ScrollView contentContainerStyle={{ padding: theme.spacing[6] }}>
         <VStack spacing="6">
           {/* Top Status & Tracking ID Banner */}
           <Card variant="elevated" padding="lg">

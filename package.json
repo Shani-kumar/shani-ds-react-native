@@ -17,7 +17,8 @@
     "sync:rules": "tsx scripts/sync-rules.ts",
     "rules:check": "tsx scripts/sync-rules.ts --check",
     "manifest": "tsx scripts/generate-manifest.ts",
-    "manifest:check": "tsx scripts/generate-manifest.ts --check"
+    "manifest:check": "tsx scripts/generate-manifest.ts --check",
+    "validate:screen": "tsx scripts/validate-screen.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

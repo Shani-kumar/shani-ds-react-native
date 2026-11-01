@@ -414,6 +414,8 @@ export function PrintWaybillButton() {
     ],
     propExamples: {
       label: 'label="Waybill Number"',
+      placeholder: 'placeholder="e.g. SHN-000000-XX"',
+      placeholderTextColor: 'placeholderTextColor="secondary"',
       helperText: 'helperText="Enter 18-digit carrier barcode number"',
       error: 'error="Waybill number not found"',
       prefix: '<Icon name="Package" size="sm" />',
@@ -782,3 +784,4 @@ export function OrderTracker() {
 }`,
   },
 };
+

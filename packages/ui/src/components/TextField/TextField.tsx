@@ -47,6 +47,10 @@ export interface TextFieldProps extends Omit<
   value?: string;
   /** Default uncontrolled input value */
   defaultValue?: string;
+  /** Transient placeholder hint text */
+  placeholder?: string;
+  /** Color for placeholder text */
+  placeholderTextColor?: string;
   /** Callback triggered on text change */
   onChangeText?: (text: string) => void;
   /** Custom style for the field container (including label and helper) */

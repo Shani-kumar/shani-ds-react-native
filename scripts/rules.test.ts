@@ -11,3 +11,4 @@ describe('AI Rules Synchronization (Step 5.1)', () => {
     expect(() => syncRules()).not.toThrow();
   });
 });
+

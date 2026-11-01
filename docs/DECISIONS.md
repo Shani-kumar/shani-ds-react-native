@@ -398,6 +398,20 @@
     5. New Compound Component Composition.
 - **Why:** Empowers AI agents and developers to generate pixel-perfect, accessible, and responsive logistics screens that integrate seamlessly with Figma design workflows.
 
+## ADR-034: TypeScript AST Screen Validation Tooling (Step 5.4)
+
+- **Context:** Catching AI hallucinations, forbidden imports, raw hex codes, and non-token styling cannot be reliably achieved through regular expressions alone, which miss AST context and generate false positives/negatives. An automated TypeScript AST validator is required to audit screens before code generation or review.
+- **Decision:**
+  - **TypeScript AST Validator (`scripts/validate-screen.ts`):** Implemented an AST visitor using the TypeScript Compiler API (`ts.createSourceFile`).
+  - **Violation Detection:**
+    1. Forbidden imports from `react-native`: rejects `Pressable`, `TextInput`, `Button`, `Text`.
+    2. Hallucinated components: flags any uppercase component import from `@shani/ui` not present in `packages/ui/components.json`.
+    3. Raw color codes: catches `#hex`, `rgb(...)`, `rgba(...)`, `hsl(...)` in string literals.
+    4. Raw numeric styles: flags literal numbers in spacing, padding, margin, gap, borderRadius, fontSize, and lineHeight style assignments.
+    5. Unknown props & invalid values: compares JSX attributes against `components.json` schemas and verifies literal union values (e.g. `variant`, `size`).
+  - **Tooling & CI Integration:** Added `pnpm validate:screen <file or folder>`, created `scripts/validate-screen.test.ts` with passing/failing fixtures (`scripts/__fixtures__/`), validated all gallery demo screens, and added the check to the pre-submission checklist in `docs/ai/rules.md`.
+- **Why:** Delivers deterministic, zero-hallucination verification for AI-generated screens and developer pull requests with clear line numbers, messages, and actionable replacement hints.
+
 
 
 
