@@ -238,21 +238,58 @@ describe('Button Component (Group B)', () => {
     const btnSm = screen.getByTestId('stretch-sm');
     const flatSmPressable = StyleSheet.flatten(btnSm.props.style);
     expect(flatSmPressable.alignSelf).toBe('center');
+    expect(flatSmPressable.height).toBe(lightTheme.components.button.size.sm.minHeight);
+    expect(flatSmPressable.maxHeight).toBe(lightTheme.components.button.size.sm.minHeight);
 
     const flatSmInner = StyleSheet.flatten((btnSm.children[0] as React.ReactElement).props.style);
+    expect(flatSmInner.height).toBe(lightTheme.components.button.size.sm.minHeight);
+    expect(flatSmInner.maxHeight).toBe(lightTheme.components.button.size.sm.minHeight);
     expect(flatSmInner.minHeight).toBe(lightTheme.components.button.size.sm.minHeight);
     expect(flatSmInner.alignSelf).toBe('center');
 
     const btnMd = screen.getByTestId('stretch-md');
     const flatMdPressable = StyleSheet.flatten(btnMd.props.style);
     expect(flatMdPressable.alignSelf).toBe('center');
+    expect(flatMdPressable.height).toBe(lightTheme.components.button.size.md.minHeight);
     const flatMdInner = StyleSheet.flatten((btnMd.children[0] as React.ReactElement).props.style);
-    expect(flatMdInner.minHeight).toBe(lightTheme.components.button.size.md.minHeight);
+    expect(flatMdInner.height).toBe(lightTheme.components.button.size.md.minHeight);
 
     const btnLg = screen.getByTestId('stretch-lg');
     const flatLgPressable = StyleSheet.flatten(btnLg.props.style);
     expect(flatLgPressable.alignSelf).toBe('center');
+    expect(flatLgPressable.height).toBe(lightTheme.components.button.size.lg.minHeight);
     const flatLgInner = StyleSheet.flatten((btnLg.children[0] as React.ReactElement).props.style);
-    expect(flatLgInner.minHeight).toBe(lightTheme.components.button.size.lg.minHeight);
+    expect(flatLgInner.height).toBe(lightTheme.components.button.size.lg.minHeight);
+  });
+
+  it('preserves exact size token height inside a flex: 1 wrapper and ignores height overrides', () => {
+    render(
+      <ThemeProvider>
+        <View style={{ flex: 1, height: 200 }}>
+          <Button
+            testID="flex-wrapper-btn"
+            size="md"
+            style={{ flexGrow: 1, flexBasis: 120, height: 130 }}
+          >
+            Track Live
+          </Button>
+        </View>
+      </ThemeProvider>
+    );
+
+    const btn = screen.getByTestId('flex-wrapper-btn');
+    const flatPressable = StyleSheet.flatten(btn.props.style);
+    // Pressable accepts flexBasis and flexGrow for horizontal layout in parent
+    expect(flatPressable.flexGrow).toBe(1);
+    expect(flatPressable.flexBasis).toBe(120);
+    // But height is strictly bounded by size token
+    expect(flatPressable.height).toBe(lightTheme.components.button.size.md.minHeight);
+    expect(flatPressable.maxHeight).toBe(lightTheme.components.button.size.md.minHeight);
+
+    const flatInner = StyleSheet.flatten((btn.children[0] as React.ReactElement).props.style);
+    // Inner container must NOT receive flexBasis or height override
+    expect(flatInner.flexBasis).toBeUndefined();
+    expect(flatInner.height).toBe(lightTheme.components.button.size.md.minHeight);
+    expect(flatInner.maxHeight).toBe(lightTheme.components.button.size.md.minHeight);
   });
 });

@@ -304,6 +304,21 @@
 - **Alternatives Considered:**
   - Keeping a fixed phone frame across the entire web application: Unnecessarily constricted wide desktop displays and made multi-stop timeline steppers and API tables difficult to read.
 
+## ADR-026: Button Height Token Enforcement & Inner Container Flex Isolation
+
+- **Context:** In the Shipments list waybill card footer, the "Track Live" Button rendered at approximately 130px tall and square-looking next to the ETA when flex styling was applied.
+- **Root Cause Identified:**
+  1. `Button` applied caller-provided `style` to both the outer `Pressable` touch target and the inner `Animated.View` container.
+  2. In React Native Web, `Pressable` defaults to `flexDirection: 'column'`. When `{ flexGrow: 1, flexBasis: 120 }` was passed to enable horizontal wrapping in the card row, the inner `Animated.View` interpreted `flexBasis: 120` along the column main axis, expanding its height to 120px (plus padding and border, yielding ~130px total height).
+  3. `Button` only declared `minHeight`, leaving `height` and `maxHeight` unbounded against parent flex stretch or `flex: 1` wrappers.
+- **Decision:**
+  - **Style Partitioning:** In `Button` and `IconButton`, caller `style` is cleanly split: outer layout styles (`flexGrow`, `flexBasis`, `flexShrink`, `margin`, `position`, `alignSelf`) apply strictly to the outer `Pressable`, while visual styles (`backgroundColor`, `borderColor`, etc.) apply to the inner `Animated.View`.
+  - **Height Token Enforcement:** Both `Pressable` and `Animated.View` strictly enforce `height`, `minHeight`, and `maxHeight` set to `sizeTokens.minHeight` (`sm`: 44pt, `md`: 48pt, `lg`: 56pt), ignoring any external height overrides.
+  - **Automated Regression Suite:** Added unit tests in `Button.test.tsx` and `IconButton.test.tsx` verifying exact token heights when rendered inside `alignItems: 'stretch'` parent rows, `flex: 1` wrappers, and when supplied with `flexBasis` / `height` overrides.
+- **Why:** Guarantees buttons and icon buttons maintain exact token heights across any parent layout structure without visual deformation.
+- **Alternatives Considered:**
+  - Applying styles only to the inner View: Leaves the outer Pressable touch area unstyled and unable to position within flex parents.
+
 
 
 

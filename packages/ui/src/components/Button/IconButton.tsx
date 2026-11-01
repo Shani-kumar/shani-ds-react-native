@@ -155,24 +155,77 @@ export const IconButton = forwardRef<View, IconButtonProps>(function IconButton(
   }
 
   const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
-  const resolvedAlignSelf: ViewStyle['alignSelf'] = flatStyle.alignSelf ?? 'center';
+
+  const {
+    flex,
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    alignSelf,
+    position,
+    top,
+    bottom,
+    left,
+    right,
+    start: _start,
+    end: _end,
+    margin,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+    marginHorizontal,
+    marginVertical,
+    marginStart,
+    marginEnd,
+    zIndex,
+    width: _ignoredWidth,
+    height: _ignoredHeight,
+    minWidth: _ignoredMinWidth,
+    minHeight: _ignoredMinHeight,
+    maxWidth: _ignoredMaxWidth,
+    maxHeight: _ignoredMaxHeight,
+    ...visualStyle
+  } = flatStyle;
+
+  const resolvedAlignSelf: ViewStyle['alignSelf'] = alignSelf ?? 'center';
 
   const pressableStyle: ViewStyle = {
     width: dimension,
     height: dimension,
+    minWidth: dimension,
+    maxWidth: dimension,
+    minHeight: dimension,
+    maxHeight: dimension,
     alignSelf: resolvedAlignSelf,
-    ...(flatStyle.margin !== undefined && { margin: flatStyle.margin }),
-    ...(flatStyle.marginTop !== undefined && { marginTop: flatStyle.marginTop }),
-    ...(flatStyle.marginBottom !== undefined && { marginBottom: flatStyle.marginBottom }),
-    ...(flatStyle.marginLeft !== undefined && { marginLeft: flatStyle.marginLeft }),
-    ...(flatStyle.marginRight !== undefined && { marginRight: flatStyle.marginRight }),
-    ...(flatStyle.marginHorizontal !== undefined && { marginHorizontal: flatStyle.marginHorizontal }),
-    ...(flatStyle.marginVertical !== undefined && { marginVertical: flatStyle.marginVertical }),
+    ...(flexGrow !== undefined && { flexGrow }),
+    ...(flexShrink !== undefined && { flexShrink }),
+    ...(flexBasis !== undefined && { flexBasis }),
+    ...(flex !== undefined && { flex }),
+    ...(margin !== undefined && { margin }),
+    ...(marginTop !== undefined && { marginTop }),
+    ...(marginBottom !== undefined && { marginBottom }),
+    ...(marginLeft !== undefined && { marginLeft }),
+    ...(marginRight !== undefined && { marginRight }),
+    ...(marginHorizontal !== undefined && { marginHorizontal }),
+    ...(marginVertical !== undefined && { marginVertical }),
+    ...(marginStart !== undefined && { marginStart }),
+    ...(marginEnd !== undefined && { marginEnd }),
+    ...(position !== undefined && { position }),
+    ...(top !== undefined && { top }),
+    ...(bottom !== undefined && { bottom }),
+    ...(left !== undefined && { left }),
+    ...(right !== undefined && { right }),
+    ...(zIndex !== undefined && { zIndex }),
   };
 
   const containerStyle: ViewStyle = {
     width: dimension,
     height: dimension,
+    minWidth: dimension,
+    maxWidth: dimension,
+    minHeight: dimension,
+    maxHeight: dimension,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: shape === 'circle' ? theme.radius.full : theme.radius.md,
@@ -184,7 +237,7 @@ export const IconButton = forwardRef<View, IconButtonProps>(function IconButton(
 
   return (
     <Pressable ref={ref} {...pressableProps} style={pressableStyle}>
-      <Animated.View style={[containerStyle, animatedStyle, style]}>
+      <Animated.View style={[containerStyle, visualStyle, animatedStyle]}>
         {loading ? (
           <ActivityIndicator
             testID={testID ? `${testID}-spinner` : 'icon-button-spinner'}

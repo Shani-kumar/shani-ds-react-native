@@ -160,40 +160,86 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
 
   const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
 
-  // Root alignSelf prevents parent stretch rows from expanding height
-  const resolvedAlignSelf: ViewStyle['alignSelf'] = flatStyle.alignSelf ?? 'center';
+  // Split external style: layout properties apply strictly to the outer Pressable,
+  // while visual properties apply to the inner Animated.View.
+  // Height and vertical stretch are strictly constrained to the size token in any parent.
+  const {
+    // Outer layout properties
+    flex,
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    alignSelf,
+    width,
+    minWidth,
+    maxWidth,
+    position,
+    top,
+    bottom,
+    left,
+    right,
+    start: _start,
+    end: _end,
+    margin,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+    marginHorizontal,
+    marginVertical,
+    marginStart,
+    marginEnd,
+    zIndex,
+    // Explicitly strip any height overrides so height ONLY comes from the size token
+    height: _ignoredHeight,
+    minHeight: _ignoredMinHeight,
+    maxHeight: _ignoredMaxHeight,
+    // Inner visual properties
+    ...visualStyle
+  } = flatStyle;
 
-  const isExpandingHorizontally =
-    fullWidth ||
-    flatStyle.flexGrow !== undefined ||
-    flatStyle.flex !== undefined ||
-    flatStyle.width === '100%';
+  // Root alignSelf prevents parent stretch rows from expanding height
+  const resolvedAlignSelf: ViewStyle['alignSelf'] = alignSelf ?? 'center';
 
   const pressableStyle: ViewStyle = {
+    height: sizeTokens.minHeight,
+    maxHeight: sizeTokens.minHeight,
+    minHeight: sizeTokens.minHeight,
+    minWidth: minWidth ?? sizeTokens.minHeight,
     alignSelf: resolvedAlignSelf,
     ...(fullWidth && { width: '100%' }),
-    ...(flatStyle.flexGrow !== undefined && { flexGrow: flatStyle.flexGrow }),
-    ...(flatStyle.flexShrink !== undefined && { flexShrink: flatStyle.flexShrink }),
-    ...(flatStyle.flexBasis !== undefined && { flexBasis: flatStyle.flexBasis }),
-    ...(flatStyle.flex !== undefined && { flex: flatStyle.flex }),
-    ...(flatStyle.width !== undefined && { width: flatStyle.width }),
-    ...(flatStyle.maxWidth !== undefined && { maxWidth: flatStyle.maxWidth }),
-    ...(flatStyle.minWidth !== undefined && { minWidth: flatStyle.minWidth }),
-    ...(flatStyle.margin !== undefined && { margin: flatStyle.margin }),
-    ...(flatStyle.marginTop !== undefined && { marginTop: flatStyle.marginTop }),
-    ...(flatStyle.marginBottom !== undefined && { marginBottom: flatStyle.marginBottom }),
-    ...(flatStyle.marginLeft !== undefined && { marginLeft: flatStyle.marginLeft }),
-    ...(flatStyle.marginRight !== undefined && { marginRight: flatStyle.marginRight }),
-    ...(flatStyle.marginHorizontal !== undefined && { marginHorizontal: flatStyle.marginHorizontal }),
-    ...(flatStyle.marginVertical !== undefined && { marginVertical: flatStyle.marginVertical }),
+    ...(flexGrow !== undefined && { flexGrow }),
+    ...(flexShrink !== undefined && { flexShrink }),
+    ...(flexBasis !== undefined && { flexBasis }),
+    ...(flex !== undefined && { flex }),
+    ...(width !== undefined && { width }),
+    ...(maxWidth !== undefined && { maxWidth }),
+    ...(margin !== undefined && { margin }),
+    ...(marginTop !== undefined && { marginTop }),
+    ...(marginBottom !== undefined && { marginBottom }),
+    ...(marginLeft !== undefined && { marginLeft }),
+    ...(marginRight !== undefined && { marginRight }),
+    ...(marginHorizontal !== undefined && { marginHorizontal }),
+    ...(marginVertical !== undefined && { marginVertical }),
+    ...(marginStart !== undefined && { marginStart }),
+    ...(marginEnd !== undefined && { marginEnd }),
+    ...(position !== undefined && { position }),
+    ...(top !== undefined && { top }),
+    ...(bottom !== undefined && { bottom }),
+    ...(left !== undefined && { left }),
+    ...(right !== undefined && { right }),
+    ...(zIndex !== undefined && { zIndex }),
   };
 
   const containerStyle: ViewStyle = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    height: sizeTokens.minHeight,
+    maxHeight: sizeTokens.minHeight,
     minHeight: sizeTokens.minHeight,
     minWidth: sizeTokens.minHeight,
+    width: '100%',
     paddingHorizontal: sizeTokens.paddingHorizontal,
     paddingVertical: sizeTokens.paddingVertical,
     gap: sizeTokens.gap,
@@ -202,7 +248,6 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
     borderWidth,
     alignSelf: resolvedAlignSelf,
     ...(borderColor && { borderColor }),
-    ...(isExpandingHorizontally && { width: '100%' }),
   };
 
   const labelStyle: TextStyle = {
@@ -227,7 +272,7 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
 
   return (
     <Pressable ref={ref} {...pressableProps} style={pressableStyle}>
-      <Animated.View style={[containerStyle, animatedStyle, style]}>
+      <Animated.View style={[containerStyle, visualStyle, animatedStyle]}>
         {loading ? (
           <ActivityIndicator
             testID={testID ? `${testID}-spinner` : 'button-spinner'}

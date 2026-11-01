@@ -178,4 +178,29 @@ describe('IconButton Component (Group B)', () => {
     expect(flatInner.width).toBe(44);
     expect(flatInner.alignSelf).toBe('center');
   });
+
+  it('maintains strict size token dimensions inside a flex: 1 wrapper', () => {
+    render(
+      <ThemeProvider>
+        <View style={{ flex: 1, height: 200 }}>
+          <IconButton
+            testID="flex-icon-btn"
+            name="Package"
+            accessibilityLabel="Package"
+            size="md"
+            style={{ flexGrow: 1, height: 150 }}
+          />
+        </View>
+      </ThemeProvider>
+    );
+
+    const btn = screen.getByTestId('flex-icon-btn');
+    const flatPressable = StyleSheet.flatten(btn.props.style);
+    expect(flatPressable.height).toBe(48);
+    expect(flatPressable.width).toBe(48);
+
+    const flatInner = StyleSheet.flatten((btn.children[0] as React.ReactElement).props.style);
+    expect(flatInner.height).toBe(48);
+    expect(flatInner.width).toBe(48);
+  });
 });
