@@ -13,7 +13,9 @@
     "tokens:build": "tsx scripts/build-tokens.ts",
     "tokens:drift": "tsx scripts/build-tokens.ts --check",
     "contrast": "tsx scripts/contrast.ts",
-    "snippets:check": "tsx scripts/check-snippets.ts"
+    "snippets:check": "tsx scripts/check-snippets.ts",
+    "sync:rules": "tsx scripts/sync-rules.ts",
+    "rules:check": "tsx scripts/sync-rules.ts --check"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

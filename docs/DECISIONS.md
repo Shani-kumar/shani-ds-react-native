@@ -358,6 +358,22 @@
   - **Universal Application:** Applied `SegmentedOption` to all 12 component playground control bars, the Shipments list status filter chips, the Tokens Explorer category selector, the ComponentPage viewport switcher, and the GalleryHeader/DocsTopBar theme switchers.
 - **Why:** Eliminates the "plain text" ambiguity on unselected options, standardizing affordances and ensuring 100% WCAG contrast across Light and Dark themes.
 
+## ADR-031: AI Rules Architecture & Multi-Agent Synchronization (Step 5.1)
+
+- **Context:** Large Language Models and AI coding assistants do not inherently understand the internal architectural constraints of `@shani/ui`, frequently hallucinating raw CSS styles, unconstrained pixel margins, arbitrary hex colors, and unstyled React Native primitives (`<Text>`, `<TextInput>`, `<Pressable>`).
+- **Decision:**
+  - **Single Source of Truth (`docs/ai/rules.md`):** Established a comprehensive rules document detailing:
+    - What Shani DS is and its 3-tier token architecture.
+    - Explicit whitelist of allowed imports (`@shani/ui`, `@shani/tokens`, `Icon` component).
+    - Strict prohibitions against raw hex colors, raw numbers for spacing/size/radius, and raw React Native text/inputs/buttons.
+    - Component prop scales (`spacing="1"` through `'16'`, size tiers `'sm'`/`'md'`/`'lg'`).
+    - Accessibility mandates (44pt touch targets, mandatory `accessibilityLabel` on `IconButton`).
+    - Screen layout patterns, typography hierarchy rules (single display hero, section titles use title), and card action placement rules (top-right utility icons, bottom-right main action).
+    - Typechecked Do/Don't code examples.
+  - **Automated Synchronization Tooling (`scripts/sync-rules.ts`):** Implemented `pnpm sync:rules` which replicates the canonical rules file identically to the root of the repository for every major coding assistant: `GEMINI.md`, `AGENTS.md`, `CLAUDE.md`, and `.cursorrules`.
+  - **Continuous Drift Detection:** Integrated `pnpm rules:check` into the test suite via `scripts/rules.test.ts`, causing CI to fail if any assistant rules file drifts from `docs/ai/rules.md`.
+- **Why:** Guarantees that AI coding assistants generate compliant, accessible, token-bound React Native code on the first prompt across any development environment.
+
 
 
 

@@ -549,6 +549,31 @@ const isWideWeb = Platform.OS === 'web' && width > 768;
 
 > "In mobile logistics apps, drivers and warehouse operators routinely use 320px–375px screens under maximum Dynamic Type font scaling. To prevent text clipping in our vertical Timeline stepper, each step's content column uses `flex: 1` and `minWidth: 0` alongside fixed `flexShrink: 0` indicators. When milestone titles are long, timestamps wrap cleanly onto the line below via `flexWrap: 'wrap'`, ensuring zero horizontal scrolling or truncated information on rugged mobile devices."
 
+---
+
+## 16. AI-Readiness, Multi-Agent Rules & Zero-Drift Synchronization (Step 5.1)
+
+### 1. The LLM Design System Hallucination Problem
+
+- **The Problem:** AI coding assistants (Gemini, Claude, Cursor, GitHub Copilot) are trained on millions of generic React and React Native repositories. When asked to "create a shipment tracking screen," an AI tool will naturally:
+  - Invent arbitrary hex codes (`#1D4ED8`, `#F3F4F6`, `#333`).
+  - Introduce magic pixel margins and paddings (`style={{ marginTop: 15, padding: 12 }}`).
+  - Import raw `<Text>`, `<TextInput>`, `<TouchableOpacity>`, and `<Button>` directly from `'react-native'`.
+  - Violate WCAG touch target constraints (< 44pt) and omit screen reader labels.
+- **The Solution:** Make the design system machine-readable by authoring an explicit system constraints contract:
+  1. **Canonical Source (`docs/ai/rules.md`):** A single comprehensive specification covering what the design system is, allowed import paths (`@shani/ui`, `@shani/tokens`), prohibitions against raw styling, component prop scales, accessibility mandates, typographic hierarchies, card action placement rules, and verified Do/Don't code examples.
+  2. **Multi-Agent Sync Tooling (`scripts/sync-rules.ts`):** `pnpm sync:rules` generates byte-for-byte identical copies to the project root for every major AI coding assistant:
+     - `GEMINI.md` for Google Gemini CLI & Antigravity agents.
+     - `AGENTS.md` for autonomous agentic developer tools.
+     - `CLAUDE.md` for Anthropic Claude Code and desktop workflows.
+     - `.cursorrules` for Cursor IDE developers.
+  3. **Zero-Drift CI Guardrails (`pnpm rules:check` & `scripts/rules.test.ts`):** An automated Jest test verifies that none of the assistant configuration files drift from the canonical source in `docs/ai/rules.md`.
+
+### 2. Interview Talking Point
+
+> "Design systems fail in the AI era when LLMs don't know the rules and invent ad-hoc hex colors, magic numbers, and raw React Native primitives. In Shani DS, we treated AI agents as first-class consumers: we established a canonical machine-readable rules contract (`docs/ai/rules.md`) that defines strict import whitelists, component token scales, and card action hierarchy rules. Using `scripts/sync-rules.ts` and automated CI drift tests (`pnpm rules:check`), we keep rules identical across Gemini, Claude, Cursor, and custom agents, ensuring AI-generated screens match our design system on the very first prompt."
+
+
 
 
 
