@@ -329,6 +329,15 @@
   - **Documentation Note:** Added subtitle note: `"Shown at 1:1 scale (1pt = 1 dp)"`.
 - **Why:** Delivers an accurate physical reference for designers and engineers assessing mobile spacing values.
 
+## ADR-028: Stack Wrap Interactive Playground & Concise Item Labeling
+
+- **Context:** In the Box & Stack component playground, items rendered with long text (e.g. `"Parcel B (Standard)"`) which truncated with ellipsis (`"..."`) when oriented horizontally on narrow mobile screens, and the playground lacked a live toggle to demonstrate the component's `wrap` prop.
+- **Decision:**
+  - **Concise Item Labels:** Shortened playground child badges to clean concise identifiers (`"Parcel A"`, `"Parcel B"`, `"Parcel C"`), ensuring complete visibility without truncation across all screen sizes.
+  - **Interactive Wrap Controller:** Added an interactive `Wrap` control (`On` / `Off`) to the playground, defaulting to enabled in horizontal mode to demonstrate multi-row wrapping without horizontal scrollbars.
+  - **Unit Regression Coverage:** Added explicit tests in `Stack.test.tsx` verifying that `Stack`, `HStack`, and `VStack` propagate the `wrap` prop to `flexWrap: 'wrap'` / `'nowrap'`.
+- **Why:** Delivers an unclipped, scrollbar-free demonstration of responsive layout primitives on mobile and desktop viewports.
+
 
 
 

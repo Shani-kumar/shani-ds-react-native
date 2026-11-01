@@ -13,9 +13,10 @@ import {
 import { ComponentPage } from '../../src/components/ComponentPage';
 
 export default function BoxStackPage() {
-  const [direction, setDirection] = useState<'vertical' | 'horizontal'>('vertical');
+  const [direction, setDirection] = useState<'vertical' | 'horizontal'>('horizontal');
   const [spacing, setSpacing] = useState<SpacingKey>('4');
   const [align, setAlign] = useState<StackAlign>('stretch');
+  const [wrap, setWrap] = useState<boolean>(true);
 
   return (
     <ComponentPage
@@ -24,15 +25,15 @@ export default function BoxStackPage() {
       category="Foundation"
       playground={
         <Box p="4" bg="surface" borderRadius="md" borderColor="subtle" borderWidth="hairline" style={{ width: '100%' }}>
-          <Stack direction={direction} spacing={spacing} align={align}>
+          <Stack direction={direction} spacing={spacing} align={align} wrap={wrap}>
             <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
-              <Text variant="label" numberOfLines={1}>Parcel A (Express)</Text>
+              <Text variant="label" numberOfLines={1}>Parcel A</Text>
             </Box>
             <Box p="3" bg="surfaceRaised" borderRadius="sm" borderColor="default" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
-              <Text variant="label" numberOfLines={1}>Parcel B (Standard)</Text>
+              <Text variant="label" numberOfLines={1}>Parcel B</Text>
             </Box>
             <Box p="3" bg="brandSubtle" borderRadius="sm" borderColor="brand" borderWidth="hairline" style={{ minWidth: 0, flexShrink: 1 }}>
-              <Text variant="label" numberOfLines={1}>Parcel C (Freight)</Text>
+              <Text variant="label" numberOfLines={1}>Parcel C</Text>
             </Box>
           </Stack>
         </Box>
@@ -51,9 +52,29 @@ export default function BoxStackPage() {
             <Button
               variant={direction === 'horizontal' ? 'primary' : 'secondary'}
               size="sm"
-              onPress={() => setDirection('horizontal')}
+              onPress={() => {
+                setDirection('horizontal');
+                setWrap(true);
+              }}
             >
               Horizontal
+            </Button>
+          </HStack>
+          <HStack spacing="2" align="center" wrap={true}>
+            <Text variant="caption">Wrap:</Text>
+            <Button
+              variant={wrap ? 'primary' : 'secondary'}
+              size="sm"
+              onPress={() => setWrap(true)}
+            >
+              On
+            </Button>
+            <Button
+              variant={!wrap ? 'primary' : 'secondary'}
+              size="sm"
+              onPress={() => setWrap(false)}
+            >
+              Off
             </Button>
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>

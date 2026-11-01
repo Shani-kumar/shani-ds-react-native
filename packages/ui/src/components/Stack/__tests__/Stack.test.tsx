@@ -85,6 +85,12 @@ describe('Stack Component (Group A)', () => {
         <Stack testID="wrapped-stack" wrap align="end" justify="around">
           <RNText>A</RNText>
         </Stack>
+        <HStack testID="wrapped-hstack" wrap>
+          <RNText>B</RNText>
+        </HStack>
+        <VStack testID="wrapped-vstack" wrap={false}>
+          <RNText>C</RNText>
+        </VStack>
       </ThemeProvider>
     );
 
@@ -95,6 +101,12 @@ describe('Stack Component (Group A)', () => {
       alignItems: 'flex-end',
       justifyContent: 'space-around',
     });
+
+    const hstack = screen.getByTestId('wrapped-hstack');
+    expect(StyleSheet.flatten(hstack.props.style).flexWrap).toBe('wrap');
+
+    const vstack = screen.getByTestId('wrapped-vstack');
+    expect(StyleSheet.flatten(vstack.props.style).flexWrap).toBe('nowrap');
   });
 
   it('forwards ref correctly', () => {
