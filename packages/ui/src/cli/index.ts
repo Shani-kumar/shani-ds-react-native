@@ -56,10 +56,19 @@ Examples:
 `);
 }
 
-function handleInitAi(_args: string[]): void {
+function handleInitAi(args: string[]): void {
+  let targetDir = process.cwd();
+  const targetIdx = args.indexOf('--target');
+  const targetArg = targetIdx !== -1 ? args[targetIdx + 1] : undefined;
+  if (targetArg) {
+    targetDir = targetArg;
+  } else if (args[0] && !args[0].startsWith('-')) {
+    targetDir = args[0];
+  }
+
   try {
-    const res = initAi();
-    console.log('\n🤖 Initialized Shani DS AI configuration:');
+    const res = initAi({ targetDir });
+    console.log(`\n🤖 Initialized Shani DS AI configuration in: ${targetDir}\n`);
     for (const f of res.created) {
       console.log(`  ✓ Created ${f}`);
     }

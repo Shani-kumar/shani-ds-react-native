@@ -436,6 +436,16 @@
   - **CLI Binary:** Registered `shani-ds` executable bin (`bin/shani-ds.js`) that wraps the TypeScript AST validator and future initialization subcommands.
 - **Why:** Enables any external React Native or Expo app repository installing `@shani/ui` to resolve the machine-readable design system schema and run validation without accessing the monorepo source.
 
+## ADR-037: `shani-ds init-ai` Project Setup & Non-Destructive Merging (Step 5.6 Item 2)
+
+- **Context:** Developers installing `@shani/ui` into external applications need a one-command setup to initialize AI agent rules (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`) that point to packaged design system metadata without overwriting existing project instructions.
+- **Decision:**
+  - **Init Command (`shani-ds init-ai`):** Implemented in `packages/ui/src/cli/init-ai.ts`, writing or updating all 4 AI configuration files in the target project.
+  - **Tool-Specific File-Import Syntax:** Leveraged `@node_modules/@shani/ui/AGENTS.md` in `CLAUDE.md` and `@./node_modules/@shani/ui/AGENTS.md` in `GEMINI.md` to cleanly import packaged rules without duplicate text. Provided full key rules and manifest pointers in `AGENTS.md` and `.cursorrules`.
+  - **Safe Non-Destructive Merging:** Enclosed Shani DS instructions in `<!-- SHANI_DS_START -->` and `<!-- SHANI_DS_END -->` markers. If a file exists, pre-existing developer instructions are preserved and the Shani DS block is appended or updated idempotently.
+- **Why:** Delivers friction-free AI enablement in consumer repositories with zero risk of overwriting project-specific developer configurations.
+
+
 
 
 
