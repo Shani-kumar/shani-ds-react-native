@@ -4,12 +4,12 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
   Badge,
   type BadgeVariant,
   type BadgeSize,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function BadgePage() {
   const [variant, setVariant] = useState<BadgeVariant>('success');
@@ -42,39 +42,31 @@ export default function BadgePage() {
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['neutral', 'brand', 'success', 'warning', 'danger', 'info'] as BadgeVariant[]).map((v) => (
-              <Button
+              <SegmentedOption
                 key={v}
-                variant={variant === v ? 'primary' : 'ghost'}
-                size="sm"
+                label={v}
+                selected={variant === v}
                 onPress={() => setVariant(v)}
-              >
-                {v}
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size & Dot:</Text>
-            <Button
-              variant={size === 'sm' ? 'primary' : 'secondary'}
-              size="sm"
+            <SegmentedOption
+              label="Small (sm)"
+              selected={size === 'sm'}
               onPress={() => setSize('sm')}
-            >
-              Small (sm)
-            </Button>
-            <Button
-              variant={size === 'md' ? 'primary' : 'secondary'}
-              size="sm"
+            />
+            <SegmentedOption
+              label="Medium (md)"
+              selected={size === 'md'}
               onPress={() => setSize('md')}
-            >
-              Medium (md)
-            </Button>
-            <Button
-              variant={dot ? 'primary' : 'secondary'}
-              size="sm"
+            />
+            <SegmentedOption
+              label={`Dot: ${dot ? 'On' : 'Off'}`}
+              selected={dot}
               onPress={() => setDot(!dot)}
-            >
-              Toggle Dot
-            </Button>
+            />
           </HStack>
         </VStack>
       }

@@ -4,12 +4,12 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
   Icon,
   type IconSize,
   type IconColor,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function IconPage() {
   const [size, setSize] = useState<IconSize>('lg');
@@ -31,27 +31,23 @@ export default function IconPage() {
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size:</Text>
             {(['xs', 'sm', 'md', 'lg', 'xl'] as IconSize[]).map((s) => (
-              <Button
+              <SegmentedOption
                 key={s}
-                variant={size === s ? 'primary' : 'ghost'}
-                size="sm"
+                label={s}
+                selected={size === s}
                 onPress={() => setSize(s)}
-              >
-                {s}
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Color:</Text>
             {(['primary', 'secondary', 'brand', 'success', 'warning', 'danger'] as IconColor[]).map((c) => (
-              <Button
+              <SegmentedOption
                 key={c}
-                variant={color === c ? 'primary' : 'ghost'}
-                size="sm"
+                label={c}
+                selected={color === c}
                 onPress={() => setColor(c)}
-              >
-                {c}
-              </Button>
+              />
             ))}
           </HStack>
         </VStack>

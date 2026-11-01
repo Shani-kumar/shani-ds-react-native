@@ -6,7 +6,6 @@ import {
   HStack,
   Text,
   Badge,
-  Button,
   Card,
   CardHeader,
   CardContent,
@@ -15,6 +14,7 @@ import {
   useTheme,
 } from '@shani/ui';
 import { GalleryHeader } from './GalleryHeader';
+import { SegmentedOption } from './SegmentedOption';
 
 export interface PropItem {
   name: string;
@@ -80,31 +80,25 @@ export const ComponentPage = ({
             <CardHeader>
               <HStack justify="between" align="center" wrap={true} spacing="2">
                 <Text variant="title">Live Interactive Playground</Text>
-                <HStack spacing="1" align="center" wrap={true}>
+                <HStack spacing="2" align="center" wrap={true}>
                   <Text variant="caption" color="secondary" style={{ marginRight: theme.spacing[1] }}>
                     Width:
                   </Text>
-                  <Button
-                    variant={previewViewport === 'fill' ? 'primary' : 'ghost'}
-                    size="sm"
+                  <SegmentedOption
+                    label="Fill"
+                    selected={previewViewport === 'fill'}
                     onPress={() => setPreviewViewport('fill')}
-                  >
-                    Fill
-                  </Button>
-                  <Button
-                    variant={previewViewport === 'tablet' ? 'primary' : 'ghost'}
-                    size="sm"
+                  />
+                  <SegmentedOption
+                    label="Tablet (768)"
+                    selected={previewViewport === 'tablet'}
                     onPress={() => setPreviewViewport('tablet')}
-                  >
-                    Tablet (768)
-                  </Button>
-                  <Button
-                    variant={previewViewport === 'phone' ? 'primary' : 'ghost'}
-                    size="sm"
+                  />
+                  <SegmentedOption
+                    label="Phone (390)"
+                    selected={previewViewport === 'phone'}
                     onPress={() => setPreviewViewport('phone')}
-                  >
-                    Phone (390)
-                  </Button>
+                  />
                 </HStack>
               </HStack>
             </CardHeader>

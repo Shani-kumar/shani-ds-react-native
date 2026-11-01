@@ -3,10 +3,10 @@ import {
   Box,
   VStack,
   HStack,
-  Button,
   Checkbox,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function CheckboxPage() {
   const [checked, setChecked] = useState(true);
@@ -38,30 +38,24 @@ export default function CheckboxPage() {
       }
       playgroundControls={
         <HStack spacing="2" align="center" wrap={true}>
-          <Button
-            variant={checked && !indeterminate ? 'primary' : 'secondary'}
-            size="sm"
+          <SegmentedOption
+            label={`Checked: ${checked && !indeterminate ? 'On' : 'Off'}`}
+            selected={checked && !indeterminate}
             onPress={() => {
               setIndeterminate(false);
               setChecked(!checked);
             }}
-          >
-            Toggle Checked
-          </Button>
-          <Button
-            variant={indeterminate ? 'primary' : 'secondary'}
-            size="sm"
+          />
+          <SegmentedOption
+            label={`Indeterminate: ${indeterminate ? 'On' : 'Off'}`}
+            selected={indeterminate}
             onPress={() => setIndeterminate(!indeterminate)}
-          >
-            Toggle Indeterminate
-          </Button>
-          <Button
-            variant={disabled ? 'primary' : 'secondary'}
-            size="sm"
+          />
+          <SegmentedOption
+            label={`Disabled: ${disabled ? 'On' : 'Off'}`}
+            selected={disabled}
             onPress={() => setDisabled(!disabled)}
-          >
-            Toggle Disabled
-          </Button>
+          />
         </HStack>
       }
       allStates={

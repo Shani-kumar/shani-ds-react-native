@@ -3,12 +3,12 @@ import {
   Box,
   VStack,
   HStack,
-  Button,
   Icon,
   Text,
   TextField,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function TextFieldPage() {
   const [value, setValue] = useState('SHN-741920-US');
@@ -40,27 +40,21 @@ export default function TextFieldPage() {
       }
       playgroundControls={
         <HStack spacing="2" align="center" wrap={true}>
-          <Button
-            variant={hasError ? 'danger' : 'secondary'}
-            size="sm"
+          <SegmentedOption
+            label={`Error: ${hasError ? 'On' : 'Off'}`}
+            selected={hasError}
             onPress={() => setHasError(!hasError)}
-          >
-            Toggle Error State
-          </Button>
-          <Button
-            variant={disabled ? 'primary' : 'secondary'}
-            size="sm"
+          />
+          <SegmentedOption
+            label={`Disabled: ${disabled ? 'On' : 'Off'}`}
+            selected={disabled}
             onPress={() => setDisabled(!disabled)}
-          >
-            Toggle Disabled
-          </Button>
-          <Button
-            variant={secure ? 'primary' : 'secondary'}
-            size="sm"
+          />
+          <SegmentedOption
+            label={`Secure: ${secure ? 'On' : 'Off'}`}
+            selected={secure}
             onPress={() => setSecure(!secure)}
-          >
-            Toggle Secure Entry
-          </Button>
+          />
         </HStack>
       }
       allStates={

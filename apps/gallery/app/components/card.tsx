@@ -14,6 +14,7 @@ import {
   type CardPadding,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function CardPage() {
   const [variant, setVariant] = useState<CardVariant>('elevated');
@@ -53,27 +54,23 @@ export default function CardPage() {
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['outlined', 'elevated', 'filled'] as CardVariant[]).map((v) => (
-              <Button
+              <SegmentedOption
                 key={v}
-                variant={variant === v ? 'primary' : 'ghost'}
-                size="sm"
+                label={v}
+                selected={variant === v}
                 onPress={() => setVariant(v)}
-              >
-                {v}
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Padding:</Text>
             {(['none', 'sm', 'md', 'lg'] as CardPadding[]).map((p) => (
-              <Button
+              <SegmentedOption
                 key={p}
-                variant={padding === p ? 'primary' : 'ghost'}
-                size="sm"
+                label={p}
+                selected={padding === p}
                 onPress={() => setPadding(p)}
-              >
-                {p}
-              </Button>
+              />
             ))}
           </HStack>
         </VStack>

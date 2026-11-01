@@ -4,10 +4,10 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
   type TextVariant,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function TextPage() {
   const [variant, setVariant] = useState<TextVariant>('title');
@@ -28,14 +28,12 @@ export default function TextPage() {
       playgroundControls={
         <HStack spacing="2" wrap={true}>
           {(['display', 'heading', 'title', 'body', 'label', 'caption'] as TextVariant[]).map((v) => (
-            <Button
+            <SegmentedOption
               key={v}
-              variant={variant === v ? 'primary' : 'ghost'}
-              size="sm"
+              label={v}
+              selected={variant === v}
               onPress={() => setVariant(v)}
-            >
-              {v}
-            </Button>
+            />
           ))}
         </HStack>
       }

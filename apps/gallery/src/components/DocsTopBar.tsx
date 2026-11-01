@@ -1,4 +1,5 @@
-import { Box, HStack, VStack, Text, Button, IconButton, useTheme } from '@shani/ui';
+import { Box, HStack, VStack, Text, IconButton, useTheme } from '@shani/ui';
+import { SegmentedOption } from './SegmentedOption';
 
 export function DocsTopBar() {
   const { theme, mode, resolvedMode, setMode } = useTheme();
@@ -43,31 +44,25 @@ export function DocsTopBar() {
         </HStack>
 
         {/* Theme Switcher in Top Bar */}
-        <HStack spacing="1" align="center" wrap={true}>
-          <Button
-            variant={mode === 'light' ? 'primary' : 'ghost'}
-            size="sm"
+        <HStack spacing="2" align="center" wrap={true}>
+          <SegmentedOption
+            label="Light"
             leftIcon="Sun"
+            selected={mode === 'light'}
             onPress={() => setMode('light')}
-          >
-            Light
-          </Button>
-          <Button
-            variant={mode === 'dark' ? 'primary' : 'ghost'}
-            size="sm"
+          />
+          <SegmentedOption
+            label="Dark"
             leftIcon="Moon"
+            selected={mode === 'dark'}
             onPress={() => setMode('dark')}
-          >
-            Dark
-          </Button>
-          <Button
-            variant={mode === 'system' ? 'primary' : 'ghost'}
-            size="sm"
+          />
+          <SegmentedOption
+            label={mode === 'system' ? `System (${resolvedMode === 'dark' ? 'Dark' : 'Light'})` : 'System'}
             leftIcon="Laptop"
+            selected={mode === 'system'}
             onPress={() => setMode('system')}
-          >
-            {mode === 'system' ? `System (${resolvedMode === 'dark' ? 'Dark' : 'Light'})` : 'System'}
-          </Button>
+          />
         </HStack>
       </HStack>
     </Box>

@@ -3,12 +3,12 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
   Card,
   Timeline,
   type TimelineStep,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function TimelinePage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(2);
@@ -64,14 +64,12 @@ export default function TimelinePage() {
         <HStack spacing="2" align="center" wrap={true}>
           <Text variant="caption">Simulate Progress:</Text>
           {baseSteps.map((_, idx) => (
-            <Button
+            <SegmentedOption
               key={idx}
-              variant={currentStepIndex === idx ? 'primary' : 'ghost'}
-              size="sm"
+              label={`Step ${idx + 1}`}
+              selected={currentStepIndex === idx}
               onPress={() => setCurrentStepIndex(idx)}
-            >
-              Step {idx + 1}
-            </Button>
+            />
           ))}
         </HStack>
       }

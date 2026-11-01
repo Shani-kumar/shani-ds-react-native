@@ -6,11 +6,11 @@ import {
   HStack,
   VStack,
   Text,
-  Button,
   Divider,
   type StackAlign,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function BoxStackPage() {
   const [direction, setDirection] = useState<'vertical' | 'horizontal'>('horizontal');
@@ -42,65 +42,53 @@ export default function BoxStackPage() {
         <VStack spacing="3">
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Direction:</Text>
-            <Button
-              variant={direction === 'vertical' ? 'primary' : 'secondary'}
-              size="sm"
+            <SegmentedOption
+              label="Vertical"
+              selected={direction === 'vertical'}
               onPress={() => setDirection('vertical')}
-            >
-              Vertical
-            </Button>
-            <Button
-              variant={direction === 'horizontal' ? 'primary' : 'secondary'}
-              size="sm"
+            />
+            <SegmentedOption
+              label="Horizontal"
+              selected={direction === 'horizontal'}
               onPress={() => {
                 setDirection('horizontal');
                 setWrap(true);
               }}
-            >
-              Horizontal
-            </Button>
+            />
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Wrap:</Text>
-            <Button
-              variant={wrap ? 'primary' : 'secondary'}
-              size="sm"
+            <SegmentedOption
+              label="On"
+              selected={wrap}
               onPress={() => setWrap(true)}
-            >
-              On
-            </Button>
-            <Button
-              variant={!wrap ? 'primary' : 'secondary'}
-              size="sm"
+            />
+            <SegmentedOption
+              label="Off"
+              selected={!wrap}
               onPress={() => setWrap(false)}
-            >
-              Off
-            </Button>
+            />
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Alignment:</Text>
             {(['stretch', 'center', 'start'] as StackAlign[]).map((a) => (
-              <Button
+              <SegmentedOption
                 key={a}
-                variant={align === a ? 'primary' : 'ghost'}
-                size="sm"
+                label={a}
+                selected={align === a}
                 onPress={() => setAlign(a)}
-              >
-                {a}
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Spacing:</Text>
             {(['2', '4', '6', '8'] as SpacingKey[]).map((sp) => (
-              <Button
+              <SegmentedOption
                 key={sp}
-                variant={spacing === sp ? 'primary' : 'ghost'}
-                size="sm"
+                label={`${sp} (${parseInt(sp, 10) * 4}pt)`}
+                selected={spacing === sp}
                 onPress={() => setSpacing(sp)}
-              >
-                {sp} ({parseInt(sp, 10) * 4}pt)
-              </Button>
+              />
             ))}
           </HStack>
         </VStack>

@@ -4,12 +4,12 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
   Card,
   Skeleton,
   type SkeletonVariant,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function SkeletonPage() {
   const [variant, setVariant] = useState<SkeletonVariant>('rectangular');
@@ -34,14 +34,12 @@ export default function SkeletonPage() {
       playgroundControls={
         <HStack spacing="2" align="center" wrap={true}>
           {(['rectangular', 'text', 'circular'] as SkeletonVariant[]).map((v) => (
-            <Button
+            <SegmentedOption
               key={v}
-              variant={variant === v ? 'primary' : 'ghost'}
-              size="sm"
+              label={v}
+              selected={variant === v}
               onPress={() => setVariant(v)}
-            >
-              {v}
-            </Button>
+            />
           ))}
         </HStack>
       }

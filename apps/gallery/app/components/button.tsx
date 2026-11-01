@@ -9,6 +9,7 @@ import {
   type ButtonSize,
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 export default function ButtonPage() {
   const [variant, setVariant] = useState<ButtonVariant>('primary');
@@ -42,45 +43,37 @@ export default function ButtonPage() {
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Variant:</Text>
             {(['primary', 'secondary', 'tertiary', 'danger', 'ghost'] as ButtonVariant[]).map((v) => (
-              <Button
+              <SegmentedOption
                 key={v}
-                variant={variant === v ? 'primary' : 'ghost'}
-                size="sm"
+                label={v}
+                selected={variant === v}
                 onPress={() => setVariant(v)}
-              >
-                {v}
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Size:</Text>
             {(['sm', 'md', 'lg'] as ButtonSize[]).map((s) => (
-              <Button
+              <SegmentedOption
                 key={s}
-                variant={size === s ? 'primary' : 'ghost'}
-                size="sm"
+                label={`${s} (${s === 'sm' ? '44pt' : s === 'md' ? '48pt' : '56pt'})`}
+                selected={size === s}
                 onPress={() => setSize(s)}
-              >
-                {s} ({s === 'sm' ? '44pt' : s === 'md' ? '48pt' : '56pt'})
-              </Button>
+              />
             ))}
           </HStack>
           <HStack spacing="2" align="center" wrap={true}>
             <Text variant="caption">Toggles:</Text>
-            <Button
-              variant={loading ? 'primary' : 'secondary'}
-              size="sm"
+            <SegmentedOption
+              label={`Loading: ${loading ? 'On' : 'Off'}`}
+              selected={loading}
               onPress={() => setLoading(!loading)}
-            >
-              Toggle Loading
-            </Button>
-            <Button
-              variant={disabled ? 'danger' : 'secondary'}
-              size="sm"
+            />
+            <SegmentedOption
+              label={`Disabled: ${disabled ? 'On' : 'Off'}`}
+              selected={disabled}
               onPress={() => setDisabled(!disabled)}
-            >
-              Toggle Disabled
-            </Button>
+            />
           </HStack>
         </VStack>
       }

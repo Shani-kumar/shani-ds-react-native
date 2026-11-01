@@ -23,6 +23,7 @@ import {
   useTheme,
 } from '@shani/ui';
 import { GalleryHeader } from '../src/components/GalleryHeader';
+import { SegmentedOption } from '../src/components/SegmentedOption';
 import { getContrastRatio } from '../src/utils/contrast';
 
 type TokenCategory = 'colors' | 'spacing' | 'typography' | 'radius' | 'shadows' | 'motion';
@@ -352,14 +353,12 @@ export default function TokensScreen() {
         <HStack spacing="2" wrap={true}>
           {(['colors', 'spacing', 'typography', 'radius', 'shadows', 'motion'] as TokenCategory[]).map(
             (cat) => (
-              <Button
+              <SegmentedOption
                 key={cat}
-                variant={activeTab === cat ? 'primary' : 'ghost'}
-                size="sm"
+                label={cat.charAt(0).toUpperCase() + cat.slice(1)}
+                selected={activeTab === cat}
                 onPress={() => setActiveTab(cat)}
-              >
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
-              </Button>
+              />
             )
           )}
         </HStack>

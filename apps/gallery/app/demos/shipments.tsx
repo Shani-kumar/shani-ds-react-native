@@ -18,6 +18,7 @@ import {
 } from '@shani/ui';
 import { GalleryHeader } from '../../src/components/GalleryHeader';
 import { DemoContainer } from '../../src/components/DemoContainer';
+import { SegmentedOption } from '../../src/components/SegmentedOption';
 
 interface ShipmentRecord {
   id: string;
@@ -151,14 +152,12 @@ export default function ShipmentsListDemo() {
                 <HStack spacing="2" wrap={true}>
                   {(['All', 'Out for Delivery', 'In Transit', 'Delivered', 'Delayed'] as FilterType[]).map(
                     (filter) => (
-                      <Button
+                      <SegmentedOption
                         key={filter}
-                        variant={activeFilter === filter ? 'primary' : 'ghost'}
-                        size="sm"
+                        label={filter}
+                        selected={activeFilter === filter}
                         onPress={() => setActiveFilter(filter)}
-                      >
-                        {filter}
-                      </Button>
+                      />
                     )
                   )}
                 </HStack>

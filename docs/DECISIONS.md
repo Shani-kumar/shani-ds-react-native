@@ -346,6 +346,18 @@
   - **Context in Helper Text:** Retained detailed search scope explanation in the associated `helperText` (`Displaying X matching waybills`), maintaining complete clarity without text clipping.
 - **Why:** Ensures clean, unclipped input rendering on compact mobile screens while preserving search context.
 
+## ADR-030: Unified SegmentedOption & Filter Chip Component Pattern
+
+- **Context:** Filter options (e.g. status chips on the Shipments demo screen) and component playground controls (alignment, variant, size toggles) rendered unselected items using ghost button variants (`bg="transparent"`, `borderWidth=0`). This rendered unselected options looking like unstyled plain text rather than interactive tappable controls, creating ambiguity for users and inconsistent control appearances across documentation pages.
+- **Decision:**
+  - **Shared `SegmentedOption` Component:** Created `apps/gallery/src/components/SegmentedOption.tsx` standardizing the toggle button and filter chip pattern across the entire gallery app:
+    - **Unselected State:** Explicit `borderWidth: thin` with `borderColor: theme.colors.border.default` on `backgroundColor: theme.colors.bg.surface`, rendering a clean, visible tappable outline with `text.primary` font color.
+    - **Selected State:** Filled brand style with `backgroundColor: theme.colors.action.primary.default` and `color: theme.colors.action.primary.text`.
+    - **Uniform Geometry:** Standardized `minHeight: 36` (with `hitSlop` to guarantee 44pt touch targets), `borderRadius: theme.radius.md`, and tokenized padding.
+    - **Accessibility States:** Declares `accessibilityRole="button"` and `accessibilityState={{ selected }}` for assistive screen reader navigation.
+  - **Universal Application:** Applied `SegmentedOption` to all 12 component playground control bars, the Shipments list status filter chips, the Tokens Explorer category selector, the ComponentPage viewport switcher, and the GalleryHeader/DocsTopBar theme switchers.
+- **Why:** Eliminates the "plain text" ambiguity on unselected options, standardizing affordances and ensuring 100% WCAG contrast across Light and Dark themes.
+
 
 
 
