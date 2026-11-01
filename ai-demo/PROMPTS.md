@@ -1,128 +1,80 @@
-# AI Screen Generation Prompts & Testing Guide
+# AI Screen Generation Experiment — Prompts & Protocol
 
-This guide provides the exact prompts to execute for the controlled experiment comparing AI screen generation **Without Context** vs **With Shani DS Context**, along with step-by-step instructions for testing the generated screen in the live gallery application.
+This document defines the strict, scientific testing protocol and the exact identical prompt for the controlled A/B experiment between **Run 1: Without Context** and **Run 2: With Context**.
 
 ---
 
-## 1. Prompt 1: Without Context (Baseline)
+## 1. The Identical Test Prompt
 
-Run this prompt in an unconfigured AI workspace (e.g., an empty project without `GEMINI.md`, `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, or `components.json`):
+Both runs must use the **exact same prompt** with no variations:
 
 ```markdown
-Build a production-ready mobile screen in React Native for a freight logistics application:
-Screen Name: "Schedule Shipment Pickup"
-
-Requirements:
-1. Pickup Facility Info:
-   - Facility Name: "Central Distribution Hub #4"
-   - Address: "1040 Logistics Blvd, Dock Bay 12, Chicago, IL"
-   - Contact Person: "Marcus Vance (+1 312-555-0192)"
-2. Scheduling Details:
-   - Pickup Date input (e.g. "2026-11-04")
-   - Time Window selector (e.g. "09:00 AM - 12:00 PM")
-   - Vehicle Type (e.g. "Semi-Trailer / 53ft Dry Van")
-   - Special Instructions input (e.g. "Requires liftgate and pallet jack")
-3. Cargo Summary Card:
-   - Total Weight: "14,250 lbs"
-   - Pallet Count: "18 Standard Pallets"
-   - Hazardous Material toggle (default: false)
-4. Screen Footer Actions:
-   - Secondary button: "Cancel"
-   - Primary button: "Confirm Pickup Schedule"
-5. The screen must be responsive, scrollable on mobile, and written in TypeScript.
+Build a shipment pickup scheduling screen matching the attached Figma screenshot: pickup address, date and time slot selection, package count, notes, a summary card, and a confirm button. Use the installed design system.
 ```
-
-Save the generated output to `ai-demo/without-context/PickupScreen.tsx`.
 
 ---
 
-## 2. Prompt 2: With Shani DS Context
+## 2. Screenshot Input Attachment
 
-Run this prompt inside this repository (or supply `GEMINI.md`/`AGENTS.md` and `packages/ui/components.json` to your AI assistant):
-
-```markdown
-You are an expert React Native engineer building a screen for a mobile logistics application using the Shani Design System (@shani/ui and @shani/tokens).
-
-Adhere strictly to the workspace guidelines in GEMINI.md / AGENTS.md / CLAUDE.md and the component manifest in packages/ui/components.json:
-- ONLY import UI primitives from '@shani/ui' and tokens from '@shani/tokens'.
-- NEVER use raw React Native primitives (<Text>, <TextInput>, <Button>, <Pressable>, <TouchableOpacity>).
-- NEVER use raw hex codes or RGB strings; all colors must come from theme tokens or semantic props.
-- NEVER use raw numbers for layout spacing, sizes, margins, padding, or border radius. Use token keys ('none', '1', '2', '3', '4', '5', '6', '8', '10', '12', '16').
-- Enforce 44x44pt minimum touch targets. All IconButtons must have a mandatory accessibilityLabel.
-- Follow screen composition hierarchy: single display hero (if any), entity IDs with variant="heading", section titles with variant="title", labels with variant="label", body text with variant="body", timestamps/hints with variant="caption".
-- Card action placement: utility icon buttons in card header top-right; single main action in card footer.
-
-Task: Build the "Schedule Shipment Pickup" screen (PickupScreen.tsx):
-1. Pickup Facility Card:
-   - Header: Facility title "Central Distribution Hub #4", badge "Priority Hub", print label IconButton.
-   - Address: "1040 Logistics Blvd, Dock Bay 12, Chicago, IL" with MapPin icon.
-   - Contact: "Marcus Vance (+1 312-555-0192)" with Phone icon.
-2. Scheduling Card:
-   - Section Title: "Pickup Schedule & Equipment"
-   - TextField for "Pickup Date" with Calendar prefix icon.
-   - TextField for "Time Window" with Clock prefix icon.
-   - TextField for "Vehicle Type" with Truck prefix icon.
-   - TextField for "Special Instructions" with helper text.
-3. Cargo Summary Card:
-   - Section Title: "Cargo Specifications"
-   - Metric rows: Total Weight ("14,250 lbs") and Pallets ("18 Standard Pallets").
-   - Switch row for "Hazardous Materials (HAZMAT)" declaration.
-4. Action Footer:
-   - Secondary button: "Cancel"
-   - Primary button: "Confirm Pickup Schedule" with CheckCircle or ArrowRight icon.
-
-Output a clean, compiling, fully typed TypeScript component named `PickupScreen` with zero design system violations.
-```
-
-Save the generated output to `ai-demo/with-context/PickupScreen.tsx`.
+- **File Path:** [`ai-demo/figma-input.png`](./figma-input.png)
+- When starting each session, attach this exact image file along with the prompt text above.
 
 ---
 
-## 3. How to Test the Generated Screen in the Gallery App
+## 3. Rules for a Fair Test
 
-To view and interact with the newly generated screen in the live Expo gallery app:
+To ensure a scientifically rigorous and unbiased benchmark:
 
-### Step 1: Copy Screen File to Gallery Demos
-Copy `ai-demo/with-context/PickupScreen.tsx` into the gallery demos folder:
+1. **Fresh Session per Run:** Use a completely new, clean AI session (e.g., Gemini CLI, Claude Code, or web chat) for each run so no prior conversation history leaks context.
+2. **Same Model & Parameters:** Use the exact same AI model (e.g. Gemini 1.5 Pro / Claude 3.5 Sonnet) and default temperature settings for both runs.
+3. **Identical Prompt & Image:** Submit the exact prompt string above with `ai-demo/figma-input.png` attached.
+4. **No Hand Edits:** Under no circumstances manually alter, reformat, or fix the AI's generated code. The code saved must be 100% the raw output of the AI assistant.
+5. **Count Refinement Prompts:**
+   - If the code fails to compile or run, prompt the AI to fix it (e.g. "Fix the TypeScript/Metro bundling errors").
+   - Record the exact number of refinement prompts required until the screen renders.
+6. **Automated AST Validation:** Run the official AST validator on both outputs:
+   ```bash
+   npx shani-ds validate <path-to-screen>
+   ```
+   Save the raw terminal output to `validation-report.txt` in each respective folder.
 
-```bash
-cp ai-demo/with-context/PickupScreen.tsx apps/gallery/app/demos/pickup.tsx
-```
+---
 
-### Step 2: Add Link to Gallery Navigation
-Open `apps/gallery/app/index.tsx` and add an entry to the `NAV_ITEMS` array:
+## 4. Execution Steps
 
-```tsx
-{
-  title: 'Demo: Pickup Scheduling',
-  description: 'AI-generated freight pickup scheduling screen adhering 100% to Shani DS.',
-  path: '/demos/pickup',
-  category: 'Display',
-  badge: 'AI Generated',
-},
-```
+### Run 1: Without Context
+1. Open the consumer directory without AI context:
+   ```bash
+   cd ../consumer-without-context
+   ```
+2. Start a fresh Gemini or Claude session in this folder.
+3. Submit the prompt with `ai-demo/figma-input.png` attached.
+4. Save the generated screen to `PickupScreen.tsx`.
+5. Run the validator:
+   ```bash
+   npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/without-context/validation-report.txt 2>&1
+   ```
+6. Copy `PickupScreen.tsx` to `ai-demo/without-context/PickupScreen.tsx`.
+7. Capture a screenshot of the rendered screen and save to `ai-demo/without-context/screenshot.png`.
 
-### Step 3: Run AST Validation Check
-Verify that the new screen passes all static design system rules:
+---
 
-```bash
-pnpm validate:screen apps/gallery/app/demos/pickup.tsx
-```
+### Run 2: With Shani DS Context
+1. Open the consumer directory with AI context (where `shani-ds init-ai` was executed):
+   ```bash
+   cd ../consumer-with-context
+   ```
+2. Start a fresh Gemini or Claude session in this folder.
+3. Submit the identical prompt with `ai-demo/figma-input.png` attached.
+4. Save the generated screen to `PickupScreen.tsx`.
+5. Run the validator:
+   ```bash
+   npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/with-context/validation-report.txt 2>&1
+   ```
+6. Copy `PickupScreen.tsx` to `ai-demo/with-context/PickupScreen.tsx`.
+7. Capture a screenshot of the rendered screen and save to `ai-demo/with-context/screenshot.png`.
 
-The validator should output:
-```text
-🛡️  Validating screen code against Shani DS rules: apps/gallery/app/demos/pickup.tsx
+---
 
-  ✓ apps/gallery/app/demos/pickup.tsx (0 violations)
-
-✅ Validation passed: 1 file(s) cleanly adhere to Shani DS rules.
-```
-
-### Step 4: Launch Web Gallery Preview
-Start the Expo web development server:
-
-```bash
-pnpm gallery:web
-```
-
-Open `http://localhost:8081` in your browser and click on **"Demo: Pickup Scheduling"** to review the rendered screen.
+## 5. Completing the Benchmark
+After both runs are finished, record your findings in [`ai-demo/COMPARISON.md`](./COMPARISON.md).

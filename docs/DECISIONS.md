@@ -465,6 +465,25 @@
   - **Verified Diff:** Confirmed via file diff that the only differences between the two consumer directories are the 4 AI rule files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 - **Why:** Guarantees a clean, unpolluted, and scientifically fair benchmark for testing AI screen generation in standalone projects.
 
+## ADR-040: Consumer-Side AI Benchmark Design & Documentation (Step 5.6 Item 5)
+
+- **Context:** To ensure the A/B evaluation between unassisted AI screen generation and Shani DS context-aware generation is repeatable, objective, and unbiased, we require a standardized benchmark protocol, identical prompt criteria, realistic visual inputs, and clear reproduction documentation.
+- **Decision:**
+  - **Identical Benchmark Prompt & Visual Mock (`ai-demo/PROMPTS.md`, `ai-demo/figma-input.png`):** Codified the exact prompt string across all benchmark runs without variation: `"Build a shipment pickup scheduling screen matching the attached Figma screenshot: pickup address, date and time slot selection, package count, notes, a summary card, and a confirm button. Use the installed design system."` Provided a realistic Figma-style mobile UI mockup (`ai-demo/figma-input.png`) depicting all form inputs, chips, counters, summary card, and action button.
+  - **Structured Multi-Dimensional Evaluation Matrix (`ai-demo/COMPARISON.md`):** Established 8 objective measurement dimensions:
+    1. Design system compliance (% of UI primitives from `@shani/ui` vs `react-native`).
+    2. Raw hex color count (target 0 with context vs typical 10-20 without).
+    3. Magic spacing/size number count in style objects (target 0 with context).
+    4. 44pt minimum touch target compliance (pass/fail).
+    5. Screen reader accessibility (`accessibilityLabel` on icon buttons, form labels).
+    6. Typographic hierarchy adherence (single display hero, valid text variants).
+    7. Automated AST validation output (`npx shani-ds validate`).
+    8. Honest notes capturing what the model got right, wrong, and manual touches needed.
+  - **Reproduction Guide (`docs/ai/consumer-setup.md`):** Authored an exhaustive step-by-step reproduction guide detailing package building, tarball distribution (`pnpm pack`), isolated consumer provisioning, `npx shani-ds init-ai` usage, AST validator invocation, and result recording.
+  - **Zero Fabrication Principle:** Preserved benchmark integrity by providing clean artifact directories and templates for the user to execute live rather than pre-populating synthetic results.
+- **Why:** Delivers an unassailable, scientifically sound methodology proving the practical velocity and code quality gains of shipping AI context with a component library.
+
+
 
 
 

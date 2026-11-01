@@ -1,51 +1,51 @@
-# Run 2: With Context (Shani Design System Layer)
+# Run 2: With Context (Shani Design System AI Layer)
 
-This folder stores the artifacts from running the prompt **with** the full Shani Design System AI layer active.
-
----
-
-## 1. Environment Setup
-
-- Run the AI assistant inside this repository or provide it with:
-  - `GEMINI.md`, `CLAUDE.md`, or `AGENTS.md` (canonical rules contract).
-  - `packages/ui/components.json` (TypeScript AST component manifest).
-  - Guidelines from `docs/ai/guidelines.md`.
-- Use the **With Context** prompt specified in [`../PROMPTS.md`](../PROMPTS.md).
+This folder stores the raw artifacts from running the benchmark prompt **with** the full Shani Design System AI layer configured.
 
 ---
 
-## 2. Artifacts to Save Here
+## 1. Environment & Setup
 
-When the AI generates the screen, save the following files into this directory:
+- **Working Directory:** An external consumer app initialized with `npx shani-ds init-ai` (e.g. `../consumer-with-context`).
+- **Context Configured:** Contains AI rules files (`GEMINI.md`, `CLAUDE.md`, `AGENTS.md`, `.cursorrules`) referencing `@node_modules/@shani/ui/AGENTS.md` and pointing to `node_modules/@shani/ui/components.json`.
+- **Session:** A fresh AI session (Gemini CLI, Claude Code, Cursor, or web interface) with zero prior chat context.
+
+---
+
+## 2. Identical Test Prompt
+
+Submit the exact, unmodified prompt to the AI assistant along with the image [`ai-demo/figma-input.png`](../figma-input.png):
+
+```markdown
+Build a shipment pickup scheduling screen matching the attached Figma screenshot: pickup address, date and time slot selection, package count, notes, a summary card, and a confirm button. Use the installed design system.
+```
+
+---
+
+## 3. Artifacts to Save Here
+
+When the AI produces its code, save the following files into this directory:
 
 | Filename | Description |
 | :--- | :--- |
-| `prompt.md` | The exact prompt submitted to the assistant. |
-| `PickupScreen.tsx` | The code output produced by the AI adhering to `@shani/ui`. |
-| `screenshot.png` | Screenshot of the screen running on mobile or web. |
-| `validation-report.txt` | Terminal output from running `pnpm validate:screen ai-demo/with-context/PickupScreen.tsx`. |
+| `PickupScreen.tsx` | The raw, unmodified code output produced by the AI assistant. |
+| `screenshot.png` | Screenshot of the screen rendered on web or mobile. |
+| `validation-report.txt` | Terminal output from running `npx shani-ds validate PickupScreen.tsx`. |
 
 ---
 
-## 3. How to Validate & Test
+## 4. How to Generate the Validation Report
 
-### Run AST Validation
+Inside the consumer app directory (`../consumer-with-context`):
+
 ```bash
-pnpm validate:screen ai-demo/with-context/PickupScreen.tsx > ai-demo/with-context/validation-report.txt 2>&1
+npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/with-context/validation-report.txt 2>&1
 ```
 
-*(Expected output: `0 violations`, exit code 0).*
-
-### Preview in Gallery
-Follow the testing instructions in [`../PROMPTS.md`](../PROMPTS.md) to preview `PickupScreen.tsx` directly inside the Expo gallery app at `apps/gallery/app/demos/pickup.tsx`.
+*(Expected output: `0 violations detected across 1 file`, exit code 0).*
 
 ---
 
-## 4. Expected Quality Standards
+## 5. Next Steps
 
-With the AI layer active, the generated screen should demonstrate:
-- **100% `@shani/ui` Primitives:** `Box`, `VStack`, `HStack`, `Text`, `Button`, `TextField`, `Card`, `Badge`, `Switch`, `Icon`.
-- **Zero Raw Hex Colors:** All colors consume `theme.colors.*` or semantic prop aliases (`color="secondary"`, `variant="brand"`).
-- **Zero Raw Numeric Layout Styles:** All padding, margins, and gaps consume the 4pt token scale (`spacing="4"`, `p="4"`).
-- **Ergonomic Accessibility:** Minimum 44×44pt touch targets on all interactive elements, compile-time enforced `accessibilityLabel` on `IconButton`, and clear form field labels.
-- **Responsive Card Action Placement:** Secondary actions in card header, single primary action in card footer wrapping properly on narrow viewports.
+After running this test, compare the artifacts with Run 1 and document the full evaluation in [`../COMPARISON.md`](../COMPARISON.md).
