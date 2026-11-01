@@ -67,6 +67,38 @@ describe('Timeline Component (Group D)', () => {
     expect(screen.queryByTestId('status-timeline-step-3-line')).toBeNull();
   });
 
+  it('renders long titles, descriptions, and timestamps with responsive wrapping', () => {
+    const longSteps: TimelineStep[] = [
+      {
+        id: 'step-long',
+        title: 'Extremely Long Shipment Milestone Title That Exceeds Normal Screen Width in Narrow Viewport',
+        description: 'Detailed multi-line logistics status description with comprehensive warehouse routing details, chute identification, and tracking waybill verification info.',
+        timestamp: 'Estimated 04:30 PM • Oct 31, 2026 • Timezone UTC-7',
+        state: 'current',
+      },
+    ];
+
+    render(
+      <ThemeProvider>
+        <Timeline testID="long-timeline" steps={longSteps} />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByText(/Extremely Long Shipment Milestone Title/)).toBeTruthy();
+    expect(screen.getByText(/Detailed multi-line logistics status description/)).toBeTruthy();
+    expect(screen.getByText(/Estimated 04:30 PM • Oct 31, 2026/)).toBeTruthy();
+
+    const titleEl = screen.getByText(/Extremely Long Shipment Milestone Title/);
+    const titleStyle = Array.isArray(titleEl.props.style)
+      ? Object.assign({}, ...titleEl.props.style)
+      : titleEl.props.style;
+
+    // Must allow shrinking with minWidth: 0 and flexShrink: 1
+    expect(titleStyle.minWidth).toBe(0);
+    expect(titleStyle.flexShrink).toBe(1);
+    expect(titleStyle.maxWidth).toBe('100%');
+  });
+
   it('forwards ref correctly', () => {
     const ref = React.createRef<View>();
     render(

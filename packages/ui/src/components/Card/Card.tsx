@@ -61,6 +61,7 @@ export const Card = forwardRef<View, CardProps>(function Card(
     borderWidth,
     ...(borderColor && { borderColor }),
     ...shadowStyle,
+    maxWidth: '100%',
   };
 
   return (
@@ -85,7 +86,7 @@ export const CardHeader = forwardRef<View, CardSectionProps>(function CardHeader
 ) {
   const { theme } = useTheme();
   return (
-    <View ref={ref} testID={testID} style={[{ marginBottom: theme.spacing[3] }, style]} {...rest}>
+    <View ref={ref} testID={testID} style={[{ marginBottom: theme.spacing[3], width: '100%', maxWidth: '100%' }, style]} {...rest}>
       {children}
     </View>
   );
@@ -99,7 +100,7 @@ export const CardContent = forwardRef<View, CardSectionProps>(function CardConte
   ref
 ) {
   return (
-    <View ref={ref} testID={testID} style={style} {...rest}>
+    <View ref={ref} testID={testID} style={[{ width: '100%', maxWidth: '100%' }, style]} {...rest}>
       {children}
     </View>
   );
@@ -117,7 +118,7 @@ export const CardFooter = forwardRef<View, CardSectionProps>(function CardFooter
     <View
       ref={ref}
       testID={testID}
-      style={[{ marginTop: theme.spacing[3], flexDirection: 'row', alignItems: 'center' }, style]}
+      style={[{ marginTop: theme.spacing[3], flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '100%' }, style]}
       {...rest}
     >
       {children}

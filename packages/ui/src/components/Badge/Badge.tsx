@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import {
   View,
   Text as RNText,
+  StyleSheet,
   type ViewProps,
   type ViewStyle,
   type TextStyle,
@@ -57,15 +58,19 @@ export const Badge = forwardRef<View, BadgeProps>(function Badge(
   const variantTokens = badgeTokens[variant];
   const sizeTokens = badgeTokens.size[size];
 
+  const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
+
   const containerStyle: ViewStyle = {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    alignSelf: flatStyle.alignSelf ?? 'flex-start',
     backgroundColor: variantTokens.bg,
     borderRadius: theme.radius.full,
     paddingHorizontal: sizeTokens.paddingHorizontal,
     paddingVertical: sizeTokens.paddingVertical,
     gap: theme.spacing[1],
+    maxWidth: '100%',
+    flexWrap: 'wrap',
   };
 
   const labelStyle: TextStyle = {
@@ -74,6 +79,7 @@ export const Badge = forwardRef<View, BadgeProps>(function Badge(
     fontWeight: theme.typography.fontWeight.semibold,
     color: variantTokens.text,
     textAlign: 'center',
+    flexShrink: 1,
   };
 
   const dotSize = size === 'sm' ? 6 : 8;

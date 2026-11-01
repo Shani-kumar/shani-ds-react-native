@@ -9,7 +9,7 @@ export type ResponsiveRecord<T> = Partial<Record<BreakpointKey, T>>;
 
 export type ResponsiveValue<T> = T | ResponsiveRecord<T>;
 
-const BREAKPOINT_ORDER: BreakpointKey[] = ['wide', 'desktop', 'tablet', 'phone'];
+const BREAKPOINT_ORDER: BreakpointKey[] = ['wide', 'desktop', 'tablet', 'compact', 'phone'];
 
 /**
  * Determines the active breakpoint given a viewport width and breakpoint scale.
@@ -18,6 +18,7 @@ export function getBreakpoint(width: number, breakpoints: BreakpointScale): Brea
   if (width >= breakpoints.wide) return 'wide';
   if (width >= breakpoints.desktop) return 'desktop';
   if (width >= breakpoints.tablet) return 'tablet';
+  if (width >= breakpoints.compact) return 'compact';
   return 'phone';
 }
 
@@ -67,6 +68,7 @@ export interface BreakpointInfo {
   width: number;
   height: number;
   isPhone: boolean;
+  isCompact: boolean;
   isTablet: boolean;
   isDesktop: boolean;
   isWide: boolean;
@@ -88,6 +90,7 @@ export function useBreakpoint(): BreakpointInfo {
       width,
       height,
       isPhone: breakpoint === 'phone',
+      isCompact: breakpoint === 'compact',
       isTablet: breakpoint === 'tablet',
       isDesktop: breakpoint === 'desktop',
       isWide: breakpoint === 'wide',

@@ -1,5 +1,5 @@
 import { forwardRef, useEffect } from 'react';
-import { Pressable, View, type ViewStyle, type StyleProp } from 'react-native';
+import { Pressable, View, Platform, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -102,12 +102,16 @@ export const Switch = forwardRef<View, SwitchProps>(function Switch(
       : switchTokens.track.bgDisabledInactive;
   }
 
+  const isFocused = state.isFocused && !state.isDisabled;
+
   const trackStyle: ViewStyle = {
     width: switchTokens.track.width,
     height: switchTokens.track.height,
     borderRadius: theme.radius.full,
     backgroundColor: trackBg,
-    padding: switchTokens.track.padding,
+    padding: isFocused ? 0 : switchTokens.track.padding,
+    borderWidth: isFocused ? theme.borderWidth.medium : 0,
+    borderColor: isFocused ? theme.colors.border.focus : 'transparent',
     justifyContent: 'center',
   };
 
@@ -117,6 +121,8 @@ export const Switch = forwardRef<View, SwitchProps>(function Switch(
     borderRadius: theme.radius.full,
     backgroundColor: state.isDisabled ? switchTokens.thumb.bgDisabled : switchTokens.thumb.bg,
   };
+
+  const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
 
   return (
     <Pressable
@@ -128,7 +134,13 @@ export const Switch = forwardRef<View, SwitchProps>(function Switch(
           minWidth: switchTokens.minTouchTarget,
           flexDirection: 'row',
           alignItems: 'center',
+          alignSelf: flatStyle.alignSelf ?? 'flex-start',
           gap: theme.spacing[2],
+          maxWidth: '100%',
+          ...(Platform.OS === 'web' && {
+            outlineStyle: 'none' as never,
+            outlineWidth: 0 as never,
+          }),
         },
         style,
       ]}
@@ -141,7 +153,7 @@ export const Switch = forwardRef<View, SwitchProps>(function Switch(
       </View>
 
       {label ? (
-        <Text variant="label" color={state.isDisabled ? 'muted' : 'primary'}>
+        <Text variant="label" color={state.isDisabled ? 'muted' : 'primary'} style={{ flexShrink: 1 }}>
           {label}
         </Text>
       ) : (

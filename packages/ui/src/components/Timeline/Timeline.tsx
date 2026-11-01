@@ -47,7 +47,7 @@ export const Timeline = forwardRef<View, TimelineProps>(function Timeline(
       accessible={true}
       accessibilityRole="list"
       accessibilityLabel={`Shipment progress: ${steps.length} milestones`}
-      style={[{ width: '100%' }, style]}
+      style={[{ width: '100%', maxWidth: '100%' }, style]}
     >
       {steps.map((step, index) => {
         const isLast = index === steps.length - 1;
@@ -120,12 +120,19 @@ export const Timeline = forwardRef<View, TimelineProps>(function Timeline(
             style={{
               flexDirection: 'row',
               position: 'relative',
+              width: '100%',
+              maxWidth: '100%',
               paddingBottom: isLast ? 0 : theme.spacing[5],
             }}
           >
             {/* Indicator Column with connecting line */}
             <View
-              style={{ alignItems: 'center', width: indicatorSize, marginRight: theme.spacing[3] }}
+              style={{
+                alignItems: 'center',
+                width: indicatorSize,
+                marginRight: theme.spacing[3],
+                flexShrink: 0,
+              }}
             >
               <View style={indicatorContainerStyle}>{indicatorContent}</View>
               {!isLast && (
@@ -137,31 +144,44 @@ export const Timeline = forwardRef<View, TimelineProps>(function Timeline(
             </View>
 
             {/* Content Column */}
-            <View style={{ flex: 1, paddingTop: 2 }}>
+            <View style={{ flex: 1, minWidth: 0, maxWidth: '100%', paddingTop: 2 }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  alignItems: 'baseline',
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap',
+                  gap: theme.spacing[1],
+                  width: '100%',
+                  maxWidth: '100%',
                 }}
               >
                 <Text
-                  variant={isCurrent ? 'title' : 'body'}
+                  variant={isCurrent ? 'title' : 'label'}
                   weight={isCurrent ? 'bold' : isCompleted ? 'semibold' : 'regular'}
                   color={isCompleted || isCurrent ? 'primary' : 'secondary'}
+                  style={{ flexShrink: 1, minWidth: 0, maxWidth: '100%' }}
                 >
                   {step.title}
                 </Text>
                 {step.timestamp ? (
-                  <Text variant="caption" color="secondary">
+                  <Text
+                    variant="caption"
+                    color="secondary"
+                    style={{ flexShrink: 1, minWidth: 0, maxWidth: '100%' }}
+                  >
                     {step.timestamp}
                   </Text>
                 ) : null}
               </View>
 
               {step.description ? (
-                <View style={{ marginTop: theme.spacing[1] }}>
-                  <Text variant="caption" color={isCurrent ? 'primary' : 'secondary'}>
+                <View style={{ marginTop: theme.spacing[1], width: '100%', maxWidth: '100%' }}>
+                  <Text
+                    variant="caption"
+                    color={isCurrent ? 'primary' : 'secondary'}
+                    style={{ flexShrink: 1, minWidth: 0, maxWidth: '100%' }}
+                  >
                     {step.description}
                   </Text>
                 </View>

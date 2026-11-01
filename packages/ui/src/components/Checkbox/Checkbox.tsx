@@ -1,5 +1,5 @@
 import { forwardRef, useEffect } from 'react';
-import { Pressable, View, type ViewStyle, type StyleProp } from 'react-native';
+import { Pressable, View, Platform, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -123,6 +123,9 @@ export const Checkbox = forwardRef<View, CheckboxProps>(function Checkbox(
   if (state.isDisabled) {
     boxBg = isCheckedOrIndeterminate ? checkboxTokens.bg.disabled : checkboxTokens.bg.default;
     boxBorder = checkboxTokens.border.disabled;
+  } else if (state.isFocused) {
+    boxBg = isCheckedOrIndeterminate ? checkboxTokens.bg.checked : checkboxTokens.bg.default;
+    boxBorder = checkboxTokens.border.focus;
   } else if (isCheckedOrIndeterminate) {
     boxBg = checkboxTokens.bg.checked;
     boxBorder = checkboxTokens.border.checked;
@@ -149,6 +152,8 @@ export const Checkbox = forwardRef<View, CheckboxProps>(function Checkbox(
     disabled: state.isDisabled,
   };
 
+  const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
+
   return (
     <Pressable
       ref={ref}
@@ -160,7 +165,13 @@ export const Checkbox = forwardRef<View, CheckboxProps>(function Checkbox(
           minWidth: sizeTokens.minTouchTarget,
           flexDirection: 'row',
           alignItems: 'center',
+          alignSelf: flatStyle.alignSelf ?? 'flex-start',
           gap: theme.spacing[2],
+          maxWidth: '100%',
+          ...(Platform.OS === 'web' && {
+            outlineStyle: 'none' as never,
+            outlineWidth: 0 as never,
+          }),
         },
         style,
       ]}
@@ -175,6 +186,7 @@ export const Checkbox = forwardRef<View, CheckboxProps>(function Checkbox(
         <Text
           variant={size === 'lg' ? 'body' : 'label'}
           color={state.isDisabled ? 'muted' : 'primary'}
+          style={{ flexShrink: 1 }}
         >
           {label}
         </Text>

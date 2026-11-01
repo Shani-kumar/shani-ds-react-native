@@ -2,6 +2,7 @@ import { forwardRef, useEffect } from 'react';
 import {
   Pressable,
   ActivityIndicator,
+  StyleSheet,
   type GestureResponderEvent,
   type ViewStyle,
   type StyleProp,
@@ -153,6 +154,22 @@ export const IconButton = forwardRef<View, IconButtonProps>(function IconButton(
         : buttonTokens.secondary.border;
   }
 
+  const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
+  const resolvedAlignSelf: ViewStyle['alignSelf'] = flatStyle.alignSelf ?? 'center';
+
+  const pressableStyle: ViewStyle = {
+    width: dimension,
+    height: dimension,
+    alignSelf: resolvedAlignSelf,
+    ...(flatStyle.margin !== undefined && { margin: flatStyle.margin }),
+    ...(flatStyle.marginTop !== undefined && { marginTop: flatStyle.marginTop }),
+    ...(flatStyle.marginBottom !== undefined && { marginBottom: flatStyle.marginBottom }),
+    ...(flatStyle.marginLeft !== undefined && { marginLeft: flatStyle.marginLeft }),
+    ...(flatStyle.marginRight !== undefined && { marginRight: flatStyle.marginRight }),
+    ...(flatStyle.marginHorizontal !== undefined && { marginHorizontal: flatStyle.marginHorizontal }),
+    ...(flatStyle.marginVertical !== undefined && { marginVertical: flatStyle.marginVertical }),
+  };
+
   const containerStyle: ViewStyle = {
     width: dimension,
     height: dimension,
@@ -161,11 +178,12 @@ export const IconButton = forwardRef<View, IconButtonProps>(function IconButton(
     borderRadius: shape === 'circle' ? theme.radius.full : theme.radius.md,
     backgroundColor,
     borderWidth,
+    alignSelf: resolvedAlignSelf,
     ...(borderColor && { borderColor }),
   };
 
   return (
-    <Pressable ref={ref} {...pressableProps}>
+    <Pressable ref={ref} {...pressableProps} style={pressableStyle}>
       <Animated.View style={[containerStyle, animatedStyle, style]}>
         {loading ? (
           <ActivityIndicator

@@ -157,4 +157,25 @@ describe('IconButton Component (Group B)', () => {
 
     expect(ref.current).toBeDefined();
   });
+
+  it('does not stretch vertically inside a parent row with alignItems: stretch', () => {
+    render(
+      <ThemeProvider>
+        <View style={{ flexDirection: 'row', alignItems: 'stretch', height: 120 }}>
+          <IconButton testID="stretch-icon-btn" name="Package" accessibilityLabel="Package" size="sm" />
+        </View>
+      </ThemeProvider>
+    );
+
+    const btn = screen.getByTestId('stretch-icon-btn');
+    const flatPressable = StyleSheet.flatten(btn.props.style);
+    expect(flatPressable.alignSelf).toBe('center');
+    expect(flatPressable.height).toBe(44);
+    expect(flatPressable.width).toBe(44);
+
+    const flatInner = StyleSheet.flatten((btn.children[0] as React.ReactElement).props.style);
+    expect(flatInner.height).toBe(44);
+    expect(flatInner.width).toBe(44);
+    expect(flatInner.alignSelf).toBe('center');
+  });
 });

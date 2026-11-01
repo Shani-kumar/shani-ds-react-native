@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   Pressable,
+  Platform,
   type TextInputProps,
   type ViewStyle,
   type TextStyle,
@@ -139,16 +140,24 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
     borderColor,
     backgroundColor,
     gap: sizeTokens.gap,
+    width: '100%',
+    maxWidth: '100%',
   };
 
   const nativeInputStyle: TextStyle = {
     flex: 1,
+    minWidth: 0,
     height: '100%',
     fontFamily: theme.typography.fontFamily.sans,
     fontSize: sizeTokens.fontSize,
     color: textColor,
     padding: 0,
     margin: 0,
+    borderWidth: 0,
+    ...(Platform.OS === 'web' && {
+      outlineStyle: 'none' as never,
+      outlineWidth: 0 as never,
+    }),
   };
 
   const effectiveSecure = secureTextEntry && !isSecureVisible;
@@ -171,7 +180,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
       ) : null}
 
       <View style={boxStyle}>
-        {prefix ? <View testID={`${fieldId}-prefix`}>{prefix}</View> : null}
+        {prefix ? <View testID={`${fieldId}-prefix`} style={{ flexShrink: 0 }}>{prefix}</View> : null}
 
         <TextInput
           ref={ref}
@@ -192,6 +201,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
             onPress={() => setIsSecureVisible(!isSecureVisible)}
             testID={`${fieldId}-secure-toggle`}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={{ flexShrink: 0 }}
           >
             <Icon
               icon={isSecureVisible ? EyeOff : Eye}
@@ -201,7 +211,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
           </Pressable>
         ) : null}
 
-        {suffix ? <View testID={`${fieldId}-suffix`}>{suffix}</View> : null}
+        {suffix ? <View testID={`${fieldId}-suffix`} style={{ flexShrink: 0 }}>{suffix}</View> : null}
       </View>
 
       {state.hasError && state.errorMessage ? (

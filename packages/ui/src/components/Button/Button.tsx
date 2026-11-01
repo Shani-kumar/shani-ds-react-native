@@ -3,6 +3,7 @@ import {
   Pressable,
   Text,
   ActivityIndicator,
+  StyleSheet,
   type GestureResponderEvent,
   type ViewStyle,
   type TextStyle,
@@ -157,6 +158,36 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
         : buttonTokens.secondary.border;
   }
 
+  const flatStyle = (StyleSheet.flatten(style) || {}) as ViewStyle;
+
+  // Root alignSelf prevents parent stretch rows from expanding height
+  const resolvedAlignSelf: ViewStyle['alignSelf'] = flatStyle.alignSelf ?? 'center';
+
+  const isExpandingHorizontally =
+    fullWidth ||
+    flatStyle.flexGrow !== undefined ||
+    flatStyle.flex !== undefined ||
+    flatStyle.width === '100%';
+
+  const pressableStyle: ViewStyle = {
+    alignSelf: resolvedAlignSelf,
+    ...(fullWidth && { width: '100%' }),
+    ...(flatStyle.flexGrow !== undefined && { flexGrow: flatStyle.flexGrow }),
+    ...(flatStyle.flexShrink !== undefined && { flexShrink: flatStyle.flexShrink }),
+    ...(flatStyle.flexBasis !== undefined && { flexBasis: flatStyle.flexBasis }),
+    ...(flatStyle.flex !== undefined && { flex: flatStyle.flex }),
+    ...(flatStyle.width !== undefined && { width: flatStyle.width }),
+    ...(flatStyle.maxWidth !== undefined && { maxWidth: flatStyle.maxWidth }),
+    ...(flatStyle.minWidth !== undefined && { minWidth: flatStyle.minWidth }),
+    ...(flatStyle.margin !== undefined && { margin: flatStyle.margin }),
+    ...(flatStyle.marginTop !== undefined && { marginTop: flatStyle.marginTop }),
+    ...(flatStyle.marginBottom !== undefined && { marginBottom: flatStyle.marginBottom }),
+    ...(flatStyle.marginLeft !== undefined && { marginLeft: flatStyle.marginLeft }),
+    ...(flatStyle.marginRight !== undefined && { marginRight: flatStyle.marginRight }),
+    ...(flatStyle.marginHorizontal !== undefined && { marginHorizontal: flatStyle.marginHorizontal }),
+    ...(flatStyle.marginVertical !== undefined && { marginVertical: flatStyle.marginVertical }),
+  };
+
   const containerStyle: ViewStyle = {
     flexDirection: 'row',
     alignItems: 'center',
@@ -169,8 +200,9 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
     borderRadius: theme.radius.md,
     backgroundColor,
     borderWidth,
+    alignSelf: resolvedAlignSelf,
     ...(borderColor && { borderColor }),
-    ...(fullWidth && { width: '100%', alignSelf: 'stretch' }),
+    ...(isExpandingHorizontally && { width: '100%' }),
   };
 
   const labelStyle: TextStyle = {
@@ -194,7 +226,7 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
   };
 
   return (
-    <Pressable ref={ref} {...pressableProps} style={fullWidth ? { width: '100%' } : undefined}>
+    <Pressable ref={ref} {...pressableProps} style={pressableStyle}>
       <Animated.View style={[containerStyle, animatedStyle, style]}>
         {loading ? (
           <ActivityIndicator

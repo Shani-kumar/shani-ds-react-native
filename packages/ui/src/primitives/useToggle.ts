@@ -13,11 +13,14 @@ export interface UseToggleOptions {
   accessibilityLabel?: string;
   accessibilityHint?: string;
   testID?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export interface UseToggleState {
   isChecked: boolean;
   isPressed: boolean;
+  isFocused: boolean;
   isDisabled: boolean;
   isReadOnly: boolean;
   setChecked: (checked: boolean) => void;
@@ -28,6 +31,8 @@ export interface ToggleProps {
   onPress: () => void;
   onPressIn: () => void;
   onPressOut: () => void;
+  onFocus: () => void;
+  onBlur: () => void;
   disabled: boolean;
   accessible: boolean;
   accessibilityRole: AccessibilityRole;
@@ -60,6 +65,7 @@ export function useToggle(options: UseToggleOptions = {}): UseToggleReturn {
 
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const [isPressed, setIsPressed] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const isControlled = controlledChecked !== undefined;
   const isChecked = isControlled ? controlledChecked : internalChecked;
@@ -89,10 +95,23 @@ export function useToggle(options: UseToggleOptions = {}): UseToggleReturn {
     setIsPressed(false);
   }, []);
 
+  const handleFocus = useCallback(() => {
+    if (!disabled && !readOnly) {
+      setIsFocused(true);
+      options.onFocus?.();
+    }
+  }, [disabled, readOnly, options]);
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    options.onBlur?.();
+  }, [options]);
+
   return {
     state: {
       isChecked,
       isPressed,
+      isFocused,
       isDisabled: disabled,
       isReadOnly: readOnly,
       setChecked,
@@ -102,6 +121,8 @@ export function useToggle(options: UseToggleOptions = {}): UseToggleReturn {
       onPress: toggle,
       onPressIn: handlePressIn,
       onPressOut: handlePressOut,
+      onFocus: handleFocus,
+      onBlur: handleBlur,
       disabled,
       accessible: true,
       accessibilityRole: role,

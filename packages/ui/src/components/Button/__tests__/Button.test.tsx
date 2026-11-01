@@ -217,4 +217,42 @@ describe('Button Component (Group B)', () => {
     expect(btn.props.accessibilityLabel).toBe('Proceed to warehouse checkout');
     expect(btn.props.accessibilityHint).toBe('Navigates to the summary screen');
   });
+
+  it('does not stretch vertically inside a parent row with alignItems: stretch', () => {
+    render(
+      <ThemeProvider>
+        <View style={{ flexDirection: 'row', alignItems: 'stretch', height: 120 }}>
+          <Button testID="stretch-sm" size="sm">
+            Compact Action
+          </Button>
+          <Button testID="stretch-md" size="md">
+            Medium Action
+          </Button>
+          <Button testID="stretch-lg" size="lg">
+            Large Action
+          </Button>
+        </View>
+      </ThemeProvider>
+    );
+
+    const btnSm = screen.getByTestId('stretch-sm');
+    const flatSmPressable = StyleSheet.flatten(btnSm.props.style);
+    expect(flatSmPressable.alignSelf).toBe('center');
+
+    const flatSmInner = StyleSheet.flatten((btnSm.children[0] as React.ReactElement).props.style);
+    expect(flatSmInner.minHeight).toBe(lightTheme.components.button.size.sm.minHeight);
+    expect(flatSmInner.alignSelf).toBe('center');
+
+    const btnMd = screen.getByTestId('stretch-md');
+    const flatMdPressable = StyleSheet.flatten(btnMd.props.style);
+    expect(flatMdPressable.alignSelf).toBe('center');
+    const flatMdInner = StyleSheet.flatten((btnMd.children[0] as React.ReactElement).props.style);
+    expect(flatMdInner.minHeight).toBe(lightTheme.components.button.size.md.minHeight);
+
+    const btnLg = screen.getByTestId('stretch-lg');
+    const flatLgPressable = StyleSheet.flatten(btnLg.props.style);
+    expect(flatLgPressable.alignSelf).toBe('center');
+    const flatLgInner = StyleSheet.flatten((btnLg.children[0] as React.ReactElement).props.style);
+    expect(flatLgInner.minHeight).toBe(lightTheme.components.button.size.lg.minHeight);
+  });
 });

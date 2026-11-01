@@ -120,7 +120,9 @@ describe('Style and Responsive Helpers (Step 2.2)', () => {
 
     it('maps screen widths to correct breakpoints', () => {
       expect(getBreakpoint(375, bps)).toBe('phone');
-      expect(getBreakpoint(767, bps)).toBe('phone');
+      expect(getBreakpoint(599, bps)).toBe('phone');
+      expect(getBreakpoint(600, bps)).toBe('compact');
+      expect(getBreakpoint(767, bps)).toBe('compact');
       expect(getBreakpoint(768, bps)).toBe('tablet');
       expect(getBreakpoint(1023, bps)).toBe('tablet');
       expect(getBreakpoint(1024, bps)).toBe('desktop');
