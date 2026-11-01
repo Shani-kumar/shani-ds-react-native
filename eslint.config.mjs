@@ -14,6 +14,7 @@ export default tseslint.config(
       '**/.expo/**',
       '**/coverage/**',
       '**/generated/**',
+      '**/bin/**',
       '**/jest.config.js',
       '**/jest.setup.js',
       '**/babel.config.js',

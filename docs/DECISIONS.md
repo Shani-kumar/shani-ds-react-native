@@ -425,6 +425,18 @@
   - **Zero Fabrication Mandate:** Maintained data integrity by establishing the clean template structure and test harness without fabricating synthetic AI outputs.
 - **Why:** Delivers clear, verifiable proof of how machine-readable design system rules reduce developer refactoring overhead and eliminate AI hallucinations.
 
+## ADR-036: Packaging AI Context & Tooling Inside `@shani/ui` (Step 5.6 Item 1)
+
+- **Context:** To make the AI layer functional in external consumer applications that install `@shani/ui` (rather than operating exclusively within this monorepo), the component manifest (`components.json`), canonical rules (`AGENTS.md`), compositional guidelines (`docs/`), and CLI validation tooling must be shipped directly inside the published package tarball.
+- **Decision:**
+  - **Package Exports & Files Whitelist:** Configured `packages/ui/package.json` with `"files": ["dist", "bin", "components.json", "AGENTS.md", "docs"]` and standard subpath exports (`"./components.json"`, `"./AGENTS.md"`, `"./docs/*"`).
+  - **Consumer Output (`dist`):** Configured `main` (`./dist/index.js`), `module` (`./dist/index.js`), and `types` (`./dist/index.d.ts`), with `source` pointing to `./src/index.ts` for local Metro development.
+  - **Peer Dependencies:** Configured `react`, `react-native`, `react-native-reanimated`, `react-native-gesture-handler`, `lucide-react-native`, and `react-native-svg` as peer dependencies. Bundled `@shani/tokens` via `bundleDependencies` so consumers can install the tarball self-contained without npm registry dependencies.
+  - **Build Automation & Drift Enforcement:** Automated the synchronization of `packages/ui/AGENTS.md` and `packages/ui/docs/*` from `docs/ai/` via `scripts/sync-rules.ts`. Extended `pnpm rules:check` and `pnpm manifest:check` to fail CI if the packaged copies are missing or stale.
+  - **CLI Binary:** Registered `shani-ds` executable bin (`bin/shani-ds.js`) that wraps the TypeScript AST validator and future initialization subcommands.
+- **Why:** Enables any external React Native or Expo app repository installing `@shani/ui` to resolve the machine-readable design system schema and run validation without accessing the monorepo source.
+
+
 
 
 
