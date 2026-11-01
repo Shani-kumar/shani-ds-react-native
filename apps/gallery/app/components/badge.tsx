@@ -10,6 +10,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const doc = getComponentDoc('Badge');
 
 export default function BadgePage() {
   const [variant, setVariant] = useState<BadgeVariant>('success');
@@ -18,9 +21,9 @@ export default function BadgePage() {
 
   return (
     <ComponentPage
-      title="Badge"
-      description="Semantic status indicator with guaranteed WCAG AA contrast (≥ 4.5:1), optional status dots, and leading icons."
-      category="Display"
+      title={doc.name}
+      description={doc.description}
+      category={doc.category}
       playground={
         <VStack spacing="2" align="center">
           <Badge variant={variant} size={size} dot={dot}>
@@ -85,71 +88,11 @@ export default function BadgePage() {
           </Box>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'children',
-          type: 'string | React element',
-          default: 'required',
-          description: 'Badge text label content describing state or category.',
-          example: 'children="Out for Delivery"',
-        },
-        {
-          name: 'variant',
-          type: "'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'",
-          default: "'neutral'",
-          description: 'Semantic feedback color pairing. All pairings strictly verified for WCAG AA (≥4.5:1) text contrast.',
-          example: 'variant="success"',
-        },
-        {
-          name: 'size',
-          type: "'sm' | 'md'",
-          default: "'md'",
-          description: 'Badge dimensions and font scale (sm uses caption 12pt; md uses label 14pt).',
-          example: 'size="sm"',
-        },
-        {
-          name: 'dot',
-          type: 'boolean',
-          default: 'false',
-          description: 'Renders a colored status indicator dot before the label to denote live state.',
-          example: 'dot={true}',
-        },
-        {
-          name: 'icon',
-          type: 'Lucide icon component or string',
-          default: 'None',
-          description: "Optional leading icon rendered before label. Accepts PascalCase string name (e.g. 'Truck') or direct Lucide component.",
-          example: 'icon="Clock"',
-        },
-        {
-          name: 'style',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer layout constraints only (margin, flexShrink). Badge height, radius, padding, and colors come from tokens.',
-          example: 'style={{ flexShrink: 0 }}',
-        },
-      ]}
-      dos={[
-        'Use semantic variants according to their true feedback state (success=green, warning=amber, danger=red).',
-        'Use the dot prop when status represents live or changing operational states.',
-        'Keep badge text concise (1 to 3 words) for quick mobile scanning by couriers.',
-      ]}
-      donts={[
-        'Never use danger badges for non-critical information.',
-        'Never use raw hex colors or inline background styles for badges.',
-      ]}
-      a11yNotes={[
-        'Every badge foreground and background pairing has been mathematically tested and verified in scripts/contrast.ts to meet or exceed WCAG AA 4.5:1.',
-        'Badge applies accessibilityRole="text" so screen readers speak status clearly without announcing it as a button.',
-      ]}
-      codeSnippet={`import { Badge } from '@shani/ui';
-
-export function ParcelStatusBadge({ status }: { status: 'delivered' | 'delayed' }) {
-  if (status === 'delivered') {
-    return <Badge variant="success" dot={true}>Delivered</Badge>;
-  }
-  return <Badge variant="warning" dot={true}>Delayed</Badge>;
-}`}
+      propsData={formatPropsForGallery(doc.props)}
+      dos={doc.whenToUse}
+      donts={doc.whenNotToUse}
+      a11yNotes={doc.accessibilityNotes}
+      codeSnippet={doc.example}
     />
   );
 }

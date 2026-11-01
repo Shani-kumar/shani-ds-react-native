@@ -10,6 +10,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const doc = getComponentDoc('IconButton');
 
 export default function IconButtonPage() {
   const [variant, setVariant] = useState<ButtonVariant>('secondary');
@@ -18,9 +21,9 @@ export default function IconButtonPage() {
 
   return (
     <ComponentPage
-      title="IconButton"
-      description="Touch-optimized 44x44 icon button with compile-time mandatory accessibility labels and UI-thread spring physics."
-      category="Actions"
+      title={doc.name}
+      description={doc.description}
+      category={doc.category}
       playground={
         <VStack spacing="2" align="center">
           <IconButton
@@ -107,104 +110,11 @@ export default function IconButtonPage() {
           </Box>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'accessibilityLabel',
-          type: 'string',
-          default: 'required',
-          description: 'Spoken description for screen readers. Strictly required in TypeScript to prevent unlabeled icon buttons.',
-          example: 'accessibilityLabel="Scan package barcode"',
-        },
-        {
-          name: 'name',
-          type: 'string',
-          default: 'None',
-          description: "PascalCase name of any supported Lucide icon (e.g. 'Printer', 'Share2', 'QrCode'). Use either 'name' or 'icon'.",
-          example: 'name="QrCode"',
-        },
-        {
-          name: 'icon',
-          type: 'Lucide icon component',
-          default: 'None',
-          description: "Direct Lucide icon component reference. Requires import from 'lucide-react-native'.",
-          example: 'icon={QrCode}',
-        },
-        {
-          name: 'variant',
-          type: "'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger'",
-          default: "'ghost'",
-          description: 'Visual style tier establishing action hierarchy.',
-          example: 'variant="primary"',
-        },
-        {
-          name: 'shape',
-          type: "'square' | 'circle'",
-          default: "'square'",
-          description: 'Corner geometry (square uses theme.radius.md; circle uses theme.radius.full).',
-          example: 'shape="circle"',
-        },
-        {
-          name: 'size',
-          type: "'sm' | 'md' | 'lg'",
-          default: "'md'",
-          description: 'Button touch area strictly enforcing ≥44x44pt minimums (sm=44x44, md=48x48, lg=56x56).',
-          example: 'size="md"',
-        },
-        {
-          name: 'onPress',
-          type: '(event: GestureResponderEvent) => void',
-          default: 'None',
-          description: 'Callback invoked on tap or press release.',
-          example: 'onPress={() => handleScan()}',
-        },
-        {
-          name: 'loading',
-          type: 'boolean',
-          default: 'false',
-          description: 'Displays a spinner indicator and temporarily disables taps.',
-          example: 'loading={false}',
-        },
-        {
-          name: 'disabled',
-          type: 'boolean',
-          default: 'false',
-          description: 'Disables press interactions and applies muted tokens with accessible contrast.',
-          example: 'disabled={false}',
-        },
-        {
-          name: 'style',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer layout positioning only (margin). Touch target dimensions and colors must come from tokens.',
-          example: 'style={{ marginLeft: 8 }}',
-        },
-      ]}
-      dos={[
-        'Always provide descriptive accessibilityLabels explaining the action (e.g. "Scan tracking barcode").',
-        'Use size="sm" in dense toolbars where 44x44pt preserves touch target compliance.',
-      ]}
-      donts={[
-        'Never use generic labels like "button" or "icon".',
-        'Never create custom icon buttons with raw Pressable; use IconButton to ensure 44pt touch areas.',
-      ]}
-      a11yNotes={[
-        'IconButton strictly mandates accessibilityLabel: string in TypeScript to prevent unlabeled buttons from ever compiling.',
-        'Meets WCAG 2.5.5 Target Size minimum (44x44pt) across all platform devices.',
-      ]}
-      codeSnippet={`import { IconButton } from '@shani/ui';
-
-export function WaybillScanner() {
-  return (
-    <IconButton
-      name="QrCode"
-      accessibilityLabel="Scan package barcode"
-      variant="primary"
-      size="md"
-      shape="circle"
-      onPress={() => console.log('Scanning')}
-    />
-  );
-}`}
+      propsData={formatPropsForGallery(doc.props)}
+      dos={doc.whenToUse}
+      donts={doc.whenNotToUse}
+      a11yNotes={doc.accessibilityNotes}
+      codeSnippet={doc.example}
     />
   );
 }

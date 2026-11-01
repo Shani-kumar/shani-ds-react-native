@@ -9,6 +9,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const doc = getComponentDoc('TextField');
 
 export default function TextFieldPage() {
   const [value, setValue] = useState('SHN-741920-US');
@@ -18,9 +21,9 @@ export default function TextFieldPage() {
 
   return (
     <ComponentPage
-      title="TextField"
-      description="Accessible text input built on useTextField with error association, secure text toggles, and tokenized border states."
-      category="Forms"
+      title={doc.name}
+      description={doc.description}
+      category={doc.category}
       playground={
         <Box style={{ width: '100%' }}>
           <TextField
@@ -85,132 +88,11 @@ export default function TextFieldPage() {
           </Box>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'label',
-          type: 'string',
-          default: 'None',
-          description: 'Visible field label rendered above the input. Recommended for all forms.',
-          example: 'label="Tracking Number"',
-        },
-        {
-          name: 'value',
-          type: 'string',
-          default: 'None',
-          description: 'Controlled text input value managed by React state.',
-          example: 'value={trackingId}',
-        },
-        {
-          name: 'onChangeText',
-          type: '(text: string) => void',
-          default: 'None',
-          description: 'Callback invoked with new string content on every keystroke.',
-          example: 'onChangeText={(val) => setTrackingId(val)}',
-        },
-        {
-          name: 'placeholder',
-          type: 'string',
-          default: 'None',
-          description: 'Transient placeholder hint text displayed when input is empty.',
-          example: 'placeholder="e.g. SHN-849102-US"',
-        },
-        {
-          name: 'helperText',
-          type: 'string',
-          default: 'None',
-          description: 'Descriptive guidance or format hint rendered below the field.',
-          example: 'helperText="Format: SHN-XXXXXX-US"',
-        },
-        {
-          name: 'error',
-          type: 'boolean | string',
-          default: 'None',
-          description: 'Error message string or boolean flag that switches border to danger token and binds to accessibilityHint.',
-          example: 'error="Invalid barcode format"',
-        },
-        {
-          name: 'prefix',
-          type: 'React element',
-          default: 'None',
-          description: 'Leading icon or adornment element rendered inside the input box.',
-          example: 'prefix={<Icon name="Search" size="sm" color="secondary" />}',
-        },
-        {
-          name: 'suffix',
-          type: 'React element',
-          default: 'None',
-          description: 'Trailing icon or action adornment element rendered inside the input box.',
-          example: 'suffix={<Icon name="Check" size="sm" color="success" />}',
-        },
-        {
-          name: 'secureTextEntry',
-          type: 'boolean',
-          default: 'false',
-          description: 'Masks typed characters for secure credentials and PIN codes.',
-          example: 'secureTextEntry={true}',
-        },
-        {
-          name: 'showSecureToggle',
-          type: 'boolean',
-          default: 'false',
-          description: 'Renders an accessible visibility toggle button when secureTextEntry is true.',
-          example: 'showSecureToggle={true}',
-        },
-        {
-          name: 'size',
-          type: "'sm' | 'md' | 'lg'",
-          default: "'md'",
-          description: 'Input height tier (sm=44pt, md=48pt, lg=56pt). All tiers enforce ≥44pt touch targets.',
-          example: 'size="md"',
-        },
-        {
-          name: 'disabled',
-          type: 'boolean',
-          default: 'false',
-          description: 'Disables editing and applies muted theme background and border tokens.',
-          example: 'disabled={false}',
-        },
-        {
-          name: 'required',
-          type: 'boolean',
-          default: 'false',
-          description: 'Appends a required indicator to the label and marks accessibilityState.',
-          example: 'required={true}',
-        },
-        {
-          name: 'containerStyle',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer wrapper layout constraints only (margin, flex). Border styles, focus ring, and padding are token-governed.',
-          example: 'containerStyle={{ marginBottom: 12 }}',
-        },
-      ]}
-      dos={[
-        'Always provide a visible label or accessibilityLabel for screen reader clarity.',
-        'Use error to communicate specific validation failures (e.g. invalid format).',
-        'Use prefix/suffix elements to hint at the input format (e.g. MapPin for address).',
-      ]}
-      donts={[
-        'Never rely solely on placeholder text as a label, as it disappears on input.',
-        'Never hide error messages without announcing them via accessibilityHint.',
-      ]}
-      a11yNotes={[
-        'TextField binds error text directly to accessibilityHint so screen readers announce errors immediately upon field focus.',
-        'Enforces a minimum 44pt touch height to satisfy WCAG AA target size criteria.',
-      ]}
-      codeSnippet={`import { TextField, Icon } from '@shani/ui';
-
-export function WaybillInput() {
-  return (
-    <TextField
-      label="Waybill Number"
-      placeholder="e.g. 1Z9999999999999999"
-      prefix={<Icon name="Package" size="sm" />}
-      helperText="Enter 18-digit carrier barcode number"
-      required={true}
-    />
-  );
-}`}
+      propsData={formatPropsForGallery(doc.props)}
+      dos={doc.whenToUse}
+      donts={doc.whenNotToUse}
+      a11yNotes={doc.accessibilityNotes}
+      codeSnippet={doc.example}
     />
   );
 }

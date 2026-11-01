@@ -10,6 +10,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const doc = getComponentDoc('Button');
 
 export default function ButtonPage() {
   const [variant, setVariant] = useState<ButtonVariant>('primary');
@@ -19,9 +22,9 @@ export default function ButtonPage() {
 
   return (
     <ComponentPage
-      title="Button"
-      description="Primary action primitive built on usePressable with Reanimated UI-thread micro-interactions, loading states, and WCAG AA contrast."
-      category="Actions"
+      title={doc.name}
+      description={doc.description}
+      category={doc.category}
       playground={
         <VStack spacing="2" align="center">
           <Button
@@ -100,119 +103,11 @@ export default function ButtonPage() {
           </Box>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'children',
-          type: 'string | React element',
-          default: 'required',
-          description: 'Button text label or nested content describing the primary action.',
-          example: 'children="Confirm Waybill"',
-        },
-        {
-          name: 'variant',
-          type: "'primary' | 'secondary' | 'tertiary' | 'danger' | 'ghost'",
-          default: "'primary'",
-          description: 'Visual style tier establishing action hierarchy.',
-          example: 'variant="primary"',
-        },
-        {
-          name: 'size',
-          type: "'sm' | 'md' | 'lg'",
-          default: "'md'",
-          description: 'Button size tier. All sizes strictly meet ≥44x44pt touch target minimums (sm=44pt, md=48pt, lg=56pt).',
-          example: 'size="md"',
-        },
-        {
-          name: 'onPress',
-          type: '(event: GestureResponderEvent) => void',
-          default: 'None',
-          description: 'Callback invoked on tap or press release.',
-          example: 'onPress={() => handleDispatch()}',
-        },
-        {
-          name: 'leftIcon',
-          type: 'Lucide icon component, name, or React element',
-          default: 'None',
-          description: "Leading icon rendered before button text. Accepts PascalCase string name (e.g. 'Truck') or direct Lucide component.",
-          example: 'leftIcon="Truck"',
-        },
-        {
-          name: 'rightIcon',
-          type: 'Lucide icon component, name, or React element',
-          default: 'None',
-          description: "Trailing icon rendered after button text. Accepts PascalCase string name (e.g. 'ChevronRight') or direct Lucide component.",
-          example: 'rightIcon="ChevronRight"',
-        },
-        {
-          name: 'loading',
-          type: 'boolean',
-          default: 'false',
-          description: 'Displays an activity indicator, disables taps, and sets accessibilityState.busy.',
-          example: 'loading={isSubmitting}',
-        },
-        {
-          name: 'disabled',
-          type: 'boolean',
-          default: 'false',
-          description: 'Disables press interactions and applies muted tokens with accessible contrast.',
-          example: 'disabled={!isFormValid}',
-        },
-        {
-          name: 'fullWidth',
-          type: 'boolean',
-          default: 'false',
-          description: 'Expands button to occupy 100% width of its parent container.',
-          example: 'fullWidth={true}',
-        },
-        {
-          name: 'accessibilityLabel',
-          type: 'string',
-          default: 'None',
-          description: 'Spoken label for screen readers. Defaults to the string value of children if omitted.',
-          example: 'accessibilityLabel="Confirm consignment dispatch"',
-        },
-        {
-          name: 'accessibilityHint',
-          type: 'string',
-          default: 'None',
-          description: 'Additional guidance describing the consequence of performing the action.',
-          example: 'accessibilityHint="Navigates to tracking summary"',
-        },
-        {
-          name: 'style',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer layout constraints only (margin, flex, alignSelf). Padding, height, radius, and colors come from tokens.',
-          example: 'style={{ marginTop: 16 }}',
-        },
-      ]}
-      dos={[
-        'Use primary for the single most important action on a screen (e.g. Complete Delivery).',
-        'Use danger for destructive, irreversible operations (e.g. Cancel Shipment).',
-        'Use loading prop during background network submissions to prevent double taps.',
-      ]}
-      donts={[
-        'Never place two primary buttons in the same container; use primary + secondary.',
-        'Never shrink buttons below size="sm" (44pt) on mobile screens.',
-      ]}
-      a11yNotes={[
-        'Button automatically manages accessibilityRole="button" and accessibilityState={{ disabled, busy: loading }}.',
-        'Uses Reanimated snappy spring physics on the native UI thread, respecting system reduced-motion settings.',
-      ]}
-      codeSnippet={`import { Button } from '@shani/ui';
-
-export function DispatchAction() {
-  return (
-    <Button
-      variant="primary"
-      size="lg"
-      leftIcon="CheckCircle"
-      onPress={() => console.log('Confirmed')}
-    >
-      Confirm Delivery
-    </Button>
-  );
-}`}
+      propsData={formatPropsForGallery(doc.props)}
+      dos={doc.whenToUse}
+      donts={doc.whenNotToUse}
+      a11yNotes={doc.accessibilityNotes}
+      codeSnippet={doc.example}
     />
   );
 }

@@ -12,9 +12,6 @@ export function checkAllSnippets(): {
   results: SnippetCheckResult[];
   hasErrors: boolean;
 } {
-  const compDir = path.resolve(__dirname, '../apps/gallery/app/components');
-  const files = fs.readdirSync(compDir).filter((f) => f.endsWith('.tsx'));
-
   const tsconfigPath = path.resolve(__dirname, '../apps/gallery/tsconfig.json');
   const configFile = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
   const parsedConfig = ts.parseJsonConfigFileContent(
@@ -26,16 +23,46 @@ export function checkAllSnippets(): {
   const snippets = new Map<string, string>();
   const rootNames: string[] = [];
   const fileToVirtual = new Map<string, string>();
+  const snippetKeys: string[] = [];
 
-  for (const file of files) {
-    const fullPath = path.join(compDir, file);
-    const content = fs.readFileSync(fullPath, 'utf-8');
-    const match = content.match(/codeSnippet={`([\s\S]*?)`}/);
-    if (match && match[1]) {
-      const virtualPath = path.resolve(__dirname, `../apps/gallery/src/__snippet_${file}`);
-      snippets.set(virtualPath, match[1]);
-      rootNames.push(virtualPath);
-      fileToVirtual.set(file, virtualPath);
+  // 1. Check all snippets in packages/ui/components.json
+  const manifestPath = path.resolve(__dirname, '../packages/ui/components.json');
+  if (fs.existsSync(manifestPath)) {
+    try {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      if (Array.isArray(manifest.components)) {
+        for (const comp of manifest.components) {
+          if (comp.example) {
+            const key = `manifest:${comp.name}`;
+            const virtualPath = path.resolve(__dirname, `../apps/gallery/src/__snippet_manifest_${comp.name}.tsx`);
+            snippets.set(virtualPath, comp.example);
+            rootNames.push(virtualPath);
+            fileToVirtual.set(key, virtualPath);
+            snippetKeys.push(key);
+          }
+        }
+      }
+    } catch {
+      // Manifest parsing errors handled gracefully
+    }
+  }
+
+  // 2. Check any remaining code snippets in apps/gallery/app/components
+  const compDir = path.resolve(__dirname, '../apps/gallery/app/components');
+  if (fs.existsSync(compDir)) {
+    const files = fs.readdirSync(compDir).filter((f) => f.endsWith('.tsx'));
+    for (const file of files) {
+      const fullPath = path.join(compDir, file);
+      const content = fs.readFileSync(fullPath, 'utf-8');
+      const match = content.match(/codeSnippet={`([\s\S]*?)`}/);
+      if (match && match[1]) {
+        const key = `gallery:${file}`;
+        const virtualPath = path.resolve(__dirname, `../apps/gallery/src/__snippet_${file}`);
+        snippets.set(virtualPath, match[1]);
+        rootNames.push(virtualPath);
+        fileToVirtual.set(key, virtualPath);
+        snippetKeys.push(key);
+      }
     }
   }
 
@@ -54,8 +81,8 @@ export function checkAllSnippets(): {
   const results: SnippetCheckResult[] = [];
   let hasErrors = false;
 
-  for (const file of files) {
-    const virtualPath = fileToVirtual.get(file);
+  for (const key of snippetKeys) {
+    const virtualPath = fileToVirtual.get(key);
     if (!virtualPath) continue;
 
     const sourceFile = program.getSourceFile(virtualPath);
@@ -67,7 +94,7 @@ export function checkAllSnippets(): {
     }
 
     results.push({
-      file,
+      file: key,
       diagnostics: messages,
     });
   }
@@ -80,7 +107,7 @@ export function checkAllSnippets(): {
 }
 
 if (require.main === module) {
-  console.log('🔍 Checking gallery component code snippets against TypeScript definitions...\n');
+  console.log('🔍 Checking design system code snippets against TypeScript definitions...\n');
   const { totalSnippets, results, hasErrors } = checkAllSnippets();
 
   for (const res of results) {

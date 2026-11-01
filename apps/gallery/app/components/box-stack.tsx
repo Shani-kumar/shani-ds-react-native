@@ -11,6 +11,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const stackDoc = getComponentDoc('Stack');
 
 export default function BoxStackPage() {
   const [direction, setDirection] = useState<'vertical' | 'horizontal'>('horizontal');
@@ -112,92 +115,11 @@ export default function BoxStackPage() {
           </Box>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'children',
-          type: 'React element or tree',
-          default: 'required',
-          description: 'Child components linearly stacked with automated token spacing.',
-          example: 'children={<Text>Manifest</Text>}',
-        },
-        {
-          name: 'direction',
-          type: "'horizontal' | 'vertical'",
-          default: "'vertical'",
-          description: 'Linear distribution axis for child components (HStack defaults to horizontal, VStack to vertical).',
-          example: 'direction="horizontal"',
-        },
-        {
-          name: 'spacing',
-          type: "'none' | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '10' | '12' | '16'",
-          default: 'None',
-          description: 'Space between children mapped to strict 4pt grid tokens (1=4pt, 2=8pt, 4=16pt, 6=24pt).',
-          example: 'spacing="4"',
-        },
-        {
-          name: 'align',
-          type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
-          default: "'stretch'",
-          description: 'Cross-axis alignment for items inside the stack.',
-          example: 'align="center"',
-        },
-        {
-          name: 'justify',
-          type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'",
-          default: "'start'",
-          description: 'Main-axis distribution alignment.',
-          example: 'justify="between"',
-        },
-        {
-          name: 'wrap',
-          type: 'boolean',
-          default: 'false',
-          description: 'Enables flex wrapping onto multiple rows/columns on narrow mobile viewports.',
-          example: 'wrap={true}',
-        },
-        {
-          name: 'divider',
-          type: 'React element',
-          default: 'None',
-          description: 'Divider element automatically injected between adjacent children.',
-          example: 'divider={<Divider orientation="vertical" />}',
-        },
-        {
-          name: 'style',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer layout constraints only (flex, minWidth, width). Spacing, padding, and borders must come from tokens.',
-          example: 'style={{ flex: 1, minWidth: 0 }}',
-        },
-      ]}
-      dos={[
-        'Use Stack, HStack, and VStack for all linear content spacing instead of manual margins.',
-        'Use tokenized spacing values (2, 4, 6) to keep 15+ logistics apps on a harmonious 4pt grid.',
-        'Use the divider prop for automated separator injection in shipment summary lists.',
-      ]}
-      donts={[
-        'Never hardcode raw pixel margins (e.g. marginBottom: 13) in application components.',
-        'Never mix arbitrary flexbox alignment props on container views.',
-      ]}
-      a11yNotes={[
-        'Stack and Box pass through accessibility props to native Views without interfering with screen reader hierarchies.',
-        'Divider automatically sets accessible={false} and accessibilityRole="none" so non-interactive dividers do not announce clutter.',
-      ]}
-      codeSnippet={`import { Box, HStack, VStack, Text, Divider } from '@shani/ui';
-
-export function ShipmentSummary() {
-  return (
-    <Box p="4" bg="surface" borderRadius="md" shadow="sm">
-      <VStack spacing="3">
-        <Text variant="title">Waybill Details</Text>
-        <HStack spacing="4" divider={<Divider orientation="vertical" />}>
-          <Text variant="caption">Weight: 14.2 kg</Text>
-          <Text variant="caption">Pieces: 3</Text>
-        </HStack>
-      </VStack>
-    </Box>
-  );
-}`}
+      propsData={formatPropsForGallery(stackDoc.props)}
+      dos={stackDoc.whenToUse}
+      donts={stackDoc.whenNotToUse}
+      a11yNotes={stackDoc.accessibilityNotes}
+      codeSnippet={stackDoc.example}
     />
   );
 }

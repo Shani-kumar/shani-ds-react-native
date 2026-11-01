@@ -573,6 +573,24 @@ const isWideWeb = Platform.OS === 'web' && width > 768;
 
 > "Design systems fail in the AI era when LLMs don't know the rules and invent ad-hoc hex colors, magic numbers, and raw React Native primitives. In Shani DS, we treated AI agents as first-class consumers: we established a canonical machine-readable rules contract (`docs/ai/rules.md`) that defines strict import whitelists, component token scales, and card action hierarchy rules. Using `scripts/sync-rules.ts` and automated CI drift tests (`pnpm rules:check`), we keep rules identical across Gemini, Claude, Cursor, and custom agents, ensuring AI-generated screens match our design system on the very first prompt."
 
+---
+
+## 17. Machine-Readable Component Manifest & Gallery Documentation Unification (Step 5.2)
+
+### 1. Eliminating the "Two Copies of Truth" Drift Problem
+
+- **The Problem:** In many component libraries, human documentation (gallery props tables, websites) and AI context files (JSON manifests, markdown cheat sheets) are maintained independently. Inevitably, someone adds a prop, changes a default, or adjusts a variant in TypeScript, updates the human doc, and forgets the AI manifest—or vice versa. Over time, AI prompts feed on stale metadata and hallucinate incorrect props.
+- **The Architectural Solution:**
+  1. **Automated AST Extraction (`scripts/generate-manifest.ts`):** We use `react-docgen-typescript` configured against `packages/ui/tsconfig.json` to inspect the real TypeScript component source code. It parses all 19 exported components, extracting exact prop names, JSDoc descriptions, required flags, default values, and literal union values (e.g. `'primary' | 'secondary' | 'danger'` rather than just generic `string`).
+  2. **Unified Manifest (`packages/ui/components.json`):** Generates a comprehensive JSON schema with descriptions, categories, variants, sizes, when to use (dos), when not to use (donts), accessibility notes, compiling usage examples, and real prop types.
+  3. **Direct Gallery Consumption:** In `apps/gallery`, all 12 component pages import directly from `components.json` via `apps/gallery/src/componentsMeta.ts` (`getComponentDoc` and `formatPropsForGallery`). There are no hardcoded props tables or duplicated guideline strings in gallery pages.
+  4. **Snippet Compilation Guardrails:** In `scripts/check-snippets.ts`, every code snippet in `components.json` is fed to the TypeScript compiler host and typechecked against real library exports. `pnpm snippets:check` guarantees that 100% of code snippets compile without errors.
+  5. **Continuous Drift Detection:** Running `pnpm manifest:check` in CI verifies that `packages/ui/components.json` matches the actual component source code and fails the build if someone forgets to regenerate it.
+
+### 2. Interview Talking Point
+
+> "To make our design system reliable for AI screen generation and human developers alike, we eliminated documentation drift at the root. We built an automated TypeScript AST extractor that parses all 19 components into `packages/ui/components.json` with real union types, default values, accessibility guidelines, and compiling code examples. Both our live gallery documentation and AI tools consume this single manifest. We enforce zero-drift in CI with `pnpm manifest:check` and compile every code snippet with TypeScript using `pnpm snippets:check`."
+
 
 
 

@@ -57,7 +57,7 @@ pnpm typecheck
 # ESLint code quality check
 pnpm lint
 
-# Jest unit test suite (23 suites, 139 tests)
+# Jest unit test suite (25 suites, 152 tests)
 pnpm test
 
 # WCAG 2.1 AA contrast audit (all 62 checks pass across Light and Dark themes)
@@ -66,8 +66,14 @@ pnpm contrast
 # Token drift check (enforces compiled outputs match token sources)
 pnpm tokens:drift
 
-# Validate gallery component code snippets against TypeScript (12/12 pass)
+# Validate all component code snippets against TypeScript (19/19 pass)
 pnpm snippets:check
+
+# Synchronize and verify AI rules across agents
+pnpm rules:check
+
+# Verify machine-readable component manifest against code
+pnpm manifest:check
 ```
 
 ---

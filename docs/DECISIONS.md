@@ -374,6 +374,16 @@
   - **Continuous Drift Detection:** Integrated `pnpm rules:check` into the test suite via `scripts/rules.test.ts`, causing CI to fail if any assistant rules file drifts from `docs/ai/rules.md`.
 - **Why:** Guarantees that AI coding assistants generate compliant, accessible, token-bound React Native code on the first prompt across any development environment.
 
+## ADR-032: Machine-Readable Component Manifest & Gallery Documentation Unification (Step 5.2)
+
+- **Context:** Design system documentation and AI prompt context frequently drift when maintained as separate copies. Furthermore, AI agents require explicit TypeScript prop schemas, expanded union literals (not just generic `string`), default values, required flags, component categories, when to use / when not to use guidance, accessibility notes, and compiling code examples.
+- **Decision:**
+  - **Component Manifest Generator (`scripts/generate-manifest.ts`):** Implemented an automated parser using `react-docgen-typescript` configured against `packages/ui/tsconfig.json`. The generator parses the real TypeScript source code for all 19 exported components (`Box`, `Stack`, `HStack`, `VStack`, `Divider`, `Text`, `Icon`, `Button`, `IconButton`, `TextField`, `Checkbox`, `Switch`, `Card`, `CardHeader`, `CardContent`, `CardFooter`, `Badge`, `Skeleton`, `Timeline`).
+  - **Comprehensive JSON Manifest (`packages/ui/components.json`):** Produces a standardized JSON schema containing component name, import path (`@shani/ui`), description, category, variants, sizes, when to use (dos), when not to use (donts), accessibility notes, compiling usage examples, and real prop types with extracted literal union values, default values, required flags, and prop descriptions.
+  - **Single Source of Truth for Gallery Documentation:** Unchecked drift was eliminated by refactoring all 12 gallery component documentation pages (`apps/gallery/app/components/*.tsx`) to consume `components.json` directly via `apps/gallery/src/componentsMeta.ts` (`getComponentDoc` and `formatPropsForGallery`). Props tables, guidelines, and code snippets now have ONE single source of truth.
+  - **Snippet Typechecking & Drift Enforcement:** Enhanced `scripts/check-snippets.ts` and created `scripts/manifest.test.ts` to typecheck all 19 code snippets against the TypeScript compiler and verify that `packages/ui/components.json` is identical to generated code (`pnpm manifest:check`). Added `"manifest"` and `"manifest:check"` to `package.json`.
+- **Why:** Eliminates documentation drift between AI prompts and human-facing docs, equips AI models with exact component prop definitions and constraints, and guarantees compiling examples at CI time.
+
 
 
 

@@ -1,10 +1,10 @@
 import { checkAllSnippets } from './check-snippets';
 
-describe('Gallery code snippets typecheck', () => {
+describe('Design system code snippets typecheck', () => {
   const { totalSnippets, results } = checkAllSnippets();
 
-  it('found all 12 component code snippets', () => {
-    expect(totalSnippets).toBe(12);
+  it('found all 19 component code snippets', () => {
+    expect(totalSnippets).toBe(19);
   });
 
   results.forEach(({ file, diagnostics }) => {

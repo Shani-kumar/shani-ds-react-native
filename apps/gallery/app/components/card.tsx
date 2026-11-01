@@ -15,6 +15,9 @@ import {
 } from '@shani/ui';
 import { ComponentPage } from '../../src/components/ComponentPage';
 import { SegmentedOption } from '../../src/components/SegmentedOption';
+import { getComponentDoc, formatPropsForGallery } from '../../src/componentsMeta';
+
+const doc = getComponentDoc('Card');
 
 export default function CardPage() {
   const [variant, setVariant] = useState<CardVariant>('elevated');
@@ -22,9 +25,9 @@ export default function CardPage() {
 
   return (
     <ComponentPage
-      title="Card"
-      description="Surface container primitive supporting outlined, elevated, and filled variants with composable header, content, and footer slots."
-      category="Display"
+      title={doc.name}
+      description={doc.description}
+      category={doc.category}
       playground={
         <Box style={{ width: '100%' }}>
           <Card variant={variant} padding={padding}>
@@ -91,86 +94,11 @@ export default function CardPage() {
           </Card>
         </VStack>
       }
-      propsData={[
-        {
-          name: 'children',
-          type: 'React element or tree',
-          default: 'required',
-          description: 'Composable card body content, typically combining CardHeader, CardContent, and CardFooter.',
-          example: 'children={<CardContent><Text>Manifest</Text></CardContent>}',
-        },
-        {
-          name: 'variant',
-          type: "'outlined' | 'elevated' | 'filled'",
-          default: "'outlined'",
-          description: 'Container surface style. Outlined has a 1px border; Elevated adds elevation and shadow.md; Filled uses bg.surfaceRaised.',
-          example: 'variant="elevated"',
-        },
-        {
-          name: 'padding',
-          type: "'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'",
-          default: "'md'",
-          description: 'Internal token padding tier (none=0, xs=4, sm=8, md=16, lg=24, xl=32).',
-          example: 'padding="lg"',
-        },
-        {
-          name: 'onPress',
-          type: '(event: GestureResponderEvent) => void',
-          default: 'None',
-          description: 'Optional press handler callback that turns the Card into an accessible interactive button.',
-          example: 'onPress={() => openDetails()}',
-        },
-        {
-          name: 'accessibilityRole',
-          type: 'AccessibilityRole',
-          default: 'None',
-          description: 'Screen reader accessibility role. Automatically sets "button" when onPress is provided.',
-          example: 'accessibilityRole="button"',
-        },
-        {
-          name: 'accessibilityLabel',
-          type: 'string',
-          default: 'None',
-          description: 'Spoken description for screen readers when card is interactive.',
-          example: 'accessibilityLabel="View shipment tracking route #490"',
-        },
-        {
-          name: 'style',
-          type: 'StyleProp<ViewStyle>',
-          default: 'None',
-          description: 'Outer layout constraints only (margin, flex, minWidth). Background colors, borders, and shadows are token-governed.',
-          example: 'style={{ width: \'100%\' }}',
-        },
-      ]}
-      dos={[
-        'Use elevated cards to lift interactive items (e.g. delivery run sheet items) off the background canvas.',
-        'Use composable CardHeader, CardContent, and CardFooter to enforce standard section spacing.',
-      ]}
-      donts={[
-        'Never nest cards inside cards with matching borders or shadows.',
-        'Never set arbitrary pixel margins on Card; wrap in Stack or Box.',
-      ]}
-      a11yNotes={[
-        'Cards organize content logically so screen readers navigate sequential shipment details naturally.',
-        'Ensure text inside cards maintains WCAG AA contrast against card background surfaces in both light and dark modes.',
-      ]}
-      codeSnippet={`import { Card, CardHeader, CardContent, CardFooter, Text, Button } from '@shani/ui';
-
-export function ShipmentCard() {
-  return (
-    <Card variant="elevated" padding="md">
-      <CardHeader>
-        <Text variant="title">Route #490</Text>
-      </CardHeader>
-      <CardContent>
-        <Text variant="body">5 Deliveries Remaining</Text>
-      </CardContent>
-      <CardFooter>
-        <Button variant="primary" size="sm">Start Route</Button>
-      </CardFooter>
-    </Card>
-  );
-}`}
+      propsData={formatPropsForGallery(doc.props)}
+      dos={doc.whenToUse}
+      donts={doc.whenNotToUse}
+      a11yNotes={doc.accessibilityNotes}
+      codeSnippet={doc.example}
     />
   );
 }

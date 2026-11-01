@@ -72,8 +72,11 @@ export const Card = forwardRef<View, CardProps>(function Card(
 });
 
 export interface CardSectionProps extends ViewProps {
+  /** Custom container style */
   style?: StyleProp<ViewStyle>;
+  /** Test identifier */
   testID?: string;
+  /** Child content */
   children?: React.ReactNode;
 }
 
