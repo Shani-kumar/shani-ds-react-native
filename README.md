@@ -2,10 +2,6 @@
 
 A React Native design system for logistics mobile applications, built with a 3-tier token architecture, headless accessibility primitives, and zero-runtime styling.
 
-Live demo: [Add link here](https://)
-
-Deployed on Vercel (config in `vercel.json`).
-
 <!-- Screenshot 1: Responsive Documentation Shell & Sidebar Navigation -->
 <!-- Screenshot 2: Component Playground with Phone / Tablet / Fill Switcher -->
 <!-- Screenshot 3: Tokens Explorer & Live Motion Demos -->
@@ -98,17 +94,9 @@ The gallery (`apps/gallery`) is responsive: full-width on mobile viewports, and 
 
 ---
 
-## AI Layer
-
-<!-- Coming in Phase 5: Agent guidelines (GEMINI.md, AGENTS.md, CLAUDE.md), components.json metadata manifest, screen validation tooling, and Figma Code Connect mappings. -->
-
-The AI layer is scheduled for Phase 5.
-
----
-
 ## Roadmap
 
-The following components and integrations are intentionally deferred:
+Next:
 - Form controls & chips: `Radio` / `RadioGroup`, `Chip` / `FilterChip`
 - Overlays & feedback: `Toast`, `BottomSheet`
 - Distribution: npm registry publishing and bi-directional Figma sync
