@@ -1,33 +1,19 @@
 # Shani Design System
 
-A React Native design system for logistics mobile applications, built with a 3-tier token architecture, headless accessibility primitives, and zero-runtime styling.
+A React Native design system for logistics mobile applications, engineered with W3C DTCG design tokens, headless accessibility primitives, zero-runtime styling, and built-in AI agent integration.
 
-<!-- Screenshot 1: Responsive Documentation Shell & Sidebar Navigation -->
-<!-- Screenshot 2: Component Playground with Phone / Tablet / Fill Switcher -->
-<!-- Screenshot 3: Tokens Explorer & Live Motion Demos -->
-<!-- Screenshot 4: WCAG 2.1 AA Accessibility Contrast Report -->
-<!-- Screenshot 5: Logistics Shipment Tracking Demo Screen -->
+[Live Demo Placeholder](https://shani-ds.vercel.app) • [Architecture Guide](docs/ARCHITECTURE.md) • [Empirical AI Demo](ai-demo/README.md)
+
+Screenshots: coming soon
 
 ---
 
-## Workspace Structure
+## What's Inside
 
-```
-shani-ds/
-├── packages/
-│   ├── tokens/          # 3-tier tokens, compiler, WCAG AA contrast audit
-│   └── ui/              # Accessible React Native components
-├── apps/
-│   └── gallery/         # Expo Router showcase web and mobile app
-├── docs/
-│   ├── DECISIONS.md     # Architecture Decision Records (ADR-001 through ADR-030)
-│   ├── LEARNING.md      # Technical explanations and architecture notes
-│   └── ROADMAP.md       # Component backlog and release milestones
-└── scripts/
-    ├── build-tokens.ts   # Token compiler with drift detection
-    ├── check-snippets.ts # Documentation code snippet typecheck
-    └── contrast.ts       # Automated WCAG 2.1 AA contrast audit
-```
+- **`@shani/tokens`**: 3-tier W3C DTCG token architecture with light/dark semantic mapping and automated WCAG 2.1 AA audits.
+- **`@shani/ui`**: 22 production-grade React Native components and 6 headless behavioral hooks.
+- **`apps/gallery`**: Responsive Expo Router gallery featuring component playgrounds, token inspector, and live shipment fleet run-sheet demos.
+- **Embedded AI Context**: Packaged `components.json`, canonical `AGENTS.md` guidelines, and an AST validator CLI (`shani-ds`).
 
 ---
 
@@ -37,124 +23,69 @@ shani-ds/
 # Install dependencies
 pnpm install
 
-# Run gallery web app
-pnpm dev --web
+# Start gallery web application
+pnpm build:web && npx serve apps/gallery/dist -s
 
-# Run on mobile device (iOS / Android / Expo Go)
-pnpm dev
+# Run mobile development server
+pnpm dev:gallery
 ```
 
 ---
 
-## Quality Gates
+## 3-Tier Token Architecture
 
-Verified against automated checks across the monorepo:
+1. **Primitive Tokens (Tier 1):** Raw palette constants, 4pt spacing scale, radius, and timing scales.
+2. **Semantic Tokens (Tier 2):** Contextual aliases resolving intent (`bg.surface`, `text.primary`, `border.focus`) across light and dark modes.
+3. **Component Tokens (Tier 3):** Scoped component overrides (`button.primary.bg`, `chip.selected.bg`) enabling targeted theming without global side effects.
+
+---
+
+## Components & Primitives (22 Components, 6 Hooks)
+
+- **Foundation & Layout:** `Box`, `Stack`, `HStack`, `VStack`, `Divider`, `Text`, `Icon`
+- **Actions & Selection:** `Button`, `IconButton`, `Chip`, `ChipGroup`
+- **Forms & Inputs:** `TextField`, `Checkbox`, `Switch`, `QuantityStepper`
+- **Display & Feedback:** `Card`, `CardHeader`, `CardContent`, `CardFooter`, `Badge`, `Skeleton`, `Timeline`
+- **Headless Hooks:** `useSelection`, `useCounter`, `usePressable`, `useToggle`, `useTextField`, `useDisclosure`
+
+---
+
+## Accessibility Approach
+
+- **44×44pt Minimum Touch Target:** Built into `Button`, `IconButton`, `Chip`, and `QuantityStepper`.
+- **Screen Reader Support:** Compile-time `accessibilityLabel` enforcement on icon controls; ARIA `radio`, `checkbox`, `adjustable`, and `list` role mapping.
+- **Dynamic Type & Motion:** Scales fonts gracefully with maximum font size multipliers; respects system reduced-motion preferences via `useReducedMotion()`.
+- **WCAG 2.1 AA Contrast:** Automated mathematical verification of 66 color pairs across light and dark themes.
+
+---
+
+## AI Layer & Developer Tooling
+
+- **Packaged AI Metadata:** Ships `components.json` schemas and canonical rules inside `@shani/ui` for external repositories.
+- **One-Command Setup:** `npx shani-ds init-ai` provisions `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.cursorrules` in consumer apps without overwriting existing instructions.
+- **AST Screen Validator:** `npx shani-ds validate <path>` parses the TypeScript AST to block raw hex colors, magic numbers, and forbidden primitives before commit.
+- **Design Handoff:** Figma MCP integration and Code Connect workflows are documented for agent-driven component mapping.
+
+---
+
+## Verification & Quality Gates
 
 ```bash
-# Typecheck all workspaces (root, tokens, ui, gallery)
-pnpm typecheck
-
-# ESLint code quality check
-pnpm lint
-
-# Jest unit test suite (28 suites, 161 tests)
-pnpm test
-
-# WCAG 2.1 AA contrast audit (all 62 checks pass across Light and Dark themes)
-pnpm contrast
-
-# Token drift check (enforces compiled outputs match token sources)
-pnpm tokens:drift
-
-# Validate all component code snippets against TypeScript (19/19 pass)
-pnpm snippets:check
-
-# Synchronize and verify AI rules across agents
-pnpm rules:check
-
-# Verify machine-readable component manifest against code
-pnpm manifest:check
-
-# AST validation of screens against Shani DS rules and component manifest
-pnpm validate:screen <file or folder>
+pnpm typecheck        # 0 TypeScript diagnostic errors
+pnpm lint             # 0 ESLint warnings or errors
+pnpm test             # 33 Jest test suites, 184 tests passing
+pnpm contrast         # 66 WCAG 2.1 AA mathematical checks passing
+pnpm tokens:drift     # 0 token compiler drift
+pnpm snippets:check   # 22/22 component manifest code snippets typechecked
+pnpm rules:check      # 10 rules files synchronized with docs/ai
+pnpm manifest:check   # 22 components verified in sync with source
+pnpm validate:screen  # AST design system screen validation
 ```
 
 ---
 
-## Using Shani DS in an App Repo
+## Next on Roadmap
 
-To use `@shani/ui` in a standalone React Native or Expo application:
-
-### 1. Installation
-Install `@shani/ui` (and required peer dependencies):
-```bash
-npm install @shani/ui lucide-react-native react-native-reanimated react-native-svg
-```
-
-### 2. Wrap Root in ThemeProvider
-```tsx
-import React from 'react';
-import { ThemeProvider, Box, Text, Button } from '@shani/ui';
-
-export default function App() {
-  return (
-    <ThemeProvider defaultMode="system">
-      <Box flex={1} bg="canvas" p="4" justify="center" align="center">
-        <Text variant="heading">Hello Shani DS</Text>
-        <Button variant="primary" size="md" onPress={() => alert('Confirmed')}>
-          Get Started
-        </Button>
-      </Box>
-    </ThemeProvider>
-  );
-}
-```
-
-### 3. Initialize AI Agent Context
-Run the Shani DS initialization CLI inside your application repository:
-```bash
-npx shani-ds init-ai
-```
-This automatically configures `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.cursorrules` pointing to the installed `node_modules/@shani/ui/components.json` and canonical guidelines without overwriting your existing instructions.
-
-### 4. Validate Screens Locally and in CI
-Check any screen file or directory against Shani DS design tokens, prohibited imports, and valid component schemas:
-```bash
-# Validate a single screen
-npx shani-ds validate src/screens/PickupScreen.tsx
-
-# Validate all screens in a directory
-npx shani-ds validate src/screens/
-```
-The command parses the TypeScript AST and exits with code 1 if raw hex colors, raw pixel spacings, or forbidden primitives are found.
-
----
-
-## Gallery Features
-
-The gallery (`apps/gallery`) is responsive: full-width on mobile viewports, and a sidebar documentation layout on wide screens with a Phone / Tablet / Fill preview switcher.
-
-1. **Theme Switcher:** Seamless switching between Light, Dark, and System modes. `createTheme()` supports white-label theming.
-2. **Tokens Explorer (`/tokens`):** Visualizes color palettes, spacing, typography scales, border radius, elevation, and live spring motion demos.
-3. **Accessibility Report (`/accessibility`):** Live report showing all 62 mathematical contrast checks across Light and Dark themes with WCAG ratios.
-4. **12 Interactive Component Pages (`/components/*`):** Playgrounds with a Phone (390) / Tablet (768) / Fill viewport switcher, all-states matrices, props API tables, and type-checked code snippets.
-5. **Logistics Demo Screens (`/demos/*`):** Realistic tracking and fleet shipment list flows demonstrating composed components in production layouts.
-
----
-
-## Architecture & Design Rules
-
-- **Design Tokens:** 3-tier token architecture (primitive, semantic, component) compiled from W3C DTCG sources. Token drift is prevented by `pnpm tokens:drift`.
-- **Styling Rules:** Component styles use tokens rather than hardcoded hex values or arbitrary numbers.
-- **Touch Targets:** Interactive action controls (`Button`, `IconButton`, `Checkbox`, `Switch`) provide a 44x44pt minimum touch area.
-- **Screen Reader Labels:** `IconButton` requires `accessibilityLabel: string` at compile time.
-- **Reduced Motion:** Animated components respect system accessibility preferences via `useReducedMotion()`.
-
----
-
-## Roadmap
-
-Next:
-- Form controls & chips: `Radio` / `RadioGroup`, `Chip` / `FilterChip`
-- Overlays & feedback: `Toast`, `BottomSheet`
-- Distribution: npm registry publishing and bi-directional Figma sync
+- **Form Controls:** `Radio` and `RadioGroup` primitives
+- **Overlays & Feedback:** `Toast` notification queue and modal `BottomSheet`
+- **Distribution:** Public npm registry publishing and bi-directional Figma sync
