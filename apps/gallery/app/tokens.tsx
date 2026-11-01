@@ -518,50 +518,67 @@ export default function TokensScreen() {
 
           {/* TAB 2: SPACING */}
           {activeTab === 'spacing' ? (
-            <Card variant="elevated" padding="lg">
-              <CardHeader>
-                <VStack spacing="1">
-                  <Text variant="title">4pt Spacing Scale</Text>
-                  <Text variant="caption">
-                    Every padding, margin, and gap is strictly mapped to the 4pt grid scale.
-                  </Text>
-                </VStack>
-              </CardHeader>
-              <CardContent>
-                <VStack spacing="3">
-                  {Object.entries(theme.spacing).map(([key, value]) => {
-                    const maxSpacing = 96;
-                    const pct = (Number(value) / maxSpacing) * 100;
-                    return (
-                      <Card key={key} variant="outlined" padding="sm">
-                        <HStack align="center" style={{ width: '100%' }}>
-                          {/* Fixed-width label column */}
-                          <HStack spacing="2" align="center" style={{ width: 120, flexShrink: 0 }}>
-                            <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>
-                              spacing[{key}]
-                            </Badge>
-                            <Text variant="caption" style={{ fontWeight: '600', flexShrink: 0 }}>
-                              {value}pt
-                            </Text>
+            <Box style={{ maxWidth: 720, width: '100%' }}>
+              <Card variant="elevated" padding="lg">
+                <CardHeader>
+                  <VStack spacing="1">
+                    <Text variant="title">4pt Spacing Scale</Text>
+                    <Text variant="caption">
+                      Every padding, margin, and gap is mapped to the 4pt grid scale. Shown at 1:1 scale (1pt = 1 dp).
+                    </Text>
+                  </VStack>
+                </CardHeader>
+                <CardContent>
+                  <VStack spacing="3">
+                    {Object.entries(theme.spacing).map(([key, value]) => {
+                      const numValue = Number(value);
+                      return (
+                        <Card key={key} variant="outlined" padding="sm">
+                          <HStack align="center" style={{ width: '100%' }}>
+                            {/* Fixed-width label column */}
+                            <HStack spacing="2" align="center" style={{ width: 140, flexShrink: 0 }}>
+                              <Badge variant="brand" size="sm" style={{ flexShrink: 0 }}>
+                                spacing[{key}]
+                              </Badge>
+                              <Text variant="caption" style={{ fontWeight: '600', flexShrink: 0 }}>
+                                {value}pt
+                              </Text>
+                            </HStack>
+                            {/* 1:1 true scale bar column */}
+                            <View style={{ flex: 1, minWidth: 0, paddingLeft: theme.spacing[3], justifyContent: 'center' }}>
+                              {numValue === 0 ? (
+                                <HStack spacing="2" align="center">
+                                  <View
+                                    style={{
+                                      width: 1,
+                                      height: theme.spacing[4],
+                                      backgroundColor: theme.colors.border.subtle,
+                                    }}
+                                  />
+                                  <Text variant="caption" color="secondary" style={{ fontStyle: 'italic' }}>
+                                    none (0pt)
+                                  </Text>
+                                </HStack>
+                              ) : (
+                                <View
+                                  style={{
+                                    height: theme.spacing[4],
+                                    width: numValue,
+                                    maxWidth: '100%',
+                                    backgroundColor: theme.colors.action.primary.default,
+                                    borderRadius: theme.radius.xs,
+                                  }}
+                                />
+                              )}
+                            </View>
                           </HStack>
-                          {/* Flexible bar column scaling cleanly relative to available width */}
-                          <View style={{ flex: 1, minWidth: 0, paddingLeft: theme.spacing[3], overflow: 'hidden' }}>
-                            <View
-                              style={{
-                                height: 18,
-                                width: `${Math.max(pct, 2)}%`,
-                                backgroundColor: theme.colors.action.primary.default,
-                                borderRadius: theme.radius.xs,
-                              }}
-                            />
-                          </View>
-                        </HStack>
-                      </Card>
-                    );
-                  })}
-                </VStack>
-              </CardContent>
-            </Card>
+                        </Card>
+                      );
+                    })}
+                  </VStack>
+                </CardContent>
+              </Card>
+            </Box>
           ) : null}
 
           {/* TAB 3: TYPOGRAPHY */}

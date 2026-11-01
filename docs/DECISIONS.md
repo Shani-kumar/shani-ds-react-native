@@ -319,6 +319,16 @@
 - **Alternatives Considered:**
   - Applying styles only to the inner View: Leaves the outer Pressable touch area unstyled and unable to position within flex parents.
 
+## ADR-027: True 1:1 Scale Spacing Token Visualization
+
+- **Context:** In the Tokens Explorer (`/tokens`), spacing bars were scaled relative to the container width ($(\text{value} / 96) \times 100\%$), which made a small 4pt token render at approximately 58px wide, misrepresenting actual physical dimensions. Furthermore, `spacing[0]` showed a visible bar, and rows stretched across wide desktop viewports.
+- **Decision:**
+  - **1:1 True Scale Rendering:** Rendered spacing bars with `width: numValue` directly matching the token's pt/dp value. Fixed bar height to token `theme.spacing[4]` (16pt).
+  - **Zero Spacing Marker:** Rendered `spacing[0]` with a hairline 1px indicator line and `"none (0pt)"` label rather than a colored bar.
+  - **Aligned Layout & Max Width Cap:** Constrained the spacing card to `maxWidth: 720` on widescreen displays to prevent excessive stretching, and widened the label column to 140px fixed width for uniform bar alignment.
+  - **Documentation Note:** Added subtitle note: `"Shown at 1:1 scale (1pt = 1 dp)"`.
+- **Why:** Delivers an accurate physical reference for designers and engineers assessing mobile spacing values.
+
 
 
 
