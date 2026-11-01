@@ -165,3 +165,147 @@
 - **Why:** Delivers a polished, accessible, and bug-free cross-platform showcase for desktop and mobile preview environments.
 - **Alternatives Considered:**
   - Requiring callers to always wrap icons in `<Icon>` explicitly: Fragile and counter-intuitive; automated normalization within `Button` and `Badge` provides ergonomic DX and prevents unstyled text rendering.
+
+## ADR-016: Universal Layout Overflow Hardening & Multi-Brand Preview Strip
+
+- **Context:** Component documentation pages suffered from horizontal layout overflow when viewed inside narrow mobile viewports ($\le 480\text{pt}$). Long TypeScript type union badges (e.g. `'display' | 'heading' | 'title' | 'body' | 'label' | 'caption'`) in the Props API table pushed default values outside card boundaries. Additionally, switching brands between Shani Core and Apex Fleet was not immediately obvious on the home page because primary button component tokens were not overridden in the theme merger.
+- **Decision:**
+  - **Component Props Table Wrapping:** In `<ComponentPage>`, wrapped the prop definition in a responsive layout (`wrap={true}`, `align="start"`), with `maxWidth: '100%'` and `flexShrink: 1` on type badges. When horizontal space is tight, default values drop gracefully onto their own line below the type badge.
+  - **Primitive Text Shrinking:** Updated `<Badge>`, `<Checkbox>`, and `<Switch>` to include `flexShrink: 1` on text labels and `maxWidth: '100%'` on containers so long status strings and labels wrap without pushing parent containers.
+  - **Timeline Header Wrapping:** In `<Timeline>`, added `flexWrap: 'wrap'` and `gap` to milestone headers, with `minWidth: 140` and `flexShrink: 1` on step titles, allowing timestamps to drop below on small mobile devices.
+  - **Component Page Playground Controls:** Audited and applied `wrap={true}` across all 12 component pages' interactive playground controls (size tiers, variant buttons, color palettes, alignment, spacing) to eliminate horizontal scrolling.
+  - **Comprehensive Brand Theme Overrides:** Updated `partnerThemeOverrides` to override `components.button.primary` and `components.badge.brand` so primary action buttons and brand badges immediately reflect the active white-label palette.
+  - **Live Brand Preview Strip:** Added a dedicated brand preview strip to the Home page displaying the active tenant name, primary Button, brand Badge, link text, and themed card accent, making brand swaps immediately perceptible.
+- **Why:** Eliminates all horizontal scrolling and clipped text across mobile viewports while proving white-label multi-brand support with zero runtime overhead.
+- **Alternatives Considered:**
+  - Truncating long types with ellipses (`numberOfLines={1}`): Hides essential API details from developers reading documentation on mobile devices. Wrapping preserves full type readability.
+
+## ADR-017: Playground Overflow Isolation, Single Web Focus Border & Props API Normalization
+
+- **Context:** Visual inspection across mobile browsers and screenshots revealed 4 polish and accessibility issues:
+  1. In the Box & Stack live playground, horizontal stack items overflowed the preview container on narrow viewports.
+  2. On web, the inner `<TextInput>` in `TextField` displayed the browser's default CSS focus outline in addition to the wrapper's 2px token focus border, producing two nested borders.
+  3. The Component Props API table rendered literal `"Default: undefined"` for optional props and `"Default: required"` instead of a distinct visual indicator.
+  4. The brand switcher's "Apex Fleet" tenant lacked explicit labeling clarifying that it is a white-label partner demo.
+- **Decision:**
+  - **Shared Playground Preview Container:** In `ComponentPage.tsx`, wrapped `{playground}` inside a horizontal `<ScrollView>` with `minWidth: '100%'`, allowing any wide preview to scroll smoothly without breaking the parent container boundary. Added `minWidth: 0, flexShrink: 1` and `numberOfLines={1}` to Box & Stack playground items.
+  - **Single Web Focus Border:** In `packages/ui/src/components/TextField/TextField.tsx`, applied platform-safe styles `Platform.OS === 'web' && { outlineStyle: 'none', outlineWidth: 0, borderWidth: 0 }` to the inner `<TextInput>`. Preserved exactly one prominent 2px focus border on the outer container using `inputTokens.border.focus` (`#1D4ED8` light, `#60A5FA` dark).
+  - **Checkbox & Switch Focus States:** Enhanced `useToggle` headless hook with `isFocused`, `onFocus`, and `onBlur`. In `Checkbox`, focused states trigger `checkboxTokens.border.focus`. In `Switch`, focused states trigger `theme.colors.border.focus` with a 2px border. Suppressed outer browser outlines on web via `outlineStyle: 'none'`.
+  - **Non-Text Focus Contrast Audit:** Added `border.focus` against `bg.surface` and `bg.canvas` checks to `scripts/contrast.ts` and `contrastAudit.ts` ensuring $\ge 3.0:1$ non-text contrast under WCAG 2.1 SC 1.4.11 (measured 6.4:1–7.9:1, passing AA).
+  - **Props API Normalization:** Centralized default value rendering in `ComponentPage.tsx`:
+    - If required (`prop.default === 'required'` or mandatory): renders `<Badge variant="danger" size="sm">Required</Badge>`.
+    - If undefined / missing: renders `"Default: None"` in secondary caption text.
+    - If defined value: renders `"Default: <value>"` with monospace formatting.
+  - **Brand Switcher Copy Clarification:** Updated `partnerTheme.ts`, `GalleryHeader.tsx`, and the Home screen (`index.tsx`) to clearly state: `"Partner brand demo: same components, different tokens"`.
+- **Why:** Eliminates visual glitches on web browsers, guarantees non-text focus contrast compliance, presents a clean props reference, and clearly explains white-label architecture to evaluators.
+- **Alternatives Considered:**
+  - Allowing browser outline on web: Clashes with design system border tokens and creates inconsistent appearance across different browser engines (Chrome vs Safari vs Firefox).
+
+## ADR-018: Timeline Content Column Flex Layout & Cross-Component Text Wrapping
+
+- **Context:** In narrow mobile phone viewports ($\le 390\text{pt}$, down to $320\text{pt}$) and in large font scaling modes, the Timeline component exhibited text clipping at the right edge: milestone titles, descriptions, and right-aligned timestamps ("Exp...") overflowed or got cut off. This was exacerbated by parent container styling (e.g. horizontal scroll containers with `overflow: 'hidden'` or fixed `maxWidth` attributes) that masked underlying flex shrinking and wrapping deficits.
+- **Decision:**
+  - **Timeline Content Column Geometry:** In `packages/ui/src/components/Timeline/Timeline.tsx`, configured the step container with `width: '100%', maxWidth: '100%'`. Clamped the indicator dot/connector column with `flexShrink: 0` to preserve its fixed token size. Configured the content column with `flex: 1, minWidth: 0, maxWidth: '100%'` so it fills all remaining horizontal space without expanding past the container.
+  - **Timestamp Wrapping Logic:** Structured the title + timestamp label row with `flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: theme.spacing[1]`. Removed fixed `minWidth: 140` from the title and set `flexShrink: 1, minWidth: 0, maxWidth: '100%'` on both title and timestamp. When horizontal space is tight, the timestamp wraps naturally onto the line directly below the title rather than forcing row overflow.
+  - **Description Text Flow:** Ensured step descriptions use `flexShrink: 1, minWidth: 0, maxWidth: '100%'` without `numberOfLines` clamping, allowing natural multi-line text flow.
+  - **Removal of Masking Containers:** In `ComponentPage.tsx`, removed the inner `<ScrollView horizontal>` and `overflow: 'hidden'` from the live playground preview card, ensuring the preview container is standard non-scrolling flex (`width: '100%', maxWidth: '100%'`). Removed arbitrary fixed `maxWidth: 440` from the Timeline playground card.
+  - **Monorepo-Wide Row Layout Audit:** Audited and applied `wrap={true}`, `flexShrink: 1`, `minWidth: 0`, and `maxWidth: '100%'` across Card headers, shipment result cards, consignment detail rows, and TextField input/adornment rows to prevent text truncation under extreme Dynamic Type scaling.
+- **Why:** Delivers 100% responsive, unclipped layout presentation on all phone sizes down to 320px and under accessibility font scaling without hiding layout bugs behind artificial scroll containers.
+- **Alternatives Considered:**
+  - Wrapping Timeline in a horizontal scroll view: Causes awkward horizontal panning for users reading vertical milestone updates. A vertical stepper must always fit its container width.
+
+## ADR-019: Mobile Typography Density Tuning & 4pt Line-Height Alignment
+
+- **Context:** Mobile logistics applications require dense, legible typography for handheld operation. Review of the primitive type scale tokens revealed oversized values for `display` (36pt) and `title` (20pt) that pushed screen layouts wider and caused aggressive text wrapping on narrow phone viewports ($\le 390\text{pt}$). Additionally, several line heights (`lineHeight['3xl'] = 38`, `lineHeight.lg = 28`) were not optimal multiples of the 4pt grid.
+- **Decision:**
+  - Adjusted `fontSize['4xl']` (`display`) from 36pt to 32pt with 40pt line height (strictly 4pt-aligned).
+  - Adjusted `fontSize.xl` (`title`) from 20pt to 18pt with 24pt line height (strictly 4pt-aligned).
+  - Adjusted `fontSize['3xl']` from 30pt to 28pt with 36pt line height (strictly 4pt-aligned).
+  - Adjusted `lineHeight.lg` from 28pt to 24pt to establish 4pt alignment for 18pt font sizes.
+  - Maintained `body` (16pt / 24pt), `label` (14pt / 20pt), and `caption` (12pt / 16pt), which align with mobile app industry standards.
+- **Why:** Matches standard mobile ergonomics (body 14–16, label 12–14, caption 11–12, title 16–18, heading 20–24, display 28–32), eliminates layout crowding on 320px–390px screens, and ensures 100% of line heights are multiples of 4.
+- **Alternatives Considered:**
+  - Keeping 36pt display: Caused waybill tracking numbers and timestamps to wrap across 3–4 lines on compact mobile screens.
+
+## ADR-020: Demo Screen Visual Hierarchy & Standard 390px Mobile Viewport Frame
+
+- **Context:** On the Shipment Tracking and Shipments List demo screens, visual hierarchy had multiple competing `display` and `heading` variants (e.g. tracking number, ETA, and section titles all using oversized text). Additionally, the web preview container was clamped at 480px, masking standard mobile phone viewport constraints (such as the standard 390px iPhone width).
+- **Decision:**
+  - **Phone Frame Clamping:** Updated `apps/gallery/app/_layout.tsx` so the responsive phone frame on wide screens is constrained to `maxWidth: 390` (previously 480), centered at 100% zoom.
+  - **Single Screen Hero:** Enforced that only ONE hero value per screen uses `variant="display"` (specifically the ETA time `"Today, 04:30 PM"` on Shipment Tracking).
+  - **Section and Identifier Hierarchy:** Card section titles (`Estimated Delivery`, `Shipment Progress`, `Consignment & Cargo Details`, `Active Waybills`, `Waybill Results`) use `variant="title"`. Primary entity identifiers (`#SHN-849102-US`) use `variant="heading"`. Timeline step titles use `variant="title"` for current and `variant="label"` for completed/upcoming. Timestamps and metadata use `variant="caption"` or `variant="body"`.
+  - **Rule Enforcement:** No text is rendered larger than the entity or section it labels.
+- **Why:** Establishes unambiguous typographic hierarchy across complex logistics workflows and guarantees that components are verified under realistic 390px mobile phone constraints.
+- **Alternatives Considered:**
+  - Retaining 480px web container: Failed to reveal mobile text wrapping and spacing constraints representative of handheld mobile devices.
+
+## ADR-021: Card Action Architecture & Utility Placement Rules
+
+- **Context:** Action buttons on cards (e.g. Waybill records in Shipments list, Cargo details in Shipment tracking) suffered from inconsistent positioning and visual competition: primary actions, secondary buttons, and icon buttons were mixed in the same rows, leading to horizontal clipping on narrow viewports ($\le 390\text{pt}$) and ambiguous visual hierarchy for couriers.
+- **Decision:**
+  - **Single Main Action Bottom-Right:** Each card may contain at most ONE primary or secondary main action, positioned in the bottom-right footer row (e.g., `"Track Live"` with a chevron, or `"Download Waybill"`). On compact screens ($\le 390\text{pt}$), the footer row allows wrapping, and the main action expands to full width (`flexGrow: 1, flexBasis: 120, maxWidth: '100%'`).
+  - **Icon-Only Utility Actions Top-Right:** Secondary or utility actions (such as `Print`, `Share2`, `Bell`, `QrCode`) must be placed in the card header at the top-right as ghost `IconButton` elements with mandatory `accessibilityLabel` attributes.
+  - **Waybill Card Information Flow:** Ordered as:
+    1. Top row: tracking number (`heading`, `flex: 1, minWidth: 0, wraps`) on the left; icon-only utility actions (`Printer`) top-right.
+    2. Body: status `Badge`, followed by destination and package info (`wraps`).
+    3. Divider.
+    4. Footer: ETA timestamp (`Clock` icon + time) on the left, single main action (`Track Live`) on the right.
+- **Why:** Eliminates action crowding, standardizes interaction affordances across 15+ logistics apps, ensures full touch target compliance (44x44pt), and guarantees unclipped responsiveness at 320px–390px.
+- **Alternatives Considered:**
+  - Multiple buttons in card footers: Causes horizontal truncation and button overlapping on 320px devices.
+
+## ADR-022: Gallery Header Simplification & Removal of Brand-Switcher UI
+
+- **Context:** The gallery previously included an interactive tenant brand switcher demonstrating white-label theme swapping (e.g., Apex Fleet). This introduced visual clutter in the gallery header (causing wrapping issues at 320px), confusing tenant badges, and a large preview card on the home screen that competed with primary component documentation.
+- **Decision:**
+  - **Remove Brand Switcher UI from Gallery:** Removed the Shani/Apex brand switcher, the "Shani Core" / "Apex Fleet" header badge, the "Tenant: ..." chip, and the blue "Active Brand Theme" preview strip from the gallery application.
+  - **Preserve `createTheme()` in UI Core:** Retained `createTheme()` in `packages/ui` with its full test suite and architectural documentation in `docs/LEARNING.md`, stripped of competitor brand names.
+  - **Streamlined Gallery Header:** Simplified `GalleryHeader` to contain strictly the logo/back button, page title, unclipped subtitle, and the Light/Dark/System theme switcher.
+  - **Unified Mode Label:** Replaced verbose status text like `"Mode: light (light)"` with clean single-status labels: `"Mode: Light"`, `"Mode: Dark"`, or `"System (Dark)"` / `"System (Light)"`.
+- **Why:** Delivers a focused, unclipped 320px-compliant design system documentation app while preserving the underlying multi-tenant white-labeling engine in the design system foundation.
+- **Alternatives Considered:**
+  - Retaining the brand switcher in a drawer: Still imposed UI maintenance overhead without adding value to core component documentation.
+
+## ADR-023: Automated Typechecking for Documentation Code Snippets
+
+- **Context:** Component documentation pages in `apps/gallery` provide copy-pasteable TypeScript code snippets for logistics application developers. Manual drift between exported component prop interfaces and documentation strings risks broken snippets, invalid prop usage, or confusing TypeScript errors in consuming projects.
+- **Decision:**
+  - **Documentation Snippet Audit:** Audited all 12 component pages' `codeSnippet` properties against `@shani/ui` and `@shani/tokens` prop definitions. Restructured the `Text` component snippet to demonstrate plain `Text` usage first, followed by composing with layout via `VStack`. Explicitly typed milestone arrays in `Timeline`.
+  - **Automated Typecheck Engine (`scripts/check-snippets.ts`):** Implemented a TypeScript Compiler API runner that extracts `codeSnippet` strings from all gallery component screens, loads `apps/gallery/tsconfig.json`, creates in-memory virtual source files, and runs semantic diagnostic checks (`ts.getPreEmitDiagnostics`).
+  - **CI Integration (`scripts/snippets.test.ts` & `package.json`):** Integrated snippet typechecks into the Jest test suite under `scripts/snippets.test.ts` and added `"snippets:check": "tsx scripts/check-snippets.ts"` in `package.json`. Any invalid prop, wrong variant, or broken type annotation immediately fails CI (`pnpm test` and `pnpm snippets:check`).
+- **Why:** Eliminates documentation drift and guarantees 100% type-safe, runnable code snippets for developers integrating Shani DS into production logistics applications.
+- **Alternatives Considered:**
+  - `ts.transpileModule`: Only checks isolated syntax, unable to perform semantic typechecking or validate prop existence against actual component definitions.
+
+## ADR-024: Button & Control Vertical Stretch Prevention via Component alignSelf
+
+- **Context:** In React Native flexbox, containers default to `alignItems: 'stretch'`. When interactive action controls (`Button`, `IconButton`) or indicators (`Badge`, `Switch`, `Checkbox`) were placed inside flex rows or card footers (such as the Shipments list waybill card footer), the controls inherited `alignItems: 'stretch'`, stretching vertically to match the height of adjacent multi-line text or the row container.
+- **Decision:**
+  - **Component-Level `alignSelf` Protection:** Configured `Button` and `IconButton` with default `alignSelf: 'center'` on both the root `<Pressable>` touch wrapper and the inner animated container. Configured `Badge`, `Switch`, and `Checkbox` with default `alignSelf: 'flex-start'`.
+  - **Horizontal-Only Full-Width Expansion:** For `fullWidth` buttons, expansion is applied strictly horizontally (`width: '100%'`) rather than setting cross-axis `alignSelf: 'stretch'`. In rows and columns, heights are strictly bounded by size tokens (`sm`: 44pt, `md`: 48pt, `lg`: 56pt), with the 44pt minimum touch target enforced.
+  - **Card Footer Layout:** Normalized card action footer rows to `alignItems: 'center'`, with metadata (e.g., ETA) on the left (`flex: 1, minWidth: 140, wrap={true}`) and the main action on the right (`flexGrow: 1, flexBasis: 120, maxWidth: '100%'`), gracefully wrapping to full width on narrow viewports without vertical stretching.
+  - **Automated Regression Tests:** Added unit tests in `Button.test.tsx` and `IconButton.test.tsx` verifying that controls inside parent rows with `alignItems: 'stretch'` and fixed heights maintain exact token-based dimensions.
+- **Why:** Eliminates visual deformation of buttons and form controls across all flexbox parents while preserving touch target compliance.
+- **Alternatives Considered:**
+  - Requiring every parent container to set `alignItems: 'center'`: Fragile and error-prone; defensive defaults at the component root guarantee resilient layouts regardless of parent composition.
+
+## ADR-025: Responsive Documentation Shell, Sidebar Navigation & Preview Viewport Switcher
+
+- **Context:** Clamping the gallery web application to a fixed 390px mobile frame on wide screens impeded desktop documentation workflows, cramped API reference tables, and prevented developers from evaluating component responsiveness across tablets and desktop viewports.
+- **Decision:**
+  - **Responsive Breakpoint Scale:** Introduced the `compact: 600` breakpoint token in `@shani/tokens` representing the documentation shell threshold without using hardcoded magic numbers.
+  - **Adaptive Documentation Shell (`_layout.tsx`):**
+    - Below 600px (phones, Expo Go): Renders full width with native mobile navigation (`SafeAreaView`, no frame).
+    - 600px and above: Renders a documentation layout featuring `DocsTopBar` (global branding, breadcrumbs, and Light/Dark/System theme switcher), `DocsSidebar` (grouped navigation across Foundations, Components, Demos, and Accessibility with active route highlighting), and a centered `maxWidth: 960` content canvas.
+  - **Playground Viewport Switcher (`ComponentPage.tsx`):** Added a responsive viewport selector above interactive component previews with `Fill (100%)`, `Tablet (768)`, and `Phone (390)` presets (default: `Fill`), enabling developers to evaluate responsive wrapping on `Card`, `TextField`, `Timeline`, and `Button` live.
+  - **Realistic Demo Screen Framing (`DemoContainer.tsx`):** On wide screens, the Shipment Tracking and Shipments List demo screens are framed inside a centered 390px phone container with a header toggle to view Full Width; on mobile devices they render full screen.
+  - **Comfortable Typography at Scale:** Capped paragraph line length (`maxWidth: 720`) across documentation cards to prevent stretched text on high-resolution widescreen monitors.
+- **Why:** Delivers an authentic documentation experience for desktop evaluators while preserving realistic handheld mobile views for logistics operators.
+- **Alternatives Considered:**
+  - Keeping a fixed phone frame across the entire web application: Unnecessarily constricted wide desktop displays and made multi-stop timeline steppers and API tables difficult to read.
+
+
+
+
+
+

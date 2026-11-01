@@ -352,15 +352,15 @@ To make Metro bundle across the monorepo seamlessly:
 
 ### Proving Multi-Tenant Theming in Real Time
 
-In enterprise logistics, white-label partner applications (such as FedEx, DHL, or third-party fleet operators) need custom branding without duplicating code.
+In enterprise logistics, white-label partner applications (such as regional delivery partners and third-party fleet operators) need custom branding without duplicating code.
 
-In `apps/gallery`, we prove this with two interactive controls:
+We prove this with:
 1. **Mode Switcher (`light` | `dark` | `system`):** Re-resolves semantic tokens (e.g. `bg.canvas`, `text.primary`) instantly without page reload.
-2. **Brand Switcher (`Shani Core` | `Apex Fleet`):** Dynamically applies partial overrides generated via `createTheme(baseTheme, overrides)`. The partner theme swaps the primary action colors and focus borders to partner primitive scales (`color.partner.*`), verifying that the entire component system reacts to theme swaps using zero runtime CSS-in-JS.
+2. **Theme Customization via `createTheme()`:** Dynamically applies partial overrides generated via `createTheme(baseTheme, overrides)`. A custom theme swaps the primary action colors and focus borders to partner primitive scales (`color.partner.*`), verifying that the entire component system reacts to theme swaps using zero runtime CSS-in-JS.
 
 ### Interview Talking Point:
 
-> "We built our documentation and interactive showcase as a production Expo Router app (`apps/gallery`) configured for iOS, Android, and Web. In Metro, we configure monorepo watch folders and node module paths to resolve `@shani/tokens` and `@shani/ui` directly from source with Fast Refresh. We prove white-labeling in real time using a tenant brand switcher that applies deep overrides via `createTheme()`, proving that components adapt to new brand guidelines without modifying a single component line."
+> "We built our documentation and interactive showcase as a production Expo Router app (`apps/gallery`) configured for iOS, Android, and Web. In Metro, we configure monorepo watch folders and node module paths to resolve `@shani/tokens` and `@shani/ui` directly from source with Fast Refresh. We support white-labeling in real time using deep token overrides via `createTheme()`, proving that components adapt to new brand guidelines without modifying a single component line."
 
 ---
 
@@ -452,7 +452,103 @@ const isWideWeb = Platform.OS === 'web' && width > 768;
 - **The Problem:** Single-row headers containing title, back button, badge, 3 mode switchers, and 2 brand switchers require $> 550\text{pt}$ width, causing severe right-side clipping on phone viewports ($390\text{pt}$ – $480\text{pt}$).
 - **The Solution:** Separate into a clean two-row hierarchy: Row 1 handles primary navigation and tenant branding; Row 2 houses a horizontal, non-clipping scrollable/wrapping control bar with WCAG AA ghost buttons.
 
+### 4. Responsive Wrapping & Mobile Overflow Protection
+
+- **The Problem:** In mobile design system documentation, long type unions (e.g. `'display' | 'heading' | 'title' | 'body' | 'label' | 'caption'`) push adjacent default values off-screen when placed in fixed horizontal rows without `flexWrap`. Similarly, button groups with 5–6 options (variants, sizes, colors) extend past device boundaries.
+- **The Solution:** 
+  1. Set `flexWrap: 'wrap'` and `flexShrink: 1` across all control rows and metadata columns.
+  2. In `<ComponentPage>`, prop definitions wrap naturally, allowing default values to drop onto their own line below long type badges when space is tight.
+  3. Form controls (`<Checkbox>`, `<Switch>`) apply `flexShrink: 1` to text labels so multi-line text wraps gracefully without expanding the parent container.
+  4. In `<Timeline>`, milestone headers use `flexWrap: 'wrap'`, ensuring timestamps drop below long step titles on narrow mobile screens.
+
+### 5. Multi-Tenant White-Labeling (Component Token Overrides)
+
+- **The Problem:** Merging semantic color overrides (`colors.action.primary.default`) is insufficient if components read pre-compiled component tokens (`theme.components.button.primary.bg`). Primary buttons and badges would remain stuck in the default corporate theme.
+- **The Solution:** Deep theme mergers (`createTheme()`) must override component-tier tokens (`components.button.primary`, `components.badge.brand`) in addition to semantic palettes, ensuring white-labeled themes cascade down to all component states.
+
 ### Interview Talking Point:
 
-> "When shipping React Native components across mobile and web, array-based JSX children (`['Mode: ', mode]`) will bypass naive string checks and fall back to the browser's default serif font inside HTML divs. We solved this by enforcing robust children normalization in `Button` and `Badge` that guarantees wrapping in design system `<Text>` with our sans-serif stack (`theme.typography.fontFamily.sans`). Additionally, we normalized icon props so string names like `'ChevronRight'` or `'Sun'` resolve directly to token-bound Lucide SVG elements, eliminating raw string rendering across platforms."
+> "To guarantee seamless mobile usability across all 15+ logistics apps and our documentation showcase, we hardened all layouts against horizontal overflow: long type unions and playground controls wrap gracefully with `flexShrink: 1` and `wrap={true}`, while `<Timeline>` timestamps drop below long titles on phone viewports. Furthermore, to support white-labeling, our `createTheme()` merger updates both semantic and component-tier tokens (`button.primary`, `badge.brand`), making custom theme transitions seamless."
+
+---
+
+## 14. Web Focus Outlines, Shared Playground Isolation & Props API Normalization
+
+### 1. The React Native Web Double Focus Border Trap
+
+- **The Problem:** In React Native Web, a `<TextInput>` renders as an HTML `<input>` inside an enclosing container `<View>`. When focused in a browser:
+  1. The browser's user-agent CSS applies a default outline (`outline: 2px solid -webkit-focus-ring-color`) to the inner `<input>`.
+  2. The DS design system applies its own 2px focus border (`inputTokens.border.focus`) to the container `<View>`.
+  This creates two nested, clashing focus borders on web.
+- **The Solution:** Apply platform-safe styles on web to suppress the inner input outline:
+  ```tsx
+  const nativeInputStyle: TextStyle = {
+    flex: 1,
+    height: '100%',
+    fontFamily: theme.typography.fontFamily.sans,
+    fontSize: sizeTokens.fontSize,
+    color: textColor,
+    padding: 0,
+    margin: 0,
+    borderWidth: 0,
+    ...(Platform.OS === 'web' && {
+      outlineStyle: 'none' as never,
+      outlineWidth: 0 as never,
+    }),
+  };
+  ```
+  This preserves exactly ONE clear, prominent focus border on the container wrapper using `inputTokens.border.focus` (`#1D4ED8` light, `#60A5FA` dark).
+- **Focus States on Checkbox and Switch:**
+  Enhanced `useToggle` headless hook with `isFocused`, `onFocus`, and `onBlur`. Checkbox resolves `boxBorder = state.isFocused ? checkboxTokens.border.focus : ...`, and Switch adds a 2px `theme.colors.border.focus` border when focused, while suppressing outer pressable browser outlines on web.
+- **Non-Text Focus Contrast (WCAG 2.1 SC 1.4.11):**
+  Focus indicators must meet at least $3.0:1$ contrast against adjacent background colors. Both light mode ($6.7:1$ on surface, $6.4:1$ on canvas) and dark mode ($7.0:1$ on surface, $7.9:1$ on canvas) easily surpass this standard in automated CI tests (`scripts/contrast.ts`).
+
+### 2. Playground Preview Container Isolation
+
+- **The Problem:** In component playgrounds where horizontal space is constrained (e.g. `Box & Stack` showing 3 parcels side-by-side with 32pt spacing), elements pushed past card boundaries and clipped on phone viewports.
+- **The Solution:** In the shared `<ComponentPage>` component, wrap `{playground}` in a horizontal `<ScrollView>` with `minWidth: '100%'`. This ensures wide component previews scroll smoothly within the card without breaking layout boundaries, while playground items use `minWidth: 0, flexShrink: 1` to shrink when appropriate.
+
+### 3. Component Props API Normalization
+
+- **The Problem:** Showing `"Default: undefined"` for optional props looks sloppy, while displaying `"Default: required"` obscures mandatory props.
+- **The Solution:** Centrally in `<ComponentPage>`:
+  - Required props render a prominent red `<Badge variant="danger" size="sm">Required</Badge>`.
+  - Optional props with no default render `"Default: None"` in muted secondary text.
+  - Defined defaults render `"Default: <value>"` with monospace code styling.
+
+### 4. White-Labeling Multi-Tenant Communication
+
+- **Talking Point:**
+  > "When presenting custom themes, clarity is key: `createTheme()` allows partner applications to consume custom token scales with zero-runtime overhead—the exact same component code consuming a custom brand token scale via `createTheme()`."
+
+---
+
+## 15. Timeline Content Flow, Timestamp Wrapping & Overflow Anti-Patterns
+
+### 1. The Column Flex Constraint Rule
+
+- **The Problem:** In UI patterns where a fixed-width element (an icon, avatar, or timeline indicator dot) sits next to a text column, naive code omits `minWidth: 0` on the text column or sets an arbitrary `minWidth` on the title. In flexbox, flex children default to `min-width: auto` (their content size). When titles or descriptions are long, the text column refuses to shrink below its content width, pushing the entire row wider than its parent and clipping text at the container's right edge.
+- **The Solution:**
+  1. The fixed column (indicator/connector) must have `flexShrink: 0` and a tokenized fixed width (`timelineTokens.indicator.size`).
+  2. The content column must explicitly specify `flex: 1`, `minWidth: 0`, and `maxWidth: '100%'`. This enforces that the content takes strictly the *remaining* width and never exceeds it.
+  3. Text elements inside must set `flexShrink: 1, minWidth: 0, maxWidth: '100%'` with no artificial `numberOfLines` clamping unless an explicit truncation design is intended.
+
+### 2. Timestamp Wrapping vs. Clipping
+
+- **The Problem:** When placing a title on the left and a timestamp on the right using `justifyContent: 'space-between'`, setting `flexShrink: 0` on the timestamp and `minWidth: 140` on the title forces both items to remain on line 1 even when the container width drops to 200px. The row width exceeds the parent, truncating the timestamp ("Exp...").
+- **The Solution:** Use a flexWrap row (`flexWrap: 'wrap'`, `alignItems: 'flex-start'`, `gap: theme.spacing[1]`) with `flexShrink: 1, minWidth: 0, maxWidth: '100%'` on both title and timestamp.
+  - When the container is wide: title sits on the left, timestamp sits on the right.
+  - When the container is narrow: the timestamp wraps naturally onto the line immediately below the title, maintaining full legibility with zero clipping.
+
+### 3. The Anti-Pattern of Masking Containers
+
+- **The Anti-Pattern:** When components overflow on narrow screens, a common anti-pattern is wrapping the preview in a horizontal `<ScrollView>` or applying `overflow: 'hidden'` to the parent container. This conceals the underlying flex deficit: inside a horizontal scroll container, `width: '100%'` no longer constrains to the viewport width, and `overflow: 'hidden'` silently clips the right side of cards.
+- **The Best Practice:** A vertical milestone stepper or card must always adapt to its container width naturally. Remove horizontal scroll views and overflow clipping from parent containers so that flex wrapping and shrinking issues are surfaced and corrected directly in component styles.
+
+### Interview Talking Point:
+
+> "In mobile logistics apps, drivers and warehouse operators routinely use 320px–375px screens under maximum Dynamic Type font scaling. To prevent text clipping in our vertical Timeline stepper, each step's content column uses `flex: 1` and `minWidth: 0` alongside fixed `flexShrink: 0` indicators. When milestone titles are long, timestamps wrap cleanly onto the line below via `flexWrap: 'wrap'`, ensuring zero horizontal scrolling or truncated information on rugged mobile devices."
+
+
+
 
