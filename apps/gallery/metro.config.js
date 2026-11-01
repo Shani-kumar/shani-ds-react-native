@@ -15,5 +15,22 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, 'node_modules'),
 ];
 
+// 3. Resolve monorepo package source directly so gallery does not depend on packaged dist
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === '@shani/ui') {
+    return {
+      filePath: path.resolve(monorepoRoot, 'packages/ui/src/index.ts'),
+      type: 'sourceFile',
+    };
+  }
+  if (moduleName === '@shani/tokens') {
+    return {
+      filePath: path.resolve(monorepoRoot, 'packages/tokens/src/index.ts'),
+      type: 'sourceFile',
+    };
+  }
+  return context.resolveRequest(context, moduleName, platform);
+};
+
 module.exports = config;
 
