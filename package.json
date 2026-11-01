@@ -5,7 +5,8 @@
   "description": "Production-style React Native design system for logistics mobile apps",
   "scripts": {
     "dev": "pnpm --filter @shani/gallery dev",
-    "build": "pnpm tokens:build && pnpm --filter \"./packages/*\" build",
+    "build": "pnpm tokens:build && pnpm sync:rules && pnpm manifest && pnpm --filter \"./packages/*\" build",
+    "build:web": "pnpm build && pnpm --filter @shani/gallery build",
     "test": "jest --passWithNoTests",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit && pnpm --filter \"./packages/*\" --filter \"./apps/*\" typecheck",
@@ -19,6 +20,9 @@
     "manifest": "tsx scripts/generate-manifest.ts",
     "manifest:check": "tsx scripts/generate-manifest.ts --check",
     "validate:screen": "tsx scripts/validate-screen.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

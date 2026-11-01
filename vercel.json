@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm --filter @shani/gallery build --output-dir dist",
+  "buildCommand": "pnpm build:web",
   "outputDirectory": "apps/gallery/dist",
   "framework": null,
   "rewrites": [
