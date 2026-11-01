@@ -229,20 +229,20 @@ export const lightTheme: ThemeTokens = {
       "sm": 14,
       "base": 16,
       "lg": 18,
-      "xl": 20,
+      "xl": 18,
       "2xl": 24,
-      "3xl": 30,
-      "4xl": 36
+      "3xl": 28,
+      "4xl": 32
     },
     "lineHeight": {
       "xs": 16,
       "sm": 20,
       "base": 24,
-      "lg": 28,
-      "xl": 28,
+      "lg": 24,
+      "xl": 24,
       "2xl": 32,
-      "3xl": 38,
-      "4xl": 44
+      "3xl": 36,
+      "4xl": 40
     },
     "fontWeight": {
       "regular": "400",
@@ -333,6 +333,7 @@ export const lightTheme: ThemeTokens = {
   },
   "breakpoints": {
     "phone": 0,
+    "compact": 600,
     "tablet": 768,
     "desktop": 1024,
     "wide": 1280

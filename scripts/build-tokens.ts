@@ -262,7 +262,7 @@ export interface ShadowToken {
 export type ShadowScale = Record<'none' | 'sm' | 'md' | 'lg' | 'xl', ShadowToken>;
 export type OpacityScale = Record<'0' | 'faint' | 'subtle' | 'muted' | 'medium' | 'strong' | 'full', number>;
 export type ZIndexScale = Record<'deep' | 'base' | 'docked' | 'dropdown' | 'sticky' | 'banner' | 'overlay' | 'modal' | 'popover' | 'toast' | 'tooltip', number>;
-export type BreakpointScale = Record<'phone' | 'tablet' | 'desktop' | 'wide', number>;
+export type BreakpointScale = Record<'phone' | 'compact' | 'tablet' | 'desktop' | 'wide', number>;
 
 export interface MotionDurationScale {
   instant: number;

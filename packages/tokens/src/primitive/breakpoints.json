@@ -3,7 +3,12 @@
     "phone": {
       "$value": 0,
       "$type": "dimension",
-      "$description": "Compact mobile devices (0px - 767px)"
+      "$description": "Compact mobile devices (0px - 599px)"
+    },
+    "compact": {
+      "$value": 600,
+      "$type": "dimension",
+      "$description": "Compact tablet / documentation layout threshold (600px - 767px)"
     },
     "tablet": {
       "$value": 768,
