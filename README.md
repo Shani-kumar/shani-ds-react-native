@@ -57,7 +57,7 @@ pnpm typecheck
 # ESLint code quality check
 pnpm lint
 
-# Jest unit test suite (26 suites, 155 tests)
+# Jest unit test suite (28 suites, 161 tests)
 pnpm test
 
 # WCAG 2.1 AA contrast audit (all 62 checks pass across Light and Dark themes)
@@ -78,6 +78,55 @@ pnpm manifest:check
 # AST validation of screens against Shani DS rules and component manifest
 pnpm validate:screen <file or folder>
 ```
+
+---
+
+## Using Shani DS in an App Repo
+
+To use `@shani/ui` in a standalone React Native or Expo application:
+
+### 1. Installation
+Install `@shani/ui` (and required peer dependencies):
+```bash
+npm install @shani/ui lucide-react-native react-native-reanimated react-native-svg
+```
+
+### 2. Wrap Root in ThemeProvider
+```tsx
+import React from 'react';
+import { ThemeProvider, Box, Text, Button } from '@shani/ui';
+
+export default function App() {
+  return (
+    <ThemeProvider defaultMode="system">
+      <Box flex={1} bg="canvas" p="4" justify="center" align="center">
+        <Text variant="heading">Hello Shani DS</Text>
+        <Button variant="primary" size="md" onPress={() => alert('Confirmed')}>
+          Get Started
+        </Button>
+      </Box>
+    </ThemeProvider>
+  );
+}
+```
+
+### 3. Initialize AI Agent Context
+Run the Shani DS initialization CLI inside your application repository:
+```bash
+npx shani-ds init-ai
+```
+This automatically configures `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.cursorrules` pointing to the installed `node_modules/@shani/ui/components.json` and canonical guidelines without overwriting your existing instructions.
+
+### 4. Validate Screens Locally and in CI
+Check any screen file or directory against Shani DS design tokens, prohibited imports, and valid component schemas:
+```bash
+# Validate a single screen
+npx shani-ds validate src/screens/PickupScreen.tsx
+
+# Validate all screens in a directory
+npx shani-ds validate src/screens/
+```
+The command parses the TypeScript AST and exits with code 1 if raw hex colors, raw pixel spacings, or forbidden primitives are found.
 
 ---
 

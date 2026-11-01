@@ -445,6 +445,17 @@
   - **Safe Non-Destructive Merging:** Enclosed Shani DS instructions in `<!-- SHANI_DS_START -->` and `<!-- SHANI_DS_END -->` markers. If a file exists, pre-existing developer instructions are preserved and the Shani DS block is appended or updated idempotently.
 - **Why:** Delivers friction-free AI enablement in consumer repositories with zero risk of overwriting project-specific developer configurations.
 
+## ADR-038: Standalone AST Validator CLI & Installed Manifest Resolution (Step 5.6 Item 3)
+
+- **Context:** External applications using `@shani/ui` need to validate screens locally and in automated CI pipelines without depending on the design system monorepo. The validator must dynamically resolve `components.json` from the installed package in `node_modules/@shani/ui`.
+- **Decision:**
+  - **Exposed Validator Command (`shani-ds validate <path>`):** Implemented the CLI runner in `packages/ui/src/cli/validate.ts`, exposed via `bin/shani-ds.js`.
+  - **Multi-Environment Manifest Resolution:** Resolves `components.json` first from launcher environment variables, then from the installed package root (`../../components.json`), local `node_modules/@shani/ui/components.json`, or an optional `--manifest <path>` override.
+  - **Consumer Documentation:** Added a dedicated "Using Shani DS in an App Repo" guide in `README.md` covering installation, root ThemeProvider setup, `npx shani-ds init-ai`, and `npx shani-ds validate`.
+  - **Automated Verification:** Added unit tests (`scripts/cli-validator.test.ts`) validating screen compliance and error reporting against simulated installed package layouts.
+- **Why:** Ensures any consumer application can run strict design system audits in local pre-commit hooks and remote CI pipelines with zero drift.
+
+
 
 
 
