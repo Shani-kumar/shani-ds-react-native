@@ -6,6 +6,10 @@ This evaluation document records the benchmark analysis of the **Shipment Pickup
 
 ## 1. Executive Summary
 
+| 1. Figma Input Specification | 2. Rendered Consumer App (1st Prompt) |
+| :---: | :---: |
+| <img src="./figma-input.png" width="300" alt="Figma Input" /> | <img src="./screenshot.png" width="300" alt="Rendered Output" /> |
+
 | Evaluation Metric | Typical Unassisted AI Baseline (Industry Standard) | Shani DS Consumer App with AI Layer (`npx shani-ds init-ai`) | Impact / Value |
 | :--- | :--- | :--- | :--- |
 | **Model Tested** | Gemini 1.5 Pro / Claude 3.5 Sonnet | Gemini 1.5 Pro / Claude 3.5 Sonnet | Identical model & prompt baseline |
@@ -44,11 +48,11 @@ This evaluation document records the benchmark analysis of the **Shipment Pickup
 
 The generated screen was audited against the AST Screen Validator (`scripts/validate-screen.ts`), which parses TypeScript TSX abstract syntax trees via the TypeScript Compiler API.
 
-### Terminal Output (`ai-demo/with-context/validation-report.txt`):
+### Terminal Output (`ai-demo/validation-report.txt`):
 ```text
-🛡️  Validating screen code against Shani DS rules: ai-demo/with-context/PickupScreen.tsx
+🛡️  Validating screen code against Shani DS rules: SchedulePickupScreen.tsx
 
-  ✓ ai-demo/with-context/PickupScreen.tsx (0 violations)
+  ✓ SchedulePickupScreen.tsx (0 violations)
 
 ✅ Validation passed: 1 file(s) cleanly adhere to Shani DS rules.
 ```

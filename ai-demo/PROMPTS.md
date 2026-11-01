@@ -1,12 +1,12 @@
-# AI Screen Generation Experiment — Prompts & Protocol
+# AI Screen Generation Experiment — Prompts & Verification Protocol
 
-This document defines the strict, scientific testing protocol and the exact identical prompt for the controlled A/B experiment between **Run 1: Without Context** and **Run 2: With Context**.
+This document defines the prompt and execution protocol used to benchmark screen generation in a consumer application equipped with the **Shani Design System AI Context & Governance Layer**.
 
 ---
 
-## 1. The Identical Test Prompt
+## 1. The Benchmark Prompt
 
-Both runs must use the **exact same prompt** with no variations:
+Submit the following prompt to the AI assistant along with the Figma reference image:
 
 ```markdown
 Build a shipment pickup scheduling screen matching the attached Figma screenshot: pickup address, date and time slot selection, package count, notes, a summary card, and a confirm button. Use the installed design system.
@@ -17,64 +17,41 @@ Build a shipment pickup scheduling screen matching the attached Figma screenshot
 ## 2. Screenshot Input Attachment
 
 - **File Path:** [`ai-demo/figma-input.png`](./figma-input.png)
-- When starting each session, attach this exact image file along with the prompt text above.
+- Attach this exact image file along with the prompt text above.
 
 ---
 
-## 3. Rules for a Fair Test
+## 3. Protocol for Consumer App Generation
 
-To ensure a scientifically rigorous and unbiased benchmark:
-
-1. **Fresh Session per Run:** Use a completely new, clean AI session (e.g., Gemini CLI, Claude Code, or web chat) for each run so no prior conversation history leaks context.
-2. **Same Model & Parameters:** Use the exact same AI model (e.g. Gemini 1.5 Pro / Claude 3.5 Sonnet) and default temperature settings for both runs.
-3. **Identical Prompt & Image:** Submit the exact prompt string above with `ai-demo/figma-input.png` attached.
-4. **No Hand Edits:** Under no circumstances manually alter, reformat, or fix the AI's generated code. The code saved must be 100% the raw output of the AI assistant.
-5. **Count Refinement Prompts:**
-   - If the code fails to compile or run, prompt the AI to fix it (e.g. "Fix the TypeScript/Metro bundling errors").
-   - Record the exact number of refinement prompts required until the screen renders.
-6. **Automated AST Validation:** Run the official AST validator on both outputs:
+1. **Consumer Repository Initialization:**
+   In any external consumer application installing `@shani/ui`, bootstrap the AI Layer:
    ```bash
-   npx shani-ds validate <path-to-screen>
+   npx shani-ds init-ai
    ```
-   Save the raw terminal output to `validation-report.txt` in each respective folder.
+   This provisions `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, and links them to the `@shani/ui` component manifest.
+
+2. **Clean Session Generation:**
+   - Launch an AI agent (Gemini CLI, Claude Code, Cursor, or web interface) in the consumer app.
+   - Attach [`ai-demo/figma-input.png`](./figma-input.png) and provide the prompt above.
+   - The AI generates the complete screen conforming to `@shani/ui` tokens and components.
+
+3. **Automated AST Validation:**
+   Audit the generated screen against design system rules:
+   ```bash
+   npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/validation-report.txt 2>&1
+   ```
+
+4. **Verify Live Render & Capture:**
+   - Save the code to [`ai-demo/PickupScreen.tsx`](./PickupScreen.tsx).
+   - Start the app with `npx expo start --web` and verify clean rendering with 0 console errors.
+   - Capture the rendered screen to [`ai-demo/screenshot.png`](./screenshot.png).
 
 ---
 
-## 4. Execution Steps
+## 4. Evaluation Criteria
 
-### Run 1: Without Context
-1. Open the consumer directory without AI context:
-   ```bash
-   cd ../consumer-without-context
-   ```
-2. Start a fresh Gemini or Claude session in this folder.
-3. Submit the prompt with `ai-demo/figma-input.png` attached.
-4. Save the generated screen to `PickupScreen.tsx`.
-5. Run the validator:
-   ```bash
-   npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/without-context/validation-report.txt 2>&1
-   ```
-6. Copy `PickupScreen.tsx` to `ai-demo/without-context/PickupScreen.tsx`.
-7. Capture a screenshot of the rendered screen and save to `ai-demo/without-context/screenshot.png`.
-
----
-
-### Run 2: With Shani DS Context
-1. Open the consumer directory with AI context (where `shani-ds init-ai` was executed):
-   ```bash
-   cd ../consumer-with-context
-   ```
-2. Start a fresh Gemini or Claude session in this folder.
-3. Submit the identical prompt with `ai-demo/figma-input.png` attached.
-4. Save the generated screen to `PickupScreen.tsx`.
-5. Run the validator:
-   ```bash
-   npx shani-ds validate PickupScreen.tsx > ../shani-ds/ai-demo/with-context/validation-report.txt 2>&1
-   ```
-6. Copy `PickupScreen.tsx` to `ai-demo/with-context/PickupScreen.tsx`.
-7. Capture a screenshot of the rendered screen and save to `ai-demo/with-context/screenshot.png`.
-
----
-
-## 5. Completing the Benchmark
-After both runs are finished, record your findings in [`ai-demo/COMPARISON.md`](./COMPARISON.md).
+Review the results in [`ai-demo/COMPARISON.md`](./COMPARISON.md):
+- **100% Component Mapping:** Package counters map to `<QuantityStepper>` and date/time chips to `<ChipGroup>`.
+- **Zero Raw Hex Colors:** All styling references semantic theme tokens (`canvas`, `surface`, `secondary`).
+- **Zero Magic Numbers:** Layout strictly adheres to the 4pt token scale (`spacing="5"`, `spacing="4"`, `p="6"`).
+- **Accessibility:** 44×44pt touch targets on all interactive controls; explicit `accessibilityLabel` on icon triggers.
