@@ -1,0 +1,5 @@
+🛡️  Validating screen code against Shani DS rules: ai-demo/with-context/PickupScreen.tsx
+
+  ✓ ai-demo/with-context/PickupScreen.tsx (0 violations)
+
+✅ Validation passed: 1 file(s) cleanly adhere to Shani DS rules.

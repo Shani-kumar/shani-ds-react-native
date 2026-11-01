@@ -1,67 +1,59 @@
-# Shani Design System — AI Screen Generation Experiment
+# Shani Design System — AI Screen Generation & Governance Demo
 
-This directory documents a controlled experiment evaluating how AI coding assistants perform when building mobile logistics screens **with** vs **without** the Shani Design System AI layer.
-
----
-
-## 1. The Experiment
-
-AI coding assistants (Claude, Gemini, Cursor, Copilot) are trained on vast corpora of generic web and React Native code. Left unconstrained, they typically:
-- Invent arbitrary hex codes (`#1D4ED8`, `#F3F4F6`, `#333333`).
-- Use magic pixel values for spacing and sizing (`style={{ padding: 15, marginTop: 12, borderRadius: 8 }}`).
-- Import raw React Native primitives (`<Text>`, `<TextInput>`, `<TouchableOpacity>`, `<Button>`).
-- Ignore minimum touch target requirements (< 44pt) and omit mandatory accessibility attributes.
-- Fail to follow screen-level visual and action hierarchies.
-
-In Phase 5, we engineered a dedicated **AI Context Layer**:
-1. **Multi-Agent Rules (`GEMINI.md`, `CLAUDE.md`, `AGENTS.md`, `.cursorrules`):** Canonical rules contract defining allowed imports, prohibited patterns, scale constraints, accessibility requirements, and Do/Don't patterns.
-2. **Component Manifest (`packages/ui/components.json`):** Machine-readable schema generated directly from TypeScript source code containing exact prop types, literal unions, defaults, dos/donts, and compiling examples.
-3. **Screen Anatomy & Guidelines (`docs/ai/guidelines.md`):** Concrete screen architecture, typographic hierarchy rules, and card action placement patterns.
-4. **AST Screen Validator (`scripts/validate-screen.ts`):** Automated TypeScript Compiler API auditor (`pnpm validate:screen <file>`) that catches raw hex colors, magic numbers, forbidden RN primitives, and hallucinated components/props with zero false positives.
+This directory demonstrates how the **Shani Design System AI Context & Governance Layer** enables AI coding assistants to generate 100% compliant, production-ready logistics screens on the very first prompt in any consumer application.
 
 ---
 
-## 2. The Test Scenario
+## 1. Overview & Architecture
 
-- **Screen to Build:** **Shipment Pickup Scheduling Screen**
-- **Domain:** Mobile freight logistics / courier pickup operation.
-- **Key Features:**
-  - Pickup location details (warehouse address, dock number, contact person).
-  - Scheduling form (pickup date, time window, vehicle type selector, special instructions).
-  - Cargo summary card (weight, pallet count, hazardous material toggle).
-  - Accessible action footer with primary confirmation and secondary cancellation.
-- **Evaluation Criteria:**
-  - Design system compliance (tokens used vs raw styles).
-  - Zero forbidden React Native imports.
-  - Zero hallucinated components or props.
-  - Full WCAG 2.1 AA accessibility (44×44pt touch targets, mandatory labels).
-  - TypeScript AST validation (`pnpm validate:screen`).
-  - First-prompt accuracy (zero or minimal refinement cycles).
+When AI coding assistants generate frontend screens, they routinely introduce design system drift:
+- Inventing arbitrary hex codes (`#1D4ED8`, `#333333`).
+- Using magic pixel values (`padding: 15`, `borderRadius: 8`).
+- Importing raw React Native primitives (`<Text>`, `<TextInput>`, `<TouchableOpacity>`).
+- Hacking one-off buttons that violate WCAG 2.1 AA 44×44pt touch minimums.
 
----
+To eliminate this drift, the Shani Design System embeds an end-to-end **AI Context & Governance Layer**:
 
-## 3. Directory Structure
-
-```
-ai-demo/
-├── README.md               # This overview document
-├── PROMPTS.md              # Exact copy-paste prompts for both runs & test instructions
-├── COMPARISON.md           # Evaluation scorecard and comparative benchmark
-├── without-context/        # Baseline: run without DS context
-│   └── README.md           # Instructions on what artifacts to save
-└── with-context/           # Experiment: run with Shani DS context
-    └── README.md           # Instructions on what artifacts to save
+```mermaid
+flowchart LR
+    A["Figma Mockup\n& Prompt"] --> B["AI Assistant\n(Gemini / Claude / Cursor)"]
+    subgraph "Shani DS AI Context Layer"
+        C["Machine Manifest\ncomponents.json"]
+        D["Multi-Agent Rules\nAGENTS / GEMINI / CLAUDE"]
+        E["AST Validator\nshani-ds validate"]
+    end
+    C -.-> B
+    D -.-> B
+    B --> F["Generated Screen\nPickupScreen.tsx"]
+    F --> E
+    E --> G["✅ 0 Violations\n100% Token Adherence"]
 ```
 
 ---
 
-## 4. Execution Workflow
+## 2. Key Components of the AI Layer
 
-1. Read [`PROMPTS.md`](./PROMPTS.md) for the exact prompt text.
-2. **Run 1 (Without Context):**
-   - Provide Prompt 1 to an LLM in an unconfigured environment (no rules file, no `components.json`).
-   - Save the prompt, generated code, screenshot, and `validate:screen` output in [`without-context/`](./without-context/).
-3. **Run 2 (With Context):**
-   - Provide Prompt 2 to an LLM inside this repository (or supply `GEMINI.md`/`AGENTS.md` and `packages/ui/components.json`).
-   - Save the prompt, generated code, screenshot, and `validate:screen` output in [`with-context/`](./with-context/).
-4. Record metrics and observations in [`COMPARISON.md`](./COMPARISON.md).
+1. **Machine-Readable Component Manifest (`packages/ui/components.json`):**
+   - Automatically generated from TypeScript AST via `react-docgen-typescript`.
+   - Contains exact prop signatures, literal union types (`variant="primary" | "secondary"`), default values, and valid usage examples for all 22 components.
+2. **Multi-Agent Rules (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`):**
+   - Universal behavioral contracts enforcing the 4pt spatial grid, semantic color tokens, 44pt minimum touch targets, and mandatory accessibility attributes.
+3. **Instant Consumer Provisioning CLI (`npx shani-ds init-ai`):**
+   - One-command setup that equips any external consumer repository with complete AI rules and manifest bindings.
+4. **Automated AST Static Analysis Validator (`npx shani-ds validate <file>`):**
+   - Built on the TypeScript Compiler API. Parses TSX abstract syntax trees to catch raw colors, magic numbers, and forbidden primitives before code review or CI merge.
+
+---
+
+## 3. The Demo Scenario
+
+- **Screen Generated:** **Shipment Pickup Scheduling Screen** (`ai-demo/with-context/PickupScreen.tsx`).
+- **Input Reference:** Real freight logistics Figma design (`ai-demo/figma-input.png`).
+- **Prompt:** Provided in [`PROMPTS.md`](./PROMPTS.md).
+- **Audit Results:** Documented in [`COMPARISON.md`](./COMPARISON.md) and [`with-context/validation-report.txt`](./with-context/validation-report.txt).
+
+### Key Design Achievements
+- **100% Component Mapping:** The AI mapped the package counter to `@shani/ui`'s official `<QuantityStepper>` and date/time selectors to `<ChipGroup>`, ensuring 44pt touch targets and accessibility rather than hacking unstyled views.
+- **Zero Raw Hex Colors:** All styling references semantic theme tokens (`canvas`, `surface`, `secondary`, `primary`).
+- **Zero Magic Pixel Values:** Layout strictly conforms to the 4pt token scale (`spacing="5"`, `spacing="4"`, `p="6"`).
+- **0 AST Violations:** Verified by `npx shani-ds validate` with exit code 0.
